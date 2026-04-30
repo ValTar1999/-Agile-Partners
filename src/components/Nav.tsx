@@ -1,33 +1,102 @@
-import logo from '../assets/image/header/LOGO.svg'
+import { useState } from 'react';
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+} from '@floating-ui/react';
+import logo from '../assets/image/header/LOGO.svg';
 
-const navLinks = ['ABOUT', 'TEAM', 'WORK']
+const navLinks = [
+  { label: 'ABOUT', href: '#about' },
+  { label: 'WHO WE ARE', href: '#who-we-are' },
+  { label: 'WORK', href: '#work' },
+  { label: 'CONTACT US', href: '#contact-us' },
+];
 
 export default function Nav() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => setIsMenuOpen(false);
+  const menuId = 'mobile-nav-menu';
+  const { refs, floatingStyles, context } = useFloating({
+    open: isMenuOpen,
+    onOpenChange: setIsMenuOpen,
+    placement: 'bottom-end',
+    middleware: [offset(12), flip({ padding: 16 }), shift({ padding: 16 })],
+    whileElementsMounted: autoUpdate,
+  });
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
+
   return (
-    <nav className="w-full flex justify-center">
-      <div className="w-full container flex items-center justify-between px-4 py-6 md:py-10">
-      <a href="/" className="flex items-center no-underline">
-        <img src={logo} alt="Agile Partners" className="h-8 md:h-11 w-auto" />
-      </a>
-      <ul className="flex list-none gap-2 sm:gap-3">
-        {navLinks.map((link) => (
-          <li key={link}>
-            <a
-              href={`#${link.toLowerCase()}`}
-              className="group relative cursor-pointer uppercase text-sm font-semibold leading-5 px-3 py-0.5 border border-black rounded-full overflow-hidden inline-flex items-center justify-center"
+    <nav className="flex w-full justify-center">
+      <div className="relative flex w-full max-w-2160 items-center justify-between p-4 md:p-10 lg:items-start">
+        <a href="/" className="flex items-center no-underline">
+          <img src={logo} alt="Agile Partners" className="h-8 w-auto lg:h-11" />
+        </a>
+
+        <button
+          type="button"
+          ref={refs.setReference}
+          className="inline-flex h-6 w-6 items-center justify-center bg-transparent lg:hidden"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          aria-controls={menuId}
+          {...getReferenceProps()}
+        >
+          <span className="sr-only">Menu</span>
+          <span className="flex flex-col gap-1.5">
+            <span className="block h-px w-6 bg-black" />
+            <span className="block h-px w-6 bg-black" />
+          </span>
+        </button>
+
+        <ul className="hidden list-none flex-col items-start lg:flex">
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                className="inline-block text-base leading-5 font-normal tracking-[0.16px] text-black uppercase no-underline transition-opacity hover:opacity-70 2xl:text-[22px] 2xl:leading-normal 2xl:tracking-[1.32px]"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        {isMenuOpen && (
+          <FloatingPortal>
+            <div
+              id={menuId}
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className="z-30 w-[min(92vw,20rem)] rounded-2xl border border-black/10 bg-white/95 p-3 shadow-2xl backdrop-blur-sm lg:hidden"
+              {...getFloatingProps()}
             >
-              <span
-                className="absolute left-0 top-0 h-full w-0 rounded-full bg-black transition-[width] duration-300 ease-out group-hover:w-full"
-                aria-hidden
-              />
-              <span className="relative z-10 text-black transition-colors duration-300 group-hover:text-white">
-                {link}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+              <ul className="m-0 list-none space-y-1 p-0">
+                {navLinks.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={closeMenu}
+                      className="block rounded-xl px-3 py-2 text-base font-semibold tracking-wide text-black transition-colors hover:bg-black hover:text-white focus-visible:bg-black focus-visible:text-white focus-visible:outline-none"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FloatingPortal>
+        )}
       </div>
     </nav>
-  )
+  );
 }

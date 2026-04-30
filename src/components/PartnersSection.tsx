@@ -1,16 +1,16 @@
-import { motion } from 'framer-motion'
-import ButtonTeam from './ButtonTeam'
-import payallLogo from '../assets/image/payall.svg'
-import transcardLogo from '../assets/image/transcard.svg'
-import prysymLogo from '../assets/image/prysym.svg'
-import artymysLogo from '../assets/image/artymys.svg'
+import { motion } from 'framer-motion';
+import ButtonTeam from './ButtonTeam';
+import payallLogo from '../assets/image/payall.svg';
+import transcardLogo from '../assets/image/transcard.svg';
+import prysymLogo from '../assets/image/prysym.svg';
+import artymysLogo from '../assets/image/artymys.svg';
 
 const PARTNERS = [
   { name: 'Payall', logo: payallLogo },
   { name: 'Transcard', logo: transcardLogo },
   { name: 'Prysym', logo: prysymLogo },
   { name: 'ARTYMYS', logo: artymysLogo },
-]
+];
 
 export default function PartnersSection() {
   return (
@@ -45,5 +45,5 @@ export default function PartnersSection() {
         </div>
       </motion.div>
     </section>
-  )
+  );
 }

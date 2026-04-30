@@ -1,14 +1,21 @@
 type ButtonTeamProps = {
-  children: React.ReactNode
-  className?: string
-} & React.ButtonHTMLAttributes<HTMLButtonElement>
+  children: React.ReactNode;
+  className?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const ArrowIcon = () => (
-  <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+  <svg
+    width="15"
+    height="14"
+    viewBox="0 0 15 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="shrink-0"
+  >
     <path d="M7 0.530334L13 6.53033L7 12.5303" stroke="currentColor" strokeWidth="1.5" />
     <path d="M13 6.53033H0" stroke="currentColor" strokeWidth="1.5" />
   </svg>
-)
+);
 
 export default function ButtonTeam({ children, className = '', ...props }: ButtonTeamProps) {
   return (
@@ -26,7 +33,9 @@ export default function ButtonTeam({ children, className = '', ...props }: Butto
       <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
         {children}
         <span className="flex overflow-hidden w-0 group-hover:w-[15px] transition-all duration-400 ease-out shrink-0">
-          <span className="opacity-0 shrink-0"><ArrowIcon /></span>
+          <span className="opacity-0 shrink-0">
+            <ArrowIcon />
+          </span>
         </span>
       </span>
 
@@ -48,5 +57,5 @@ export default function ButtonTeam({ children, className = '', ...props }: Butto
         </span>
       </span>
     </button>
-  )
+  );
 }

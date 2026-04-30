@@ -1,11 +1,11 @@
-import logo from '../assets/image/LOGO-dark.svg'
+import logo from '../assets/image/LOGO-dark.svg';
 
-const navLinks = ['ABOUT', 'TEAM', 'WORK']
+const navLinks = ['ABOUT', 'TEAM', 'WORK'];
 const socialLinks = [
   { name: 'Instagram', href: '#' },
   { name: 'LinkedIn', href: '#' },
   { name: 'Facebook', href: '#' },
-]
+];
 
 export default function Footer() {
   return (
@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <a href="/">
-            <img src={logo} alt="Agile Partners" className="h-11 w-auto"/>
+            <img src={logo} alt="Agile Partners" className="h-11 w-auto" />
           </a>
           <ul className="flex list-none gap-2">
             {navLinks.map((link) => (
@@ -47,9 +47,15 @@ export default function Footer() {
               className="absolute bottom-0 left-0 h-0.5 bg-[#0AE58A] w-0 transition-[width] duration-300 ease-out group-hover/link:w-full"
               aria-hidden
             />
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 2.5L17.5 10L10 17.5" stroke="#0AE58A"/>
-              <path d="M17.5 10H1.25" stroke="#0AE58A"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <path d="M10 2.5L17.5 10L10 17.5" stroke="#0AE58A" />
+              <path d="M17.5 10H1.25" stroke="#0AE58A" />
             </svg>
             <span className="relative z-10">contact@agilepartners.eu</span>
           </a>
@@ -58,10 +64,14 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="flex flex-col sm:flex-row sm:items-start gap-6 md:gap-20">
             <address className="text-base md:text-xl lg:text-2xl leading-[30px] -tracking-[0.72px] text-white not-italic">
-              Stefan cel Mare Str. 135<br />
+              Stefan cel Mare Str. 135
+              <br />
               Chisinau, Moldova
             </address>
-            <a href="tel:+37360869382" className="text-white text-base md:text-xl lg:text-2xl leading-[30px] -tracking-[0.72px] hover:text-[#0AE58A] transition-colors">
+            <a
+              href="tel:+37360869382"
+              className="text-white text-base md:text-xl lg:text-2xl leading-[30px] -tracking-[0.72px] hover:text-[#0AE58A] transition-colors"
+            >
               (+373) 608 69 382
             </a>
           </div>
@@ -87,5 +97,5 @@ export default function Footer() {
         </p>
       </div>
     </footer>
-  )
+  );
 }
