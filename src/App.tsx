@@ -129,10 +129,7 @@ function App() {
           <StatsSection />
           <PartnersSection />
         </div>
-        <div
-          className="relative scroll-mt-20 bg-[#f8f8f8]"
-          id="work"
-        >
+        <div className="relative scroll-mt-20 bg-[#f8f8f8]" id="work">
           <div className="pointer-events-none absolute top-0 right-0 h-full w-full max-w-lg overflow-visible opacity-60 md:right-1/12 md:opacity-100">
             <svg
               className="h-full w-full overflow-visible object-cover"
@@ -196,10 +193,7 @@ function App() {
           <ProjectsSection />
         </div>
       </div>
-      <div
-        aria-hidden
-        className="pointer-events-none h-(--footer-height,100dvh) shrink-0"
-      />
+      <div aria-hidden className="pointer-events-none h-(--footer-height,100dvh) shrink-0" />
       <div
         className="fixed right-10 bottom-1/12 z-50 hidden md:block"
         style={{ mixBlendMode: 'difference' }}
