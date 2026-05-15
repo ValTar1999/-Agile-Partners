@@ -231,7 +231,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
           </h2>
         </div>
 
-        <div className="mt-20 mb-24 flex flex-col gap-20 md:mt-[100px] md:gap-24 lg:mb-36 lg:gap-[100px] xl:mb-40 2xl:mt-32 2xl:mb-48 2xl:gap-48">
+        <div className="flex flex-col gap-20 pt-20 pb-24 md:gap-24 md:pt-[100px] lg:gap-[100px] lg:pb-36 2xl:gap-48 2xl:pt-32 2xl:pb-48">
           {phases.map((phase, index) => (
             <motion.div
               key={phase.number}
