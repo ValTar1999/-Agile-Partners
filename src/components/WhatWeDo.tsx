@@ -235,7 +235,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
           {phases.map((phase, index) => (
             <motion.div
               key={phase.number}
-              className="grid grid-cols-1 items-start gap-10 md:grid-cols-[240px_1fr] md:gap-16 lg:grid-cols-2 lg:gap-40 xl:grid-cols-[512px_1fr] xl:gap-44 2xl:grid-cols-[688px_1fr] 2xl:gap-60"
+              className="grid grid-cols-1 items-start gap-10 md:grid-cols-[240px_1fr] lg:grid-cols-2 lg:gap-40 xl:grid-cols-[512px_1fr] xl:gap-44 2xl:grid-cols-[688px_1fr] 2xl:gap-60"
               initial={{ opacity: 0, y: 48 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}

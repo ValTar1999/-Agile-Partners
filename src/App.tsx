@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import Header from './components/Header';
 import Nav from './components/Nav';
 import ButtonGlobal from './components/ButtonGlobal';
@@ -9,16 +10,64 @@ import ProjectsSection from './components/ProjectsSection';
 import Footer from './components/Footer';
 
 function App() {
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [isFooterInteractive, setIsFooterInteractive] = useState(false);
+
+  useEffect(() => {
+    const footer = footerRef.current;
+    if (!footer) return;
+
+    const setFooterHeight = () => {
+      const height = footer.offsetHeight;
+      document.documentElement.style.setProperty('--footer-height', `${height}px`);
+    };
+
+    const updateFooterInteractive = () => {
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const pageBottom = document.documentElement.scrollHeight;
+      setIsFooterInteractive(scrollBottom >= pageBottom - 48);
+    };
+
+    setFooterHeight();
+    updateFooterInteractive();
+
+    const resizeObserver = new ResizeObserver(() => {
+      setFooterHeight();
+      updateFooterInteractive();
+    });
+    resizeObserver.observe(footer);
+
+    window.addEventListener('scroll', updateFooterInteractive, { passive: true });
+    window.addEventListener('resize', updateFooterInteractive);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('scroll', updateFooterInteractive);
+      window.removeEventListener('resize', updateFooterInteractive);
+    };
+  }, []);
+
   return (
-    <div className="app w-full min-h-screen relative">
+    <div className="app relative min-h-screen w-full">
+      <div
+        ref={footerRef}
+        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden ${
+          isFooterInteractive ? 'z-40' : 'pointer-events-none z-0'
+        }`}
+      >
+        <Footer />
+      </div>
+
       <div className="relative z-10 overflow-hidden">
-        <Nav />
-        <Header />
-        <WhatWeDo id="about" />
-        <div className="bg-black/95 relative scroll-mt-20" id="team">
-          <div className="absolute top-0 left-0 md:left-1/12 overflow-visible pointer-events-none w-full h-full max-w-lg opacity-60 md:opacity-100">
+        <div className="bg-[#f8f8f8]">
+          <Nav />
+          <Header />
+          <WhatWeDo id="about" />
+        </div>
+        <div className="relative scroll-mt-20 bg-black" id="who-we-are">
+          <div className="pointer-events-none absolute top-0 left-0 h-full w-full max-w-lg overflow-visible opacity-60 md:left-1/12 md:opacity-100">
             <svg
-              className="w-full h-full object-cover overflow-visible"
+              className="h-full w-full overflow-visible object-cover"
               viewBox="0 0 654 845"
               fill="none"
               preserveAspectRatio="xMinYMin meet"
@@ -80,10 +129,13 @@ function App() {
           <StatsSection />
           <PartnersSection />
         </div>
-        <div className="relative scroll-mt-20" id="work">
-          <div className="absolute top-0 right-0 md:right-1/12 overflow-visible pointer-events-none w-full h-full max-w-lg opacity-60 md:opacity-100">
+        <div
+          className="relative scroll-mt-20 bg-[#f8f8f8]"
+          id="work"
+        >
+          <div className="pointer-events-none absolute top-0 right-0 h-full w-full max-w-lg overflow-visible opacity-60 md:right-1/12 md:opacity-100">
             <svg
-              className="w-full h-full object-cover overflow-visible"
+              className="h-full w-full overflow-visible object-cover"
               viewBox="0 0 654 845"
               fill="none"
               preserveAspectRatio="xMinYMin meet"
@@ -143,10 +195,13 @@ function App() {
           </div>
           <ProjectsSection />
         </div>
-        <Footer />
       </div>
       <div
-        className="fixed bottom-1/12 right-1/12 z-50 hidden md:block"
+        aria-hidden
+        className="pointer-events-none h-(--footer-height,100dvh) shrink-0"
+      />
+      <div
+        className="fixed right-10 bottom-1/12 z-50 hidden md:block"
         style={{ mixBlendMode: 'difference' }}
       >
         <ButtonGlobal />

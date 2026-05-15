@@ -14,9 +14,9 @@ const PARTNERS = [
 
 export default function PartnersSection() {
   return (
-    <section className="w-full container mx-auto px-4 pt-10 pb-16 md:pb-32 lg:pb-52 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-0">
+    <section className="container mx-auto flex w-full flex-col gap-8 px-4 pt-10 pb-24 md:px-10 lg:items-start lg:gap-20 xl:flex-row xl:gap-0">
       <motion.p
-        className="text-base text-white uppercase leading-5 tracking-[0.16px]"
+        className="mb-6 text-sm leading-4 tracking-[0.14px] text-white uppercase md:mb-8 xl:mb-0 2xl:min-w-[560px]"
         initial={{ opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
@@ -26,16 +26,16 @@ export default function PartnersSection() {
       </motion.p>
 
       <motion.div
-        className="flex flex-col gap-8 md:gap-16 lg:gap-[100px] w-full max-w-[952px]"
+        className="flex w-full max-w-[952px] flex-col gap-8 md:gap-16 lg:gap-[100px]"
         initial={{ opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
       >
-        <p className="text-lg md:text-2xl leading-[30px] -tracking-[0.72px] text-white">
+        <p className="text-xl leading-[26px] -tracking-[0.7px] text-white">
           We work and create with ambitious businesses and people.
         </p>
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6 md:gap-12 lg:gap-[100px]">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:justify-start md:gap-12 lg:gap-[100px]">
           {PARTNERS.map(({ name, logo }) => (
             <img key={name} src={logo} alt={name} className="h-9 w-auto object-contain" />
           ))}

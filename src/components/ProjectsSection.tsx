@@ -9,6 +9,7 @@ import p6 from '../assets/image/project/p-6.svg';
 import p7 from '../assets/image/project/p-7.svg';
 import p8 from '../assets/image/project/p-8.svg';
 import p9 from '../assets/image/project/p-9.svg';
+import Simbols from '../assets/image/project/Simbolds.svg';
 
 const PROJECTS = [
   {
@@ -84,7 +85,7 @@ export default function ProjectsSection() {
         </motion.div>
       </div>
 
-      <div className="container mx-auto flex flex-col gap-12 px-4 md:gap-20 lg:gap-32">
+      <div className="container mx-auto flex flex-col gap-14 px-4 md:gap-20 lg:gap-32">
         <motion.div
           className="w-full max-w-[1040px]"
           initial={{ opacity: 0, y: 48 }}
@@ -94,13 +95,13 @@ export default function ProjectsSection() {
         >
           <img className="h-full max-h-[600px] w-full object-cover" src={p1} alt="" />
           <motion.div
-            className="mt-8 h-px w-full origin-left bg-black"
+            className="my-6 h-px w-full origin-left bg-black"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           />
-          <div className="flex items-start justify-between pt-4 text-black">
+          <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
             <p className="text-base leading-5 font-semibold tracking-[0.32px] uppercase">
               {PROJECTS[0].title}
             </p>
@@ -110,7 +111,7 @@ export default function ProjectsSection() {
           </div>
         </motion.div>
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-0">
+        <div className="flex flex-col gap-14 lg:flex-row lg:justify-between lg:gap-0">
           <motion.div
             className="mx-auto mt-0 w-full max-w-lg lg:mt-[452px]"
             initial={{ opacity: 0, y: 48 }}
@@ -120,13 +121,13 @@ export default function ProjectsSection() {
           >
             <img className="h-full max-h-[680px] w-full object-cover" src={p3} alt="" />
             <motion.div
-              className="mt-8 h-px w-full origin-left bg-black"
+              className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
             />
-            <div className="flex items-start justify-between pt-4 text-black">
+            <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
               <p className="w-full max-w-[108px] text-base leading-5 font-semibold tracking-[0.32px] uppercase">
                 {PROJECTS[1].title}
               </p>
@@ -145,13 +146,13 @@ export default function ProjectsSection() {
           >
             <img className="h-full max-h-[648px] w-full object-cover" src={p2} alt="" />
             <motion.div
-              className="mt-8 h-px w-full origin-left bg-black"
+              className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
             />
-            <div className="flex items-start justify-between pt-4 text-black">
+            <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
               <p className="w-full max-w-60 text-base leading-5 font-semibold tracking-[0.32px] uppercase">
                 {PROJECTS[2].title}
               </p>
@@ -162,6 +163,8 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
+        <img className="ml-auto h-8 w-fit object-cover" src={Simbols} alt="" />
+
         <motion.div
           className="w-full max-w-[784px]"
           initial={{ opacity: 0, y: 48 }}
@@ -171,13 +174,13 @@ export default function ProjectsSection() {
         >
           <img className="h-full max-h-[500px] w-full object-cover" src={p4} alt="" />
           <motion.div
-            className="mt-8 h-px w-full origin-left bg-black"
+            className="my-6 h-px w-full origin-left bg-black"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           />
-          <div className="flex items-start justify-between pt-4 text-black">
+          <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
             <p className="text-base leading-5 font-semibold tracking-[0.32px] uppercase">
               {PROJECTS[3].title}
             </p>
@@ -196,13 +199,13 @@ export default function ProjectsSection() {
         >
           <img className="h-full max-h-[500px] w-full object-cover" src={p5} alt="" />
           <motion.div
-            className="mt-8 h-px w-full origin-left bg-black"
+            className="my-6 h-px w-full origin-left bg-black"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           />
-          <div className="flex items-start justify-between pt-4 text-black">
+          <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
             <p className="w-full max-w-60 text-base leading-5 font-semibold tracking-[0.32px] uppercase">
               {PROJECTS[4].title}
             </p>
@@ -221,13 +224,13 @@ export default function ProjectsSection() {
         >
           <img className="h-full max-h-60 w-full object-cover" src={p6} alt="" />
           <motion.div
-            className="mt-8 h-px w-full origin-left bg-black"
+            className="my-6 h-px w-full origin-left bg-black"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           />
-          <div className="flex items-start justify-between pt-4 text-black">
+          <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
             <p className="text-base leading-5 font-semibold tracking-[0.32px] uppercase">
               {PROJECTS[5].title}
             </p>
@@ -248,13 +251,13 @@ export default function ProjectsSection() {
         >
           <img className="h-full max-h-[480px] w-full object-cover" src={p7} alt="" />
           <motion.div
-            className="mt-8 h-px w-full origin-left bg-black"
+            className="my-6 h-px w-full origin-left bg-black"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
           />
-          <div className="flex items-start justify-between pt-4 text-black">
+          <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
             <p className="text-base leading-5 font-semibold tracking-[0.32px] uppercase">
               {PROJECTS[6].title}
             </p>
@@ -266,7 +269,7 @@ export default function ProjectsSection() {
           </div>
         </motion.div>
 
-        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-0">
+        <div className="flex flex-col gap-14 lg:flex-row lg:justify-between lg:gap-0">
           <motion.div
             className="w-full max-w-[648px]"
             initial={{ opacity: 0, y: 48 }}
@@ -280,13 +283,13 @@ export default function ProjectsSection() {
               alt=""
             />
             <motion.div
-              className="mt-8 h-px w-full origin-left bg-black"
+              className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
             />
-            <div className="flex items-start justify-between pt-4 text-black">
+            <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
               <p className="w-full max-w-60 text-base leading-5 font-semibold tracking-[0.32px] uppercase">
                 {PROJECTS[7].title}
               </p>
@@ -305,13 +308,13 @@ export default function ProjectsSection() {
           >
             <img className="h-full max-h-[412px] w-full object-cover" src={p9} alt="" />
             <motion.div
-              className="mt-8 h-px w-full origin-left bg-black"
+              className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
             />
-            <div className="flex items-start justify-between pt-4 text-black">
+            <div className="flex flex-col items-start justify-between gap-3 text-black xl:flex-row">
               <p className="text-base leading-5 font-semibold tracking-[0.32px] uppercase">
                 {PROJECTS[8].title}
               </p>

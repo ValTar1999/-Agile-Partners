@@ -1,12 +1,29 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import ButtonTeam from '../ButtonTeam';
 import imageGroup from '../../assets/image/sectionPeople/image 8.svg';
 import imagePortrait from '../../assets/image/sectionPeople/surface-4FEub7tWUzM-unsplash 1.svg';
 import imageObject from '../../assets/image/sectionPeople/redd-5U_28ojjgms-unsplash 1.svg';
 
+const imageReveal = {
+  initial: { opacity: 0, scale: 0.98 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: { once: true, margin: '-80px' },
+  transition: { duration: 0.55, ease: 'easeOut' as const },
+};
+
 export default function PeopleSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [parallaxLg, setParallaxLg] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const sync = () => setParallaxLg(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
@@ -20,12 +37,12 @@ export default function PeopleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 text-white pt-16 md:pt-24 lg:pt-36 pb-24 md:pb-36 lg:pb-52 overflow-x-hidden"
+      className="relative z-10 overflow-x-hidden pt-24 pb-24 text-white md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32"
     >
-      <div className="w-full overflow-hidden mb-16 md:mb-32 lg:mb-60">
+      <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div
-          className="text-5xl md:text-7xl lg:text-[168px] lg:leading-[168px] font-medium uppercase -tracking-[2px] md:-tracking-[4px] lg:-tracking-[8.4px] whitespace-nowrap px-4 flex items-center gap-8 md:gap-16 lg:gap-36"
-          style={{ x: textX }}
+          className="flex items-center gap-8 px-4 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
+          style={parallaxLg ? { x: textX } : undefined}
         >
           <span className="text-white">PEOPLE BUILDING </span>
           <span className="text-white">
@@ -34,9 +51,9 @@ export default function PeopleSection() {
         </motion.div>
       </div>
 
-      <div className="container px-4 mx-auto">
+      <div className="container mx-auto px-4 md:px-10">
         <motion.div
-          className="w-full max-w-lg relative ml-0 lg:ml-auto lg:mr-20"
+          className="relative ml-auto w-full max-w-56 md:max-w-lg lg:mr-20"
           initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -57,14 +74,14 @@ export default function PeopleSection() {
               />
             </svg>
           </div>
-          <p className="text-lg md:text-2xl text-white leading-[30px] -tracking-[0.72px] mb-8">
+          <p className="mb-8 text-xl leading-[26px] -tracking-[0.7px] text-white md:text-2xl">
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
             commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
             dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa.
           </p>
           <div className="grid gap-2 uppercase">
-            <div className="font-semibold text-base leading-7 tracking-[0.32px] text-white">
+            <div className="text-base leading-7 font-semibold tracking-[0.32px] text-white">
               NAME HERE
             </div>
             <div className="text-base leading-7 -tracking-[0.48px] text-[#999999]">
@@ -73,41 +90,62 @@ export default function PeopleSection() {
           </div>
         </motion.div>
 
-        <div className="py-12 md:py-32 lg:py-60 overflow-visible">
-          <div className="">
-            <motion.div className="w-full h-full" style={{ y: img1Y }}>
-              <img
-                src={imageObject}
-                alt="Team meeting"
-                className="w-full object-cover h-[664px] max-w-5xl mx-auto"
-                style={{ aspectRatio: '16/9' }}
-              />
-            </motion.div>
-            <div className="w-full -mt-40 ml-20">
-              <motion.div className="w-full max-w-80 h-[460px]" style={{ y: img2Y }}>
+        <div className="overflow-visible py-24 xl:py-48">
+          <div className="flex flex-col gap-8 md:gap-10 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:gap-y-14 xl:gap-x-0 xl:gap-y-0">
+            <motion.div
+              className="h-full w-full lg:col-span-10 lg:col-start-2 xl:col-span-8 xl:col-start-3"
+              style={parallaxLg ? { y: img1Y } : undefined}
+            >
+              <motion.div
+                className="h-full w-full overflow-hidden"
+                {...imageReveal}
+                transition={{ ...imageReveal.transition, delay: 0 }}
+              >
                 <img
-                  src={imagePortrait}
-                  alt="Team member"
-                  className="w-full h-full aspect-square object-cover"
+                  src={imageObject}
+                  alt="Team meeting"
+                  className="aspect-video w-full object-cover lg:aspect-auto lg:h-[587px]"
                 />
               </motion.div>
+            </motion.div>
+            <div className="self-start lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:w-full lg:self-auto">
+              <motion.div
+                className="aspect-square w-[min(100%,17rem)] max-w-[272px] lg:aspect-auto lg:h-[406px] lg:w-[290px] lg:max-w-none"
+                style={parallaxLg ? { y: img2Y } : undefined}
+              >
+                <motion.div
+                  className="h-full w-full overflow-hidden"
+                  {...imageReveal}
+                  transition={{ ...imageReveal.transition, delay: 0.1 }}
+                >
+                  <img
+                    src={imagePortrait}
+                    alt="Team member"
+                    className="h-full w-full object-cover"
+                  />
+                </motion.div>
+              </motion.div>
             </div>
-            <div className="w-full flex justify-end">
-              <motion.div className="w-full max-w-[648px] h-[416px]" style={{ y: img3Y }}>
-                <img
-                  src={imageGroup}
-                  alt="Workspace"
-                  className="w-full object-cover"
-                  style={{ aspectRatio: '4/3' }}
-                />
+            <div className="flex w-full justify-center lg:col-span-5 lg:col-start-8 lg:row-start-3 lg:justify-end xl:col-span-5 xl:col-start-8">
+              <motion.div
+                className="aspect-4/3 w-full max-w-md lg:ml-0 lg:aspect-auto lg:h-[367px] lg:w-[590px] lg:max-w-none"
+                style={parallaxLg ? { y: img3Y } : undefined}
+              >
+                <motion.div
+                  className="h-full w-full overflow-hidden"
+                  {...imageReveal}
+                  transition={{ ...imageReveal.transition, delay: 0.2 }}
+                >
+                  <img src={imageGroup} alt="Workspace" className="h-full w-full object-cover" />
+                </motion.div>
               </motion.div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-[168px] items-end">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-end gap-14 lg:grid-cols-2 lg:gap-44">
           <motion.p
-            className="text-base md:text-xl leading-[26px] -tracking-[0.7px] text-white max-w-[376px]"
+            className="max-w-[376px] text-xl leading-[26px] -tracking-[0.7px] text-white"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}

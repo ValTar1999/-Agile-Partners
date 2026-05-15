@@ -63,9 +63,13 @@ export default function Nav() {
             <li key={link.label}>
               <a
                 href={link.href}
-                className="inline-block text-base leading-5 font-normal tracking-[0.16px] text-black uppercase no-underline transition-opacity hover:opacity-70 2xl:text-[22px] 2xl:leading-normal 2xl:tracking-[1.32px]"
+                className="group/nav relative inline-block text-base leading-5 font-normal tracking-[0.16px] text-black uppercase no-underline"
               >
-                {link.label}
+                <span
+                  className="absolute bottom-0 left-0 h-px w-0 bg-black transition-[width] duration-300 ease-out group-hover/nav:w-full"
+                  aria-hidden
+                />
+                <span className="relative z-10">{link.label}</span>
               </a>
             </li>
           ))}

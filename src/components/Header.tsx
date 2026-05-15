@@ -111,9 +111,12 @@ export default function Header() {
         <div className="flex w-full flex-col">
           <h1 className="mx-auto min-h-0 w-full max-w-6xl text-[40px] leading-11 -tracking-[1.6px] text-black sm:min-h-[60px] sm:text-3xl md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
             We{' '}
-            <span className="inline-flex items-center gap-1 italic">
+            <span className="inline-flex items-baseline gap-1 italic">
               {displayed}
-              <span className="animate-blink inline-block h-12 w-px shrink-0 bg-black align-middle md:h-20" />
+              <span
+                className="animate-blink inline-block h-10 w-px shrink-0 self-baseline bg-black"
+                aria-hidden
+              />
             </span>{' '}
             <span className="text-primary">fintech</span> solutions that power seamless digital
             payments.
