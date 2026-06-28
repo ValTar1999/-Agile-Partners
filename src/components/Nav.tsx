@@ -19,6 +19,9 @@ const navLinks = [
   { label: 'CONTACT US', href: '#contact-us' },
 ];
 
+const navLinkClass =
+  'self-stretch text-base leading-5 font-normal tracking-[0.16px] text-black uppercase no-underline';
+
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -37,7 +40,7 @@ export default function Nav() {
 
   return (
     <nav className="flex w-full justify-center">
-      <div className="relative flex w-full max-w-2160 items-center justify-between p-4 md:p-10 lg:items-start">
+      <div className="relative flex w-full items-center justify-between p-4 md:p-10 lg:items-start">
         <a href="/" className="flex items-center no-underline">
           <img src={logo} alt="Agile Partners" className="h-8 w-auto lg:h-11" />
         </a>
@@ -63,7 +66,7 @@ export default function Nav() {
             <li key={link.label}>
               <a
                 href={link.href}
-                className="group/nav relative inline-block text-base leading-5 font-normal tracking-[0.16px] text-black uppercase no-underline"
+                className={`group/nav relative block ${navLinkClass}`}
               >
                 <span
                   className="absolute bottom-0 left-0 h-px w-0 bg-black transition-[width] duration-300 ease-out group-hover/nav:w-full"
@@ -90,7 +93,7 @@ export default function Nav() {
                     <a
                       href={link.href}
                       onClick={closeMenu}
-                      className="block rounded-xl px-3 py-2 text-base font-semibold tracking-wide text-black transition-colors hover:bg-black hover:text-white focus-visible:bg-black focus-visible:text-white focus-visible:outline-none"
+                      className={`block px-3 py-2 ${navLinkClass} transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none`}
                     >
                       {link.label}
                     </a>

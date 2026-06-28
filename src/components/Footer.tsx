@@ -24,6 +24,9 @@ const socialLinks = [
   { name: 'Facebook', href: '#' },
 ];
 
+const navLinkClass =
+  'self-stretch text-base leading-5 font-normal tracking-[0.16px] text-white uppercase no-underline';
+
 export default function Footer() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -66,13 +69,10 @@ export default function Footer() {
             </span>
           </button>
 
-          <ul className="hidden list-none flex-col items-start gap-1 lg:flex">
+          <ul className="hidden list-none flex-col items-start lg:flex">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <a
-                  href={link.href}
-                  className="group/nav relative inline-block text-base leading-5 font-normal tracking-[0.16px] text-white uppercase no-underline"
-                >
+                <a href={link.href} className={`group/nav relative block ${navLinkClass}`}>
                   <span
                     className="absolute bottom-0 left-0 h-px w-0 bg-white transition-[width] duration-300 ease-out group-hover/nav:w-full"
                     aria-hidden
@@ -98,7 +98,7 @@ export default function Footer() {
                       <a
                         href={link.href}
                         onClick={closeMenu}
-                        className="block rounded-xl px-3 py-2 text-base font-semibold tracking-wide text-white transition-colors hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black focus-visible:outline-none"
+                        className={`block px-3 py-2 ${navLinkClass} transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none`}
                       >
                         {link.label}
                       </a>
@@ -115,30 +115,32 @@ export default function Footer() {
             <h2 className="mb-4 text-[40px] leading-11 -tracking-[1.6px] md:mb-5 lg:text-6xl lg:leading-[1.1] lg:-tracking-[2.4px] xl:mb-6 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
               Get in touch
             </h2>
-            <a
-              href="mailto:contact@agilepartners.eu"
-              className="group/link relative inline-flex items-center gap-2 text-xl leading-[26px] -tracking-[0.7px] text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
-            >
-              <span
-                className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/link:w-full"
-                aria-hidden
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
+            <div className="">
+              <a
+                href="mailto:contact@agilepartners.eu"
+                className="group/link relative inline-flex items-center gap-2 text-xl leading-[26px] -tracking-[0.7px] text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
               >
-                <path d="M10 2.5L17.5 10L10 17.5" stroke="#0AE58A" />
-                <path d="M17.5 10H1.25" stroke="#0AE58A" />
-              </svg>
-              <span className="relative z-10">contact@agilepartners.eu</span>
-            </a>
+                <span
+                  className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/link:w-full"
+                  aria-hidden
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path d="M10 2.5L17.5 10L10 17.5" stroke="#0AE58A" />
+                  <path d="M17.5 10H1.25" stroke="#0AE58A" />
+                </svg>
+                <span className="relative z-10">contact@agilepartners.eu</span>
+              </a>
+            </div>
           </div>
 
           <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-8">
               <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
                 Stefan cel Mare Str. 135
                 <br />

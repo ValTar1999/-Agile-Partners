@@ -219,95 +219,100 @@ function PhaseGraphic({ type }: { type: string }) {
 
 export default function WhatWeDo({ id }: { id?: string }) {
   return (
-    <section id={id} className="relative z-10 scroll-mt-20 pt-36 md:pt-56 lg:pt-40 2xl:pt-44">
-      <div className="mx-auto max-w-[1792px] px-4 md:px-10">
-        <div className="w-full max-w-[784px] 2xl:max-w-5xl">
-          <p className="2xl:text[22px] mb-5 text-sm leading-4 tracking-[0.14px] text-black uppercase md:leading-5 md:tracking-[0.16px] 2xl:mb-7 2xl:leading-normal 2xl:-tracking-[1.32px]">
+    <section
+      id={id}
+      className="relative z-10 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 2xl:pt-44"
+    >
+      <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
+        <div className="col-span-12 xl:col-span-5 xl:col-start-2">
+          <p className="mb-5 text-sm leading-4 tracking-[0.14px] text-black uppercase md:text-base md:leading-5 md:tracking-[0.16px]">
             WHAT WE DO
           </p>
-          <h2 className="text-[32px] leading-[34px] -tracking-[1.28px] text-black md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] 2xl:text-7xl 2xl:leading-20">
+          <h2 className="text-[32px] leading-[34px] -tracking-[1.28px] text-black md:text-[52px] md:leading-[60px] md:-tracking-[2.34px]">
             We thrive at the intersection of{' '}
             <span className="text-primary">technology, data, design, and marketing.</span>
           </h2>
         </div>
+      </div>
 
-        <div className="mt-20 mb-24 flex flex-col gap-20 md:mt-[100px] md:gap-24 lg:mb-36 lg:gap-[100px] xl:mb-40 2xl:mt-32 2xl:mb-48 2xl:gap-48">
-          {phases.map((phase, index) => (
+      <div className="mt-20 flex flex-col gap-20 md:mt-[100px] md:gap-24 lg:gap-[100px]">
+        {phases.map((phase, index) => (
+          <motion.div
+            key={phase.number}
+            className="grid grid-cols-1 items-start md:grid-cols-12 md:gap-x-8 md:gap-y-0"
+            initial={{ opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 }}
+          >
             <motion.div
-              key={phase.number}
-              className="grid grid-cols-1 items-start gap-10 md:grid-cols-[240px_1fr] lg:grid-cols-2 lg:gap-40 xl:grid-cols-[512px_1fr] xl:gap-44 2xl:grid-cols-[688px_1fr] 2xl:gap-60"
-              initial={{ opacity: 0, y: 48 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 }}
-            >
-              <div className="flex flex-col">
-                <motion.div
-                  className="mb-5 h-px w-full origin-left bg-black 2xl:mb-8"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 + 0.15 }}
-                />
-                <div className="mb-8 flex items-baseline justify-between gap-4 text-2xl leading-7 tracking-[0.72px] text-black 2xl:text-[32px] 2xl:leading-10 2xl:tracking-[0.16px]">
-                  <h3 className="font-medium">{phase.title}</h3>
-                  <span className="shrink-0 tabular-nums">{phase.number}</span>
-                </div>
-                <div className="flex justify-center">
-                  <PhaseGraphic type={phase.graphic} />
-                </div>
-              </div>
+              className="mb-5 hidden h-px w-full origin-left bg-black md:col-span-4 md:col-start-1 md:row-start-1 md:block xl:col-span-4 xl:col-start-2"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 + 0.15 }}
+            />
+            <motion.div
+              className="mb-5 hidden h-px w-full origin-left bg-black md:col-span-8 md:col-start-5 md:row-start-1 md:block xl:col-span-5 xl:col-start-7"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 + 0.15 }}
+            />
+            <motion.div
+              className="mb-5 h-px w-full origin-left bg-black md:hidden"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 + 0.15 }}
+            />
 
-              <div className="flex flex-col">
-                <motion.div
-                  className="mb-5 h-px w-full origin-left bg-black 2xl:mb-8"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.15 + 0.15 }}
-                />
-                <p className="mb-8 text-xl leading-[26px] -tracking-[0.7px] text-black 2xl:mb-[60px] 2xl:text-[28px] 2xl:leading-9 2xl:tracking-[0.28px]">
-                  {phase.description}
-                </p>
-                {phase.twoColumns ? (
-                  <div className="grid grid-cols-2 gap-x-5 gap-y-1">
-                    <ul className="space-y-1">
-                      {phase.services.map((s) => (
-                        <li
-                          key={s}
-                          className="text-xl leading-7 -tracking-[0.7px] text-black 2xl:text-[28px] 2xl:leading-9 2xl:tracking-[0.28px]"
-                        >
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                    <ul className="space-y-1">
-                      {phase.services.map((s) => (
-                        <li
-                          key={`${s}-2`}
-                          className="text-xl leading-7 -tracking-[0.7px] text-black 2xl:text-[28px] 2xl:leading-9 2xl:tracking-[0.28px]"
-                        >
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
+            <div className="mb-8 flex w-full items-baseline justify-between gap-4 md:mb-0 md:contents">
+              <h3 className="min-w-0 text-2xl leading-7 font-medium -tracking-[0.72px] text-black md:col-span-3 md:col-start-1 md:row-start-2 md:mb-0 xl:col-span-3 xl:col-start-2">
+                {phase.title}
+              </h3>
+              <span className="shrink-0 text-2xl leading-7 -tracking-[0.72px] text-black tabular-nums md:col-span-1 md:col-start-4 md:row-start-2 md:mb-0 md:text-right xl:col-start-5">
+                {phase.number}
+              </span>
+            </div>
+
+            <div className="col-span-full flex justify-center py-12 md:col-span-4 md:col-start-1 md:row-start-3 md:py-0 md:pt-8 xl:col-span-2 xl:col-start-3 xl:pt-20">
+              <PhaseGraphic type={phase.graphic} />
+            </div>
+
+            <div className="col-span-full flex flex-col md:col-span-8 md:col-start-5 md:row-span-2 md:row-start-2 xl:col-span-5 xl:col-start-7">
+              <p className="mb-8 text-xl leading-[26px] -tracking-[0.7px] text-black">
+                {phase.description}
+              </p>
+              {phase.twoColumns ? (
+                <div className="grid grid-cols-2 gap-x-5 gap-y-1">
                   <ul className="space-y-1">
                     {phase.services.map((s) => (
-                      <li
-                        key={s}
-                        className="text-xl leading-7 -tracking-[0.7px] text-black 2xl:text-[28px] 2xl:leading-9 2xl:tracking-[0.28px]"
-                      >
+                      <li key={s} className="text-xl leading-7 -tracking-[0.7px] text-black">
                         {s}
                       </li>
                     ))}
                   </ul>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  <ul className="space-y-1">
+                    {phase.services.map((s) => (
+                      <li key={`${s}-2`} className="text-xl leading-7 -tracking-[0.7px] text-black">
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <ul className="space-y-1">
+                  {phase.services.map((s) => (
+                    <li key={s} className="text-xl leading-7 -tracking-[0.7px] text-black">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

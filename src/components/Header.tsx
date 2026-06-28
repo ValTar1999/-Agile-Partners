@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import bgImage from '../assets/image/header/bg-header.svg';
 
 const TYPING_WORDS = ['ideate', 'design', 'develop', 'launch'];
 const TYPE_DELAY = 120;
@@ -39,7 +38,7 @@ export default function Header() {
 
   return (
     <header className="relative h-full w-full overflow-visible">
-      <div className="pointer-events-none absolute -bottom-1/2 left-0 h-dvh w-full overflow-visible">
+      {/* <div className="pointer-events-none absolute -bottom-1/2 left-0 h-dvh w-full overflow-visible">
         <svg
           className="-mt-64 h-full w-full origin-bottom scale-[1.53] overflow-visible object-cover md:scale-125 lg:mt-0 lg:-ml-[20%] lg:scale-100 xl:-mt-[15%] 2xl:-ml-[10%] 2xl:scale-75"
           viewBox="0 0 1341 1045"
@@ -86,30 +85,30 @@ export default function Header() {
             filter="url(#blob-blur)"
           />
         </svg>
-      </div>
+      </div> */}
 
-      <div className="relative z-10 mx-auto mt-12 flex max-w-2160 flex-col items-start px-4 md:mt-[52px] md:flex-row 2xl:mt-[90px]">
-        <div className="mt-18 hidden shrink-0 -translate-x-1/2 -rotate-90 items-center gap-2 md:mt-14 md:inline-flex md:pt-16">
-          <div className="w-10 shrink-0 overflow-hidden">
-            <motion.span
-              className="block h-px w-full bg-black"
-              initial={{ x: '100%' }}
-              animate={{
-                x: ['100%', '0%', '-100%'],
-                transition: {
-                  duration: 1,
-                  repeat: Infinity,
-                  repeatDelay: 0.5,
-                },
-              }}
-            />
+      <div className="relative z-10 mx-auto w-full flex-col items-start px-4 md:px-10">
+        <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
+          <div className="mt-5 hidden h-[140px] shrink-0 flex-col items-center gap-2 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
+            <span className="text-xs text-black uppercase [writing-mode:vertical-rl]">
+              SCROLL DOWN
+            </span>
+            <div className="h-10 w-px shrink-0 overflow-hidden">
+              <motion.span
+                className="block h-full w-px bg-black"
+                initial={{ y: '-100%' }}
+                animate={{
+                  y: ['-100%', '0%', '100%'],
+                  transition: {
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 0.5,
+                  },
+                }}
+              />
+            </div>
           </div>
-          <div className="text-xs text-nowrap whitespace-nowrap text-black uppercase">
-            SCROLL DOWN
-          </div>
-        </div>
-        <div className="flex w-full flex-col">
-          <h1 className="mx-auto min-h-0 w-full max-w-6xl text-[40px] leading-11 -tracking-[1.6px] text-black sm:min-h-[60px] sm:text-3xl md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
+          <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-black md:col-span-11 md:col-start-2 md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
             We{' '}
             <span className="inline-flex items-baseline gap-1 italic">
               {displayed}
@@ -121,17 +120,19 @@ export default function Header() {
             <span className="text-primary">fintech</span> solutions that power seamless digital
             payments.
           </h1>
-          <p className="mt-[52px] mb-[72px] ml-auto w-full max-w-[224px] text-xl leading-[26px] -tracking-[0.7px] text-black md:mr-20 md:mb-32 md:max-w-60 lg:mr-32 lg:mb-0 xl:mt-20 xl:mr-64 2xl:mt-36 2xl:mr-[30%] 2xl:max-w-[370px]">
+        </div>
+        <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8">
+          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-3 xl:col-start-8 2xl:col-span-2 2xl:col-start-8">
             Agile Partners transform and support every aspect of a fintech business at every phase -
             from start-up to large-scale platform — across the world.
           </p>
-          <div className="-ml-24 flex justify-start md:-ml-52 lg:-mt-20 xl:-mt-5 xl:ml-0 2xl:mt-28 2xl:ml-[5%]">
+          {/* <div className="flex justify-start md:col-span-4 md:col-start-9 lg:-mt-20 xl:-mt-4 2xl:ml-7">
             <img
               src={bgImage}
               alt=""
-              className="h-full max-h-[200px] min-h-[200px] w-lg object-cover sm:max-h-44 md:max-h-60 md:min-h-60 md:w-auto xl:max-h-[275px] xl:min-h-[275px] 2xl:max-h-[358px] 2xl:min-h-[358px]"
+              className="h-auto max-h-[200px] w-full max-w-xs object-cover sm:max-w-sm md:max-h-60 md:min-h-60 md:w-auto xl:max-h-[275px] xl:min-h-[275px]"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

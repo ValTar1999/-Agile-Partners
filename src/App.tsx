@@ -58,14 +58,14 @@ function App() {
         <Footer />
       </div>
 
-      <div className="relative z-10 overflow-hidden">
-        <div className="bg-[#f8f8f8]">
+      <div className="relative isolate z-10 flex flex-col gap-0 overflow-hidden bg-[#f8f8f8]">
+        <div>
           <Nav />
           <Header />
           <WhatWeDo id="about" />
         </div>
-        <div className="relative scroll-mt-20 bg-black" id="who-we-are">
-          <div className="pointer-events-none absolute top-0 left-0 h-full w-full max-w-lg overflow-visible opacity-60 md:left-1/12 md:opacity-100">
+        <div className="relative scroll-mt-20 bg-black shadow-[0_-1px_0_0_#000]" id="who-we-are">
+          {/* <div className="pointer-events-none absolute top-0 left-0 h-full w-full max-w-lg overflow-visible opacity-60 md:left-1/12 md:opacity-100">
             <svg
               className="h-full w-full overflow-visible object-cover"
               viewBox="0 0 654 845"
@@ -124,15 +124,12 @@ function App() {
                 </filter>
               </defs>
             </svg>
-          </div>
+          </div> */}
           <PeopleSection />
           <StatsSection />
           <PartnersSection />
         </div>
-        <div
-          className="relative scroll-mt-20 bg-[#f8f8f8]"
-          id="work"
-        >
+        <div className="relative scroll-mt-20 bg-[#f8f8f8] shadow-[0_-1px_0_0_#f8f8f8]" id="work">
           <div className="pointer-events-none absolute top-0 right-0 h-full w-full max-w-lg overflow-visible opacity-60 md:right-1/12 md:opacity-100">
             <svg
               className="h-full w-full overflow-visible object-cover"
@@ -196,12 +193,9 @@ function App() {
           <ProjectsSection />
         </div>
       </div>
+      <div aria-hidden className="pointer-events-none h-(--footer-height,100dvh) shrink-0" />
       <div
-        aria-hidden
-        className="pointer-events-none h-(--footer-height,100dvh) shrink-0"
-      />
-      <div
-        className="fixed right-10 bottom-1/12 z-50 hidden md:block"
+        className="fixed right-10 bottom-10 z-50 hidden md:block"
         style={{ mixBlendMode: 'difference' }}
       >
         <ButtonGlobal />
