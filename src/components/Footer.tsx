@@ -110,7 +110,7 @@ export default function Footer() {
           )}
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col justify-between gap-8 py-6 md:gap-10 md:py-8 lg:gap-12 lg:py-10 xl:gap-14 xl:py-12">
+        <div className="flex min-h-0 flex-1 flex-col justify-between gap-8 py-6 md:gap-10 md:py-8 lg:gap-12 lg:py-10 xl:gap-0 xl:py-0">
           <div className="flex min-h-0 flex-1 flex-col justify-center">
             <h2 className="mb-4 text-[40px] leading-11 -tracking-[1.6px] md:mb-5 lg:text-6xl lg:leading-[1.1] lg:-tracking-[2.4px] xl:mb-6 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
               Get in touch
@@ -139,7 +139,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10">
+          <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10 xl:mb-40">
             <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-8">
               <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
                 Stefan cel Mare Str. 135
