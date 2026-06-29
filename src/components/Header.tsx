@@ -1,40 +1,40 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const TYPING_WORDS = ['ideate', 'design', 'develop', 'launch'];
-const TYPE_DELAY = 120;
-const HOLD_MS = 2000;
-const ERASE_DELAY = 60;
+// const TYPING_WORDS = ['ideate', 'design', 'develop', 'launch'];
+// const TYPE_DELAY = 120;
+// const HOLD_MS = 2000;
+// const ERASE_DELAY = 60;
 
 export default function Header() {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [charCount, setCharCount] = useState(0);
-  const [isErasing, setIsErasing] = useState(false);
+  // const [wordIndex, setWordIndex] = useState(0);
+  // const [charCount, setCharCount] = useState(0);
+  // const [isErasing, setIsErasing] = useState(false);
 
-  useEffect(() => {
-    const word = TYPING_WORDS[wordIndex];
+  // useEffect(() => {
+  //   const word = TYPING_WORDS[wordIndex];
 
-    if (isErasing) {
-      if (charCount === 0) {
-        setIsErasing(false);
-        setWordIndex((i) => (i + 1) % TYPING_WORDS.length);
-        return;
-      }
-      const id = setTimeout(() => setCharCount((c) => c - 1), ERASE_DELAY);
-      return () => clearTimeout(id);
-    }
+  //   if (isErasing) {
+  //     if (charCount === 0) {
+  //       setIsErasing(false);
+  //       setWordIndex((i) => (i + 1) % TYPING_WORDS.length);
+  //       return;
+  //     }
+  //     const id = setTimeout(() => setCharCount((c) => c - 1), ERASE_DELAY);
+  //     return () => clearTimeout(id);
+  //   }
 
-    if (charCount >= word.length) {
-      const id = setTimeout(() => setIsErasing(true), HOLD_MS);
-      return () => clearTimeout(id);
-    }
+  //   if (charCount >= word.length) {
+  //     const id = setTimeout(() => setIsErasing(true), HOLD_MS);
+  //     return () => clearTimeout(id);
+  //   }
 
-    const id = setTimeout(() => setCharCount((c) => c + 1), TYPE_DELAY);
-    return () => clearTimeout(id);
-  }, [wordIndex, charCount, isErasing]);
+  //   const id = setTimeout(() => setCharCount((c) => c + 1), TYPE_DELAY);
+  //   return () => clearTimeout(id);
+  // }, [wordIndex, charCount, isErasing]);
 
-  const word = TYPING_WORDS[wordIndex];
-  const displayed = word.slice(0, charCount);
+  // const word = TYPING_WORDS[wordIndex];
+  // const displayed = word.slice(0, charCount);
+  const displayed = 'ideate';
 
   return (
     <header className="relative h-full w-full overflow-visible">
@@ -89,8 +89,8 @@ export default function Header() {
 
       <div className="relative z-10 mx-auto w-full flex-col items-start px-4 md:px-10">
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
-          <div className="mt-5 hidden h-[140px] shrink-0 flex-col items-center gap-2 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
-            <span className="text-xs text-black uppercase [writing-mode:vertical-rl]">
+          <div className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
+            <span className="text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-black uppercase [writing-mode:vertical-rl] rotate-180">
               SCROLL DOWN
             </span>
             <div className="h-10 w-px shrink-0 overflow-hidden">
@@ -112,10 +112,10 @@ export default function Header() {
             We{' '}
             <span className="inline-flex items-baseline gap-1 italic">
               {displayed}
-              <span
+              {/* <span
                 className="animate-blink inline-block h-10 w-px shrink-0 self-baseline bg-black"
                 aria-hidden
-              />
+              /> */}
             </span>{' '}
             <span className="text-primary">fintech</span> solutions that power seamless digital
             payments.

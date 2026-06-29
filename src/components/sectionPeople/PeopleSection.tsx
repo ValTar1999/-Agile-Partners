@@ -18,7 +18,7 @@ export default function PeopleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 overflow-x-hidden pt-24 pb-24 text-white md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32"
+      className="relative z-10 overflow-x-hidden pt-24 pb-24 text-white md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32 xl:pb-24"
     >
       <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div
@@ -34,7 +34,7 @@ export default function PeopleSection() {
 
       <div className="grid grid-cols-12 gap-x-8 px-4 md:px-10">
         <motion.div
-          className="relative col-span-8 col-start-4 md:col-span-8 md:col-start-5 lg:col-span-6 lg:col-start-6 xl:col-span-3 xl:col-start-7"
+          className="relative col-span-8 col-start-4 md:col-span-8 md:col-start-5 lg:col-span-6 lg:col-start-6 xl:col-span-4 xl:col-start-7"
           initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -73,33 +73,29 @@ export default function PeopleSection() {
         </motion.div>
       </div>
 
-      <div className="overflow-visible px-4 py-24 md:px-10 xl:py-48">
+      <div className="overflow-visible px-4 py-24 md:px-10 xl:pt-48 xl:pb-0">
         <div className="flex flex-col gap-10 md:grid md:auto-rows-auto md:grid-cols-12 md:items-start md:gap-x-8 md:gap-y-0">
-          <div className="w-full md:col-span-8 md:col-start-3 md:row-start-1 lg:col-span-8 lg:col-start-3 xl:col-span-8 xl:col-start-3 2xl:col-span-6 2xl:col-start-4">
-            <div className="w-full overflow-hidden md:w-[560px] lg:w-full">
+          <div className="w-full md:col-span-8 md:col-start-3 md:row-start-1 lg:col-span-8 lg:col-start-3 xl:col-span-8 xl:col-start-3">
+            <div className="w-full overflow-hidden lg:w-full">
               <img
                 src={imageObject}
                 alt="Team meeting"
-                className="aspect-video w-full object-cover md:aspect-auto md:h-[340px] md:w-[560px] lg:aspect-auto lg:h-[587px] lg:w-full xl:h-[546px]"
+                className="aspect-5/3 w-full object-cover"
               />
             </div>
           </div>
           <div className="relative w-[68%] self-start md:-top-10 md:col-span-3 md:col-start-1 md:row-start-2 md:w-auto md:self-start lg:top-0 lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:w-full xl:-top-20">
-            <div className="w-full overflow-hidden md:w-[188px] lg:w-full">
+            <div className="w-full overflow-hidden lg:w-full">
               <img
                 src={imagePortrait}
                 alt="Team member"
-                className="aspect-3/4 w-full object-cover md:aspect-auto md:h-[264px] md:w-[188px] lg:aspect-auto lg:h-[406px] lg:w-full xl:h-[443px]"
+                className="aspect-3/4 w-full object-cover"
               />
             </div>
           </div>
-          <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48 2xl:col-span-4 2xl:col-start-7">
-            <div className="w-full overflow-hidden md:w-[364px] lg:w-full">
-              <img
-                src={imageGroup}
-                alt="Workspace"
-                className="aspect-4/3 w-full object-cover md:aspect-auto md:h-[240px] md:w-[364px] lg:aspect-auto lg:h-[367px] lg:w-full xl:h-[341px]"
-              />
+          <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
+            <div className="w-full overflow-hidden lg:w-full">
+              <img src={imageGroup} alt="Workspace" className="aspect-5/3 w-full object-cover" />
             </div>
           </div>
         </div>
@@ -118,7 +114,7 @@ export default function PeopleSection() {
           complete framework that passes its craft and vision to the different poles of the company.
         </motion.p>
         <motion.div
-          className="flex items-start justify-start md:col-span-6 md:col-start-2 md:row-start-2 xl:col-span-4 xl:col-start-6 xl:row-start-1 xl:items-end xl:justify-center"
+          className="flex items-start justify-start md:col-span-6 md:col-start-2 md:row-start-2 xl:col-span-4 xl:col-start-7 xl:row-start-1 xl:items-end xl:justify-start"
           initial={{ opacity: 0, y: 48 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}

@@ -17,11 +17,13 @@ const ArrowIcon = () => (
   </svg>
 );
 
+const buttonTextClass = 'text-xl leading-[26px] font-normal -tracking-[0.7px]';
+
 export default function ButtonTeam({ children, className = '', ...props }: ButtonTeamProps) {
   return (
     <button
       type="button"
-      className={`group relative inline-flex cursor-pointer items-center justify-start overflow-hidden rounded-full bg-[#1C1C1C] py-5 pr-4 pl-7 text-white duration-400 ease-out ${className} `}
+      className={`group relative inline-flex cursor-pointer items-center justify-start overflow-hidden rounded-full bg-[#1C1C1C] py-5 pr-4 pl-7 text-white duration-400 ease-out ${buttonTextClass} ${className}`}
       {...props}
     >
       <span className="relative z-10 flex items-center gap-3 whitespace-nowrap">
@@ -42,7 +44,7 @@ export default function ButtonTeam({ children, className = '', ...props }: Butto
         className="absolute inset-0 z-20 flex items-center justify-start rounded-full pr-7 pl-7 transition-[clip-path] duration-400 ease-out [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0)]"
         aria-hidden
       >
-        <span className="flex items-center gap-3 whitespace-nowrap text-black">
+        <span className={`flex items-center gap-3 whitespace-nowrap text-black ${buttonTextClass}`}>
           {children}
           <ArrowIcon />
         </span>

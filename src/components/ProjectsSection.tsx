@@ -66,7 +66,7 @@ export default function ProjectsSection() {
   const textX = useTransform(scrollYProgress, [0, 0.5, 1], ['-20%', '20%', '-20%']);
 
   return (
-    <section ref={sectionRef} className="w-full py-24 md:pt-24 md:pb-60 lg:pt-40">
+    <section ref={sectionRef} className="w-full py-24 md:pt-24 md:pb-60 lg:pt-40 xl:pb-48">
       <div className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
         <motion.div
           className="flex items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
@@ -82,16 +82,16 @@ export default function ProjectsSection() {
         </motion.div>
       </div>
 
-      <div className="flex flex-col gap-14 px-4 md:gap-20 md:px-10 lg:gap-32 xl:gap-48">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
+      <div className="flex flex-col gap-14 px-4 md:gap-20 md:px-10 lg:gap-32 xl:gap-0">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:mb-48">
           <motion.div
-            className="lg:col-span-8 xl:col-span-8 2xl:col-span-6"
+            className="lg:col-span-8 xl:col-span-8"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[600px] w-full object-contain lg:object-cover" src={p1} alt="" />
+            <img className="aspect-5/3 w-full object-cover" src={p1} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -112,13 +112,13 @@ export default function ProjectsSection() {
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
           <motion.div
-            className="lg:col-span-5 lg:col-start-8 xl:col-span-5 xl:col-start-8 2xl:col-span-4 2xl:col-start-9"
+            className="lg:col-span-5 lg:col-start-8 xl:col-span-5 xl:col-start-8"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[648px] w-full object-contain lg:object-cover" src={p2} alt="" />
+            <img className="aspect-square w-full object-cover" src={p2} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -141,15 +141,15 @@ export default function ProjectsSection() {
           <img className="h-8 w-fit object-contain" src={Simbols} alt="" />
         </div>
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:-mt-48 xl:mb-48">
           <motion.div
-            className="lg:col-span-4 lg:col-start-2 2xl:col-span-3 2xl:col-start-2"
+            className="lg:col-span-4 lg:col-start-2"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[680px] w-full object-contain lg:object-cover" src={p3} alt="" />
+            <img className="aspect-3/4 w-full object-cover" src={p3} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -167,7 +167,7 @@ export default function ProjectsSection() {
             </div>
           </motion.div>
           <img
-            className="hidden h-8 w-fit object-contain lg:col-span-3 lg:col-start-9 lg:my-auto lg:block xl:col-span-2 xl:col-start-10"
+            className="hidden h-8 w-fit object-contain lg:col-span-3 lg:col-start-9 lg:my-auto lg:block xl:col-span-3 xl:col-start-9"
             src={Simbols}
             alt=""
           />
@@ -175,13 +175,13 @@ export default function ProjectsSection() {
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
           <motion.div
-            className="lg:col-span-6 2xl:col-span-5"
+            className="lg:col-span-6"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[420px] w-full object-contain lg:object-cover" src={p4} alt="" />
+            <img className="aspect-5/3 w-full object-cover" src={p4} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -208,7 +208,7 @@ export default function ProjectsSection() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[500px] w-full object-contain lg:object-cover" src={p5} alt="" />
+            <img className="aspect-4/3 w-full object-cover" src={p5} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -227,7 +227,7 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:mb-24">
           <motion.div
             className="lg:col-span-3 lg:col-start-2"
             initial={{ opacity: 0, y: 48 }}
@@ -235,7 +235,7 @@ export default function ProjectsSection() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-60 w-full object-contain lg:object-cover" src={p6} alt="" />
+            <img className="aspect-5/3 w-full object-cover" src={p6} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -256,19 +256,15 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:mb-48">
           <motion.div
-            className="lg:col-span-4 lg:col-start-5 xl:col-span-4 xl:col-start-5 2xl:col-start-5"
+            className="lg:col-span-4 lg:col-start-5 xl:col-span-4 xl:col-start-5"
             initial={{ opacity: 0, y: 48 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img
-              className="max-h-[480px] w-full object-contain lg:object-cover 2xl:max-h-[550px]"
-              src={p7}
-              alt=""
-            />
+            <img className="aspect-3/4 w-full object-cover" src={p7} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -289,7 +285,7 @@ export default function ProjectsSection() {
           </motion.div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:mb-48">
           <motion.div
             className="lg:col-span-5"
             initial={{ opacity: 0, y: 48 }}
@@ -297,11 +293,7 @@ export default function ProjectsSection() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img
-              className="max-h-[400px] w-full object-contain md:max-h-[648px] lg:object-cover"
-              src={p8}
-              alt=""
-            />
+            <img className="aspect-square w-full object-cover" src={p8} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}
@@ -328,7 +320,7 @@ export default function ProjectsSection() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
-            <img className="max-h-[412px] w-full object-contain lg:object-cover" src={p9} alt="" />
+            <img className="aspect-5/3 w-full object-cover" src={p9} alt="" />
             <motion.div
               className="my-6 h-px w-full origin-left bg-black"
               initial={{ scaleX: 0 }}

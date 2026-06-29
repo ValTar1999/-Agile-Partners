@@ -21,18 +21,18 @@ const fadeIn = {
 
 export default function PartnersSection() {
   return (
-    <section className="flex flex-col gap-12 border-y border-white/5 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10">
+    <section className="flex flex-col gap-12 border-y border-white/5 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10 xl:gap-24">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-x-8">
         <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
           <motion.p
-            className="text-sm leading-4 tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-nowrap"
+            className="text-sm leading-4 font-normal tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-base xl:leading-5 xl:tracking-[0.16px] xl:text-nowrap"
             {...fadeIn}
           >
             Our Partners
           </motion.p>
 
           <motion.p
-            className="text-xl leading-[26px] -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5"
+            className="text-xl leading-[26px] font-normal -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5 xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
             {...fadeIn}
           >
             We work and create with ambitious businesses and people.

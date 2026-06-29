@@ -168,18 +168,18 @@ export default function StatsSection() {
   const isInView = useInView(blockRef, { once: true, margin: '-60px' });
 
   return (
-    <div className="flex flex-col gap-12 border-y border-white/5 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10">
+    <div className="mx-4 flex flex-col gap-12 border-y border-white/20 pt-8 pb-24 md:mx-10 md:gap-16 md:pt-10 xl:gap-0">
       <div className="grid grid-cols-[1fr_auto] items-start gap-6 md:grid-cols-12 md:gap-x-8">
         <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
           <motion.p
-            className="text-sm leading-4 tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-nowrap"
+            className="text-sm leading-4 font-normal tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-base xl:leading-5 xl:tracking-[0.16px] xl:text-nowrap"
             {...fadeIn}
           >
             Let us share some stats
           </motion.p>
 
           <motion.p
-            className="text-xl leading-[26px] -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5"
+            className="text-xl leading-[26px] font-normal -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5 xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
             {...fadeIn}
           >
             Fintech isn't easy. We just make it feel that way.
@@ -198,7 +198,7 @@ export default function StatsSection() {
         {STATS.map(({ value, suffix, label }, index) => (
           <div
             key={`${value}${suffix}`}
-            className={`flex w-full min-w-0 flex-col items-start gap-1 text-white md:flex-row md:items-start md:gap-6 xl:gap-8 ${STAT_GRID[index]}`}
+            className={`flex w-full min-w-0 flex-col items-start gap-1 text-white md:flex-row md:items-start md:gap-6 xl:gap-3 ${STAT_GRID[index]}`}
           >
             <AnimatedNumber value={value} suffix={suffix} start={isInView} />
             <span className="shrink-0 text-left text-base leading-5 -tracking-[0.48px] text-white">

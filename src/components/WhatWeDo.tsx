@@ -35,6 +35,9 @@ const phases = [
   },
 ];
 
+const serviceItemClass =
+  'text-xl leading-7 font-normal -tracking-[0.7px] text-black xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]';
+
 function PhaseGraphic({ type }: { type: string }) {
   if (type === 'circle') {
     return (
@@ -221,7 +224,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
   return (
     <section
       id={id}
-      className="relative z-10 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 2xl:pt-44"
+      className="relative z-10 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 xl:pt-60"
     >
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="col-span-12 xl:col-span-5 xl:col-start-2">
@@ -271,7 +274,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
               <h3 className="min-w-0 text-2xl leading-7 font-medium -tracking-[0.72px] text-black md:col-span-3 md:col-start-1 md:row-start-2 md:mb-0 xl:col-span-3 xl:col-start-2">
                 {phase.title}
               </h3>
-              <span className="shrink-0 text-2xl leading-7 -tracking-[0.72px] text-black tabular-nums md:col-span-1 md:col-start-4 md:row-start-2 md:mb-0 md:text-right xl:col-start-5">
+              <span className="font-inter shrink-0 text-2xl leading-7 -tracking-[0.72px] text-black md:col-span-1 md:col-start-4 md:row-start-2 md:mb-0 md:text-right xl:col-start-5">
                 {phase.number}
               </span>
             </div>
@@ -288,14 +291,14 @@ export default function WhatWeDo({ id }: { id?: string }) {
                 <div className="grid grid-cols-2 gap-x-5 gap-y-1">
                   <ul className="space-y-1">
                     {phase.services.map((s) => (
-                      <li key={s} className="text-xl leading-7 -tracking-[0.7px] text-black">
+                      <li key={s} className={serviceItemClass}>
                         {s}
                       </li>
                     ))}
                   </ul>
                   <ul className="space-y-1">
                     {phase.services.map((s) => (
-                      <li key={`${s}-2`} className="text-xl leading-7 -tracking-[0.7px] text-black">
+                      <li key={`${s}-2`} className={serviceItemClass}>
                         {s}
                       </li>
                     ))}
@@ -304,7 +307,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
               ) : (
                 <ul className="space-y-1">
                   {phase.services.map((s) => (
-                    <li key={s} className="text-xl leading-7 -tracking-[0.7px] text-black">
+                    <li key={s} className={serviceItemClass}>
                       {s}
                     </li>
                   ))}
