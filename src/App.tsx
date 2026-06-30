@@ -23,12 +23,18 @@ function App() {
     };
 
     const updateFooterInteractive = () => {
+      if (window.scrollY < 0) {
+        window.scrollTo(0, 0);
+      }
+
       const scrollBottom = window.scrollY + window.innerHeight;
       const pageBottom = document.documentElement.scrollHeight;
       setIsFooterInteractive(scrollBottom >= pageBottom - 48);
     };
 
-    const preventTopOverscroll = (event: WheelEvent) => {
+    const isAppleDevice = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
+    const preventMacOverscroll = (event: WheelEvent) => {
+      if (!event.cancelable) return;
       if (window.scrollY <= 0 && event.deltaY < 0) {
         event.preventDefault();
       }
@@ -45,13 +51,17 @@ function App() {
 
     window.addEventListener('scroll', updateFooterInteractive, { passive: true });
     window.addEventListener('resize', updateFooterInteractive);
-    window.addEventListener('wheel', preventTopOverscroll, { passive: false });
+    if (isAppleDevice) {
+      window.addEventListener('wheel', preventMacOverscroll, { passive: false });
+    }
 
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener('scroll', updateFooterInteractive);
       window.removeEventListener('resize', updateFooterInteractive);
-      window.removeEventListener('wheel', preventTopOverscroll);
+      if (isAppleDevice) {
+        window.removeEventListener('wheel', preventMacOverscroll);
+      }
     };
   }, []);
 
@@ -59,14 +69,16 @@ function App() {
     <div className="app relative min-h-screen w-full">
       <div
         ref={footerRef}
-        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden ${
-          isFooterInteractive ? 'z-40' : 'pointer-events-none z-0'
+        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden transition-transform duration-500 ease-out ${
+          isFooterInteractive
+            ? 'z-40 translate-y-0'
+            : 'pointer-events-none z-0 translate-y-full'
         }`}
       >
         <Footer />
       </div>
 
-      <div className="relative isolate z-10 flex flex-col gap-0 overflow-hidden overscroll-y-none bg-[#f8f8f8]">
+      <div className="relative isolate z-10 flex flex-col gap-0 overflow-hidden bg-[#f8f8f8]">
         <div>
           <Nav />
           <Header />
