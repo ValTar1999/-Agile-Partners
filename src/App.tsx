@@ -28,6 +28,12 @@ function App() {
       setIsFooterInteractive(scrollBottom >= pageBottom - 48);
     };
 
+    const preventTopOverscroll = (event: WheelEvent) => {
+      if (window.scrollY <= 0 && event.deltaY < 0) {
+        event.preventDefault();
+      }
+    };
+
     setFooterHeight();
     updateFooterInteractive();
 
@@ -39,11 +45,13 @@ function App() {
 
     window.addEventListener('scroll', updateFooterInteractive, { passive: true });
     window.addEventListener('resize', updateFooterInteractive);
+    window.addEventListener('wheel', preventTopOverscroll, { passive: false });
 
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener('scroll', updateFooterInteractive);
       window.removeEventListener('resize', updateFooterInteractive);
+      window.removeEventListener('wheel', preventTopOverscroll);
     };
   }, []);
 
@@ -58,7 +66,7 @@ function App() {
         <Footer />
       </div>
 
-      <div className="relative isolate z-10 flex flex-col gap-0 overflow-hidden bg-[#f8f8f8]">
+      <div className="relative isolate z-10 flex flex-col gap-0 overflow-hidden overscroll-y-none bg-[#f8f8f8]">
         <div>
           <Nav />
           <Header />

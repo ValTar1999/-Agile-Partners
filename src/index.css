@@ -207,6 +207,7 @@
 
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
 html,
@@ -217,6 +218,7 @@ body {
   background: #f8f8f8;
   color: #333333;
   min-height: 100vh;
+  overscroll-behavior-y: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
