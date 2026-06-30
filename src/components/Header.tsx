@@ -122,7 +122,7 @@ export default function Header() {
           </h1>
         </div>
         <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8">
-          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-2 xl:col-start-8">
+          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-2 xl:col-start-8 xl:min-w-[248px]">
             Agile Partners transform and support every aspect of a fintech business at every phase -
             from start-up to large-scale platform — across the world.
           </p>
