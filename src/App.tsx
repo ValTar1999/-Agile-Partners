@@ -143,7 +143,10 @@ function App() {
           <StatsSection />
           <PartnersSection />
         </div>
-        <div className="relative scroll-mt-20 bg-[#f8f8f8] shadow-[0_-1px_0_0_#f8f8f8]" id="work">
+        <div
+          className="relative mx-auto w-full max-w-2160 scroll-mt-20 bg-[#f8f8f8] shadow-[0_-1px_0_0_#f8f8f8]"
+          id="work"
+        >
           <div className="pointer-events-none absolute top-0 right-0 h-full w-full max-w-lg overflow-visible opacity-60 md:right-1/12 md:opacity-100">
             <svg
               className="h-full w-full overflow-visible object-cover"

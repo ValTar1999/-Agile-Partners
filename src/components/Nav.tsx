@@ -39,7 +39,7 @@ export default function Nav() {
   const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
   return (
-    <nav className="flex w-full justify-center">
+    <nav className="mx-auto flex w-full max-w-2160 justify-center">
       <div className="relative flex w-full items-center justify-between p-4 md:p-10 lg:items-start">
         <a href="/" className="flex items-center no-underline">
           <img src={logo} alt="Agile Partners" className="h-8 w-auto lg:h-11" />
@@ -64,10 +64,7 @@ export default function Nav() {
         <ul className="hidden list-none flex-col items-start lg:flex">
           {navLinks.map((link) => (
             <li key={link.label}>
-              <a
-                href={link.href}
-                className={`group/nav relative block ${navLinkClass}`}
-              >
+              <a href={link.href} className={`group/nav relative block ${navLinkClass}`}>
                 <span
                   className="absolute bottom-0 left-0 h-px w-0 bg-black transition-[width] duration-300 ease-out group-hover/nav:w-full"
                   aria-hidden

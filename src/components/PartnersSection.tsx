@@ -21,7 +21,7 @@ const fadeIn = {
 
 export default function PartnersSection() {
   return (
-    <section className="flex flex-col gap-12 border-y border-white/5 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10 xl:gap-24">
+    <section className="mx-auto flex w-full max-w-2160 flex-col gap-12 border-y border-white/5 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10 xl:gap-24">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-x-8">
         <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
           <motion.p

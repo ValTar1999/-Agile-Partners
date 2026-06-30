@@ -224,7 +224,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
   return (
     <section
       id={id}
-      className="relative z-10 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 xl:pt-60"
+      className="relative z-10 mx-auto w-full max-w-2160 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 xl:pt-60"
     >
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="col-span-12 xl:col-span-6 xl:col-start-2">

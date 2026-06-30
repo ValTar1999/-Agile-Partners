@@ -168,7 +168,7 @@ export default function StatsSection() {
   const isInView = useInView(blockRef, { once: true, margin: '-60px' });
 
   return (
-    <div className="mx-4 flex flex-col gap-12 border-y border-white/20 pt-8 pb-24 md:mx-10 md:gap-16 md:pt-10 xl:gap-0">
+    <div className="mx-auto flex w-full max-w-2160 flex-col gap-12 border-y border-white/20 pt-8 pb-24 md:gap-16 md:pt-10 xl:gap-0">
       <div className="grid grid-cols-[1fr_auto] items-start gap-6 md:grid-cols-12 md:gap-x-8">
         <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
           <motion.p

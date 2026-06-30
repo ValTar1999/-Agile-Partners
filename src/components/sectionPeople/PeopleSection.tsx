@@ -18,7 +18,7 @@ export default function PeopleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 overflow-x-hidden pt-24 pb-24 text-white md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32 xl:pb-24"
+      className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-white md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32 xl:pb-24"
     >
       <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div

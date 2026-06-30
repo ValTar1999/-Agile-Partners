@@ -87,7 +87,7 @@ export default function Header() {
         </svg>
       </div> */}
 
-      <div className="relative z-10 mx-auto w-full flex-col items-start px-4 md:px-10">
+      <div className="relative z-10 mx-auto w-full max-w-2160 flex-col items-start px-4 md:px-10">
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
           <div className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
             <span className="rotate-180 text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-black uppercase [writing-mode:vertical-rl]">

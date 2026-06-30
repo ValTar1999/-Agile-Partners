@@ -48,7 +48,7 @@ export default function Footer() {
       id="contact-us"
       className="flex h-full min-h-0 w-full scroll-mt-20 flex-col bg-black text-white"
     >
-      <div className="flex h-full min-h-0 w-full flex-col p-4 md:p-10">
+      <div className="mx-auto flex h-full min-h-0 w-full max-w-2160 flex-col p-4 md:p-10">
         <div className="relative flex shrink-0 items-center justify-between lg:items-start">
           <a href="/">
             <img src={logo} alt="Agile Partners" className="h-11 w-auto" />
