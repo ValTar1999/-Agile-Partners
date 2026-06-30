@@ -227,7 +227,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
       className="relative z-10 scroll-pt-20 px-4 pt-24 pb-16 md:px-10 md:pt-36 md:pb-20 lg:pt-40 lg:pb-24 xl:pt-60"
     >
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
-        <div className="col-span-12 xl:col-span-5 xl:col-start-2">
+        <div className="col-span-12 xl:col-span-6 xl:col-start-2">
           <p className="mb-5 text-sm leading-4 tracking-[0.14px] text-black uppercase md:text-base md:leading-5 md:tracking-[0.16px]">
             WHAT WE DO
           </p>

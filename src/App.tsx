@@ -23,10 +23,6 @@ function App() {
     };
 
     const updateFooterInteractive = () => {
-      if (window.scrollY < 0) {
-        window.scrollTo(0, 0);
-      }
-
       const scrollBottom = window.scrollY + window.innerHeight;
       const pageBottom = document.documentElement.scrollHeight;
       setIsFooterInteractive(scrollBottom >= pageBottom - 48);
@@ -69,10 +65,8 @@ function App() {
     <div className="app relative min-h-screen w-full">
       <div
         ref={footerRef}
-        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden transition-transform duration-500 ease-out ${
-          isFooterInteractive
-            ? 'z-40 translate-y-0'
-            : 'pointer-events-none z-0 translate-y-full'
+        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden ${
+          isFooterInteractive ? 'z-40' : 'pointer-events-none z-0'
         }`}
       >
         <Footer />

@@ -90,7 +90,7 @@ export default function Header() {
       <div className="relative z-10 mx-auto w-full flex-col items-start px-4 md:px-10">
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
           <div className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
-            <span className="text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-black uppercase [writing-mode:vertical-rl] rotate-180">
+            <span className="rotate-180 text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-black uppercase [writing-mode:vertical-rl]">
               SCROLL DOWN
             </span>
             <div className="h-10 w-px shrink-0 overflow-hidden">
@@ -122,7 +122,7 @@ export default function Header() {
           </h1>
         </div>
         <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8">
-          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-3 xl:col-start-8 2xl:col-span-2 2xl:col-start-8">
+          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-2 xl:col-start-8">
             Agile Partners transform and support every aspect of a fintech business at every phase -
             from start-up to large-scale platform — across the world.
           </p>

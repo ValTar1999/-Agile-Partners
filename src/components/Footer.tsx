@@ -140,7 +140,7 @@ export default function Footer() {
           </div>
 
           <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10 xl:mb-40">
-            <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-8">
+            <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-12">
               <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
                 Stefan cel Mare Str. 135
                 <br />
