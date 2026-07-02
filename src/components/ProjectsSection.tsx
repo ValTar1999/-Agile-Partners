@@ -1,14 +1,14 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import p1 from '../assets/image/project/p-1.svg';
-import p2 from '../assets/image/project/p-2.svg';
-import p3 from '../assets/image/project/p-3.svg';
-import p4 from '../assets/image/project/p-4.svg';
-import p5 from '../assets/image/project/p-5.svg';
-import p6 from '../assets/image/project/p-6.svg';
-import p7 from '../assets/image/project/p-7.svg';
-import p8 from '../assets/image/project/p-8.svg';
-import p9 from '../assets/image/project/p-9.svg';
+import p1 from '../assets/image/project/p-1 (1).png';
+import p2 from '../assets/image/project/p-2 (1).png';
+import p3 from '../assets/image/project/p-3 (1).png';
+import p4 from '../assets/image/project/p-4 (1).png';
+import p5 from '../assets/image/project/p-5 (1).png';
+import p6 from '../assets/image/project/p-6 (1).png';
+import p7 from '../assets/image/project/p-7 (1).png';
+import p8 from '../assets/image/project/p-8 (1).png';
+import p9 from '../assets/image/project/p-9 (1).png';
 import Simbols from '../assets/image/project/Simbolds.svg';
 
 const PROJECTS = [
