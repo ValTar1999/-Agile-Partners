@@ -206,8 +206,20 @@
 }
 
 html {
-  scroll-behavior: smooth;
   overscroll-behavior-y: none;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 html,
@@ -233,6 +245,26 @@ body::before {
   height: 100%;
   background: url('/src/assets/image/bg-project.svg') no-repeat center center;
   background-size: cover;
+  transition: opacity 300ms ease;
+}
+
+html[data-theme='dark'] body::before {
+  opacity: 0;
+}
+
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+html[data-theme='light'],
+html[data-theme='light'] body {
+  background-color: #f8f8f8;
+}
+
+.app {
+  background-color: inherit;
 }
 
 #root {

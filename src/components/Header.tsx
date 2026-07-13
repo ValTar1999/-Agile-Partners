@@ -1,4 +1,124 @@
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
+
+function RevealLine({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  return (
+    <span className="block overflow-hidden">
+      <motion.span
+        className="block"
+        initial={{ y: '100%', opacity: 0.5 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          y: {
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1],
+            delay,
+          },
+          opacity: {
+            duration: 0.1,
+            ease: 'easeOut',
+            delay: delay + 0.18,
+          },
+        }}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+}
+
+const PARAGRAPH_TEXT =
+  'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
+
+const PARAGRAPH_GRID_CLASS =
+  'col-span-4 col-start-3 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 xl:min-w-[248px]';
+
+const PARAGRAPH_TEXT_CLASS =
+  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px]';
+
+const PARAGRAPH_LEADING = {
+  mobile: { initial: '56px', final: '22px' },
+  desktop: { initial: '64px', final: '26px' },
+};
+
+function getParagraphLeading() {
+  if (typeof window === 'undefined') return PARAGRAPH_LEADING.mobile;
+  return window.matchMedia('(min-width: 768px)').matches
+    ? PARAGRAPH_LEADING.desktop
+    : PARAGRAPH_LEADING.mobile;
+}
+
+function useParagraphLeading() {
+  const [leading, setLeading] = useState(getParagraphLeading);
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () =>
+      setLeading(mq.matches ? PARAGRAPH_LEADING.desktop : PARAGRAPH_LEADING.mobile);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return leading;
+}
+
+function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) {
+  const leading = useParagraphLeading();
+  const measureRef = useRef<HTMLParagraphElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = measureRef.current;
+    if (!el) return;
+
+    const update = () => setHeight(el.offsetHeight);
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [text, leading.final]);
+
+  return (
+    <div className={`relative ${PARAGRAPH_GRID_CLASS}`}>
+      <p
+        ref={measureRef}
+        className={`${PARAGRAPH_TEXT_CLASS} pointer-events-none invisible absolute inset-x-0 top-0`}
+        style={{ lineHeight: leading.final }}
+        aria-hidden
+      >
+        {text}
+      </p>
+      <div className="overflow-hidden" style={{ height: height || undefined }}>
+        <motion.p
+          className={PARAGRAPH_TEXT_CLASS}
+          initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
+          animate={{ y: 0, opacity: 1, lineHeight: leading.final }}
+          transition={{
+            y: {
+              duration: 1,
+              ease: [0.22, 1, 0.36, 1],
+              delay,
+            },
+            opacity: {
+              duration: 0.1,
+              ease: 'easeOut',
+              delay: delay + 0.18,
+            },
+            lineHeight: {
+              duration: 1,
+              ease: [0.22, 1, 0.36, 1],
+              delay,
+            },
+          }}
+        >
+          {text}
+        </motion.p>
+      </div>
+    </div>
+  );
+}
 
 // const TYPING_WORDS = ['ideate', 'design', 'develop', 'launch'];
 // const TYPE_DELAY = 120;
@@ -89,13 +209,18 @@ export default function Header() {
 
       <div className="relative z-10 mx-auto w-full max-w-2160 flex-col items-start px-4 md:px-10">
         <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
-          <div className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex">
-            <span className="rotate-180 text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-black uppercase [writing-mode:vertical-rl]">
+          <motion.div
+            className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
+          >
+            <span className="rotate-180 text-xs leading-4 font-normal tracking-[0.12px] whitespace-nowrap text-current uppercase [writing-mode:vertical-rl]">
               SCROLL DOWN
             </span>
             <div className="h-10 w-px shrink-0 overflow-hidden">
               <motion.span
-                className="block h-full w-px bg-black"
+                className="block h-full w-px bg-current"
                 initial={{ y: '-100%' }}
                 animate={{
                   y: ['-100%', '0%', '100%'],
@@ -107,25 +232,24 @@ export default function Header() {
                 }}
               />
             </div>
-          </div>
-          <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-black md:col-span-11 md:col-start-2 md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
-            We{' '}
-            <span className="inline-flex items-baseline gap-1 italic">
-              {displayed}
-              {/* <span
-                className="animate-blink inline-block h-10 w-px shrink-0 self-baseline bg-black"
-                aria-hidden
-              /> */}
-            </span>{' '}
-            <span className="text-primary">fintech</span> solutions that power seamless digital
-            payments.
+          </motion.div>
+          <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
+            <RevealLine delay={0}>
+              We{' '}
+              <span className="inline-flex items-baseline gap-1 italic">
+                {displayed}
+                {/* <span
+                  className="animate-blink inline-block h-10 w-px shrink-0 self-baseline bg-current"
+                  aria-hidden
+                /> */}
+              </span>{' '}
+              <span className="text-primary">fintech</span> solutions that
+            </RevealLine>
+            <RevealLine delay={0.08}>power seamless digital payments.</RevealLine>
           </h1>
         </div>
         <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8">
-          <p className="col-span-4 col-start-3 text-base leading-[22px] -tracking-[0.48px] text-black md:col-span-5 md:col-start-7 md:text-xl md:leading-[26px] md:-tracking-[0.7px] xl:col-span-2 xl:col-start-8 xl:min-w-[248px]">
-            Agile Partners transform and support every aspect of a fintech business at every phase -
-            from start-up to large-scale platform — across the world.
-          </p>
+          <RevealParagraph text={PARAGRAPH_TEXT} />
           {/* <div className="flex justify-start md:col-span-4 md:col-start-9 lg:-mt-20 xl:-mt-4 2xl:ml-7">
             <img
               src={bgImage}

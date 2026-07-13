@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import {
   autoUpdate,
   flip,
@@ -10,6 +10,7 @@ import {
   useFloating,
   useInteractions,
 } from '@floating-ui/react';
+import { motion } from 'framer-motion';
 import logo from '../assets/image/LOGO-dark.svg';
 
 const navLinks = [
@@ -27,8 +28,55 @@ const socialLinks = [
 const navLinkClass =
   'self-stretch text-base leading-5 font-normal tracking-[0.16px] text-white uppercase no-underline';
 
-export default function Footer() {
+const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const slideDown = {
+  initial: { opacity: 0, y: -100 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: TEXT_EASE },
+};
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+};
+
+function RevealLine({
+  children,
+  className,
+  active,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  active: boolean;
+  delay?: number;
+}) {
+  return (
+    <div className={`overflow-hidden ${className ?? ''}`}>
+      <motion.div
+        initial={{ y: '100%', opacity: 0.5 }}
+        animate={active ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0.5 }}
+        transition={{
+          y: { duration: 0.5, ease: TEXT_EASE, delay },
+          opacity: { duration: 0.1, ease: 'easeOut', delay: delay + 0.1 },
+        }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+export default function Footer({ isActive = false }: { isActive?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasRevealed, setHasRevealed] = useState(false);
+
+  useEffect(() => {
+    if (isActive) setHasRevealed(true);
+  }, [isActive]);
+
+  const show = hasRevealed;
 
   const closeMenu = () => setIsMenuOpen(false);
   const menuId = 'footer-nav-menu';
@@ -50,16 +98,24 @@ export default function Footer() {
     >
       <div className="mx-auto flex h-full min-h-0 w-full max-w-2160 flex-col p-4 md:p-10">
         <div className="relative flex shrink-0 items-center justify-between lg:items-start">
-          <a href="/">
+          <motion.a
+            href="/"
+            initial={slideDown.initial}
+            animate={show ? slideDown.animate : slideDown.initial}
+            transition={slideDown.transition}
+          >
             <img src={logo} alt="Agile Partners" className="h-11 w-auto" />
-          </a>
-          <button
+          </motion.a>
+          <motion.button
             type="button"
             ref={refs.setReference}
             className="inline-flex h-6 w-6 items-center justify-center bg-transparent lg:hidden"
             aria-label="Toggle navigation menu"
             aria-expanded={isMenuOpen}
             aria-controls={menuId}
+            initial={slideDown.initial}
+            animate={show ? slideDown.animate : slideDown.initial}
+            transition={{ ...slideDown.transition, delay: 0.04 }}
             {...getReferenceProps()}
           >
             <span className="sr-only">Menu</span>
@@ -67,9 +123,14 @@ export default function Footer() {
               <span className="block h-px w-6 bg-white" />
               <span className="block h-px w-6 bg-white" />
             </span>
-          </button>
+          </motion.button>
 
-          <ul className="hidden list-none flex-col items-start lg:flex">
+          <motion.ul
+            className="hidden list-none flex-col items-start lg:flex"
+            initial={slideDown.initial}
+            animate={show ? slideDown.animate : slideDown.initial}
+            transition={{ ...slideDown.transition, delay: 0.04 }}
+          >
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a href={link.href} className={`group/nav relative block ${navLinkClass}`}>
@@ -81,7 +142,7 @@ export default function Footer() {
                 </a>
               </li>
             ))}
-          </ul>
+          </motion.ul>
 
           {isMenuOpen && (
             <FloatingPortal>
@@ -112,10 +173,12 @@ export default function Footer() {
 
         <div className="flex min-h-0 flex-1 flex-col justify-between gap-8 py-6 md:gap-10 md:py-8 lg:gap-12 lg:py-10 xl:gap-0 xl:py-0">
           <div className="flex min-h-0 flex-1 flex-col justify-center">
-            <h2 className="mb-4 text-[40px] leading-11 -tracking-[1.6px] md:mb-5 lg:text-6xl lg:leading-[1.1] lg:-tracking-[2.4px] xl:mb-6 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
-              Get in touch
-            </h2>
-            <div className="">
+            <RevealLine active={show} delay={0.08} className="mb-4 md:mb-5 xl:mb-6">
+              <h2 className="text-[40px] leading-11 -tracking-[1.6px] lg:text-6xl lg:leading-[1.1] lg:-tracking-[2.4px] xl:text-7xl xl:leading-20 xl:-tracking-[2.88px]">
+                Get in touch
+              </h2>
+            </RevealLine>
+            <RevealLine active={show} delay={0.14}>
               <a
                 href="mailto:contact@agilepartners.eu"
                 className="group/link relative inline-flex items-center gap-2 text-xl leading-[26px] -tracking-[0.7px] text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
@@ -136,24 +199,33 @@ export default function Footer() {
                 </svg>
                 <span className="relative z-10">contact@agilepartners.eu</span>
               </a>
-            </div>
+            </RevealLine>
           </div>
 
           <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10 xl:mb-40">
             <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-12">
-              <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
-                Stefan cel Mare Str. 135
-                <br />
-                Chisinau, Moldova
-              </address>
-              <a
-                href="tel:+37360869382"
-                className="text-xl leading-[26px] -tracking-[0.7px] text-white transition-colors hover:text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
-              >
-                (+373) 608 69 382
-              </a>
+              <RevealLine active={show} delay={0.18}>
+                <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
+                  Stefan cel Mare Str. 135
+                  <br />
+                  Chisinau, Moldova
+                </address>
+              </RevealLine>
+              <RevealLine active={show} delay={0.22}>
+                <a
+                  href="tel:+37360869382"
+                  className="text-xl leading-[26px] -tracking-[0.7px] text-white transition-colors hover:text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
+                >
+                  (+373) 608 69 382
+                </a>
+              </RevealLine>
             </div>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+            <motion.div
+              className="flex flex-wrap items-center gap-x-6 gap-y-1"
+              initial={fadeUp.initial}
+              animate={show ? fadeUp.animate : fadeUp.initial}
+              transition={{ duration: 0.45, ease: TEXT_EASE, delay: 0.26 }}
+            >
               {socialLinks.map(({ name, href }, index) => (
                 <Fragment key={name}>
                   {index > 0 && (
@@ -176,12 +248,17 @@ export default function Footer() {
                   </a>
                 </Fragment>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          <p className="shrink-0 pb-1 text-base leading-5 -tracking-[0.48px] text-[#999999]">
+          <motion.p
+            className="shrink-0 pb-1 text-base leading-5 -tracking-[0.48px] text-[#999999]"
+            initial={fadeUp.initial}
+            animate={show ? fadeUp.animate : fadeUp.initial}
+            transition={{ duration: 0.4, ease: TEXT_EASE, delay: 0.3 }}
+          >
             ©Agile Partners 2026. All rights reserved.
-          </p>
+          </motion.p>
         </div>
       </div>
     </footer>

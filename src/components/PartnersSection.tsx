@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import ButtonTeam from './ButtonTeam';
+import RevealParagraph from './RevealParagraph';
 import payallLogo from '../assets/image/payall.svg';
 import transcardLogo from '../assets/image/transcard.svg';
 import prysymLogo from '../assets/image/prysym.svg';
@@ -24,19 +25,22 @@ export default function PartnersSection() {
     <section className="mx-auto flex w-full max-w-2160 flex-col gap-12 px-4 pt-8 pb-24 md:gap-16 md:px-10 md:pt-10 xl:gap-24">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-x-8">
         <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
-          <motion.p
-            className="text-sm leading-4 font-normal tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-base xl:leading-5 xl:tracking-[0.16px] xl:text-nowrap"
-            {...fadeIn}
+          <RevealParagraph
+            className="lg:col-span-2"
+            textClassName="text-sm font-normal tracking-[0.14px] text-current uppercase xl:text-base xl:tracking-[0.16px] xl:text-nowrap"
+            leading={{ initial: '32px', final: '16px' }}
           >
             Our Partners
-          </motion.p>
+          </RevealParagraph>
 
-          <motion.p
-            className="text-xl leading-[26px] font-normal -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5 xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
-            {...fadeIn}
+          <RevealParagraph
+            className="lg:col-span-5 lg:col-start-5"
+            textClassName="text-xl font-normal -tracking-[0.7px] text-current xl:text-2xl xl:-tracking-[0.72px]"
+            delay={0.08}
+            leading={{ initial: '56px', final: '26px' }}
           >
             We work and create with ambitious businesses and people.
-          </motion.p>
+          </RevealParagraph>
         </div>
       </div>
 

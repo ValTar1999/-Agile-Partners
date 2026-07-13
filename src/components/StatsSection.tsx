@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, type ReactNode } from 'react';
 import { motion, useInView, useMotionValue, animate, type HTMLMotionProps } from 'framer-motion';
+import RevealParagraph from './RevealParagraph';
 
 const STATS: { value: number; suffix: string; label: ReactNode }[] = [
   {
@@ -172,19 +173,22 @@ export default function StatsSection() {
       <div className="flex flex-col gap-12 border-y border-white/20 pt-8 pb-24 md:gap-16 md:pt-10 xl:gap-0">
         <div className="grid grid-cols-[1fr_auto] items-start gap-6 md:grid-cols-12 md:gap-x-8">
           <div className="flex min-w-0 flex-col gap-6 md:col-span-8 lg:contents">
-            <motion.p
-              className="text-sm leading-4 font-normal tracking-[0.14px] text-white uppercase lg:col-span-2 xl:text-base xl:leading-5 xl:tracking-[0.16px] xl:text-nowrap"
-              {...fadeIn}
+            <RevealParagraph
+              className="lg:col-span-2"
+              textClassName="text-sm font-normal tracking-[0.14px] text-current uppercase xl:text-base xl:tracking-[0.16px] xl:text-nowrap"
+              leading={{ initial: '32px', final: '16px' }}
             >
               Let us share some stats
-            </motion.p>
+            </RevealParagraph>
 
-            <motion.p
-              className="text-xl leading-[26px] font-normal -tracking-[0.7px] text-white lg:col-span-5 lg:col-start-5 xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
-              {...fadeIn}
+            <RevealParagraph
+              className="lg:col-span-5 lg:col-start-5"
+              textClassName="text-xl font-normal -tracking-[0.7px] text-current xl:text-2xl xl:-tracking-[0.72px]"
+              delay={0.08}
+              leading={{ initial: '56px', final: '26px' }}
             >
               Fintech isn't easy. We just make it feel that way.
-            </motion.p>
+            </RevealParagraph>
           </div>
 
           <FadeIn className="flex shrink-0 justify-end md:col-span-2 md:col-start-11 2xl:ml-20">
@@ -197,15 +201,23 @@ export default function StatsSection() {
           className="grid grid-cols-1 gap-y-12 md:w-fit md:max-w-full md:grid-cols-2 md:gap-x-12 lg:gap-x-24 xl:w-full xl:max-w-none xl:grid-cols-12 xl:gap-x-8 xl:gap-y-[72px]"
         >
           {STATS.map(({ value, suffix, label }, index) => (
-            <div
+            <motion.div
               key={`${value}${suffix}`}
-              className={`flex w-full min-w-0 flex-col items-start gap-1 text-white md:flex-row md:items-start md:gap-6 xl:gap-3 ${STAT_GRID[index]}`}
+              className={`flex w-full min-w-0 flex-col items-start gap-1 overflow-hidden text-current md:flex-row md:items-start md:gap-6 xl:gap-3 ${STAT_GRID[index]}`}
+              initial={{ opacity: 0, y: 48 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{
+                duration: 0.7,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.12 + index * 0.08,
+              }}
             >
               <AnimatedNumber value={value} suffix={suffix} start={isInView} />
-              <span className="shrink-0 text-left text-base leading-5 -tracking-[0.48px] text-white">
+              <span className="shrink-0 text-left text-base leading-5 -tracking-[0.48px] text-current">
                 {label}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
