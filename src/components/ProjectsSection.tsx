@@ -175,7 +175,7 @@ const MARQUEE_ITEM_CLASS =
   'flex shrink-0 items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] xl:gap-40 lg:-tracking-[8.4px] xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
 
 const MARQUEE_PHRASES = 4;
-const MARQUEE_SCROLL_SPEED = 0.45;
+const MARQUEE_SCROLL_SPEED = 1.5;
 
 function MarqueePhrase() {
   return (

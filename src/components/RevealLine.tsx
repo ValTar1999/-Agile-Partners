@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 type RevealLineProps = {
   children: ReactNode;
@@ -7,6 +7,8 @@ type RevealLineProps = {
   className?: string;
   /** When false, animates on mount (hero). Default: on scroll into view. */
   whenInView?: boolean;
+  /** Shared trigger: when set, overrides per-line whileInView. */
+  active?: boolean;
 };
 
 export default function RevealLine({
@@ -14,15 +16,22 @@ export default function RevealLine({
   delay = 0,
   className,
   whenInView = true,
+  active,
 }: RevealLineProps) {
-  const motionProps = whenInView
+  const controlled = active !== undefined;
+
+  const motionProps = controlled
     ? {
-        whileInView: { y: 0, opacity: 1 },
-        viewport: { once: true, margin: '-10px' as const },
+        animate: active ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0.5 },
       }
-    : {
-        animate: { y: 0, opacity: 1 },
-      };
+    : whenInView
+      ? {
+          whileInView: { y: 0, opacity: 1 },
+          viewport: { once: true, margin: '-10px' as const },
+        }
+      : {
+          animate: { y: 0, opacity: 1 },
+        };
 
   return (
     <span className={`block overflow-hidden ${className ?? ''}`}>
@@ -64,7 +73,8 @@ type RevealWrappedLinesProps = {
   className?: string;
   baseDelay?: number;
   stagger?: number;
-  whenInView?: boolean;
+  /** Shared in-view trigger from parent. If omitted, observes this block once. */
+  active?: boolean;
 };
 
 function tokenize(segments: RevealTextSegment[]): WordToken[] {
@@ -78,17 +88,20 @@ function tokenize(segments: RevealTextSegment[]): WordToken[] {
   return words;
 }
 
-/** Splits flowing text into visual lines and reveals each with RevealLine. */
+/** Splits flowing text into visual lines and reveals each with staggered RevealLine. */
 export function RevealWrappedLines({
   segments,
   className,
   baseDelay = 0,
   stagger = 0.15,
-  whenInView = true,
+  active: activeProp,
 }: RevealWrappedLinesProps) {
+  const rootRef = useRef<HTMLSpanElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const words = useMemo(() => tokenize(segments), [segments]);
   const [lines, setLines] = useState<WordToken[][]>(() => [words]);
+  const inView = useInView(rootRef, { once: true, margin: '-40px' });
+  const active = activeProp ?? inView;
 
   useLayoutEffect(() => {
     const el = measureRef.current;
@@ -127,7 +140,7 @@ export function RevealWrappedLines({
   }, [words]);
 
   return (
-    <span className={`relative block ${className ?? ''}`}>
+    <span ref={rootRef} className={`relative block ${className ?? ''}`}>
       <span
         ref={measureRef}
         aria-hidden
@@ -145,7 +158,7 @@ export function RevealWrappedLines({
         <RevealLine
           key={line.map((w) => w.text).join(' ')}
           delay={baseDelay + lineIndex * stagger}
-          whenInView={whenInView}
+          active={active}
         >
           {line.map((word, i) => (
             <span key={`${word.text}-${i}`} className={word.className}>
