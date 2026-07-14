@@ -258,7 +258,7 @@ export default function Header() {
             </RevealLine>
           </h1>
         </div>
-        <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8 xl:mt-24">
+        <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8 xl:mt-20">
           <RevealParagraph text={PARAGRAPH_TEXT} />
           {/* <div className="flex justify-start md:col-span-4 md:col-start-9 lg:-mt-20 xl:-mt-4 2xl:ml-7">
             <img
