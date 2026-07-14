@@ -25,7 +25,7 @@ export default function RevealLine({
       };
 
   return (
-    <span className={`-my-[0.22em] block overflow-hidden py-[0.22em] ${className ?? ''}`}>
+    <span className={`block overflow-hidden ${className ?? ''}`}>
       <motion.span
         className="block"
         initial={{ y: '100%', opacity: 0.5 }}

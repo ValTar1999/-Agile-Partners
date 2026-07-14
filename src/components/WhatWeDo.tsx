@@ -87,7 +87,7 @@ export default function WhatWeDo({ id }: { id?: string }) {
           </RevealLine>
           <h2 className="text-[32px] leading-[34px] -tracking-[1.28px] text-current md:text-[52px] md:leading-[60px] md:-tracking-[2.34px]">
             <RevealLine>We thrive at the intersection of</RevealLine>
-            <RevealLine delay={0.15}>
+            <RevealLine delay={0.15} className="xl:-mt-1">
               <span className="text-primary">technology, data, design, and marketing.</span>
             </RevealLine>
           </h2>

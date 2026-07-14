@@ -6,7 +6,7 @@ import imageGroup from '../../assets/image/sectionPeople/image 8.svg';
 import imagePortrait from '../../assets/image/sectionPeople/surface-4FEub7tWUzM-unsplash 1.svg';
 import imageObject from '../../assets/image/sectionPeople/redd-5U_28ojjgms-unsplash 1.svg';
 
-const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current md:text-2xl';
+const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current leading-[26px]';
 
 const QUOTE_LEADING = {
   mobile: { initial: '56px', final: '26px' },
@@ -78,7 +78,7 @@ function RevealImage({
       <motion.img
         src={src}
         alt={alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover text-xl"
         initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
         animate={
           isInView
