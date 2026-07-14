@@ -233,6 +233,9 @@ body {
   overscroll-behavior-y: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 700ms ease,
+    color 700ms ease;
 }
 
 body::before {

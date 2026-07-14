@@ -57,8 +57,7 @@ function QuoteRevealParagraph({
   );
 }
 
-const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const IMAGE_REVEAL_DURATION = 2.2;
+const IMAGE_REVEAL_DURATION = 1.9;
 
 function RevealImage({
   src,
@@ -87,8 +86,8 @@ function RevealImage({
             : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
         }
         transition={{
-          clipPath: { duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay },
-          scale: { duration: IMAGE_REVEAL_DURATION + 0.3, ease: IMAGE_REVEAL_EASE, delay },
+          clipPath: { duration: IMAGE_REVEAL_DURATION, ease: 'easeOut', delay },
+          scale: { duration: IMAGE_REVEAL_DURATION + 0.3, ease: 'easeOut', delay },
         }}
       />
     </div>
@@ -97,25 +96,27 @@ function RevealImage({
 
 export default function PeopleSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: marqueeRef,
     offset: ['start end', 'end start'],
   });
 
-  const textX = useTransform(scrollYProgress, [0, 0.5, 1], ['-20%', '20%', '-20%']);
+  const textX = useTransform(scrollYProgress, [0, 1], [-200, 200]);
 
   return (
     <section
       ref={sectionRef}
       className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-60 xl:pb-24"
     >
-      <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
+      <div ref={marqueeRef} className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div
           className="flex items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
           style={{ x: textX }}
         >
-          <span className="text-current">PEOPLE BUILDING </span>
+          <span className="italic">PEOPLE </span>
+          BUILDING
           <span className="text-current">
             <span className="italic">PEOPLE</span> BUILDING
           </span>

@@ -173,15 +173,16 @@ function ProjectCard({
 
 export default function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: marqueeRef,
     offset: ['start end', 'end start'],
   });
-  const textX = useTransform(scrollYProgress, [0, 0.5, 1], ['-20%', '20%', '-20%']);
+  const textX = useTransform(scrollYProgress, [0, 1], [-200, 200]);
 
   return (
     <section ref={sectionRef} className="w-full py-24 md:pt-24 md:pb-60 lg:pt-40 xl:pb-48">
-      <div className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
+      <div ref={marqueeRef} className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
         <motion.div
           className="flex items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
           style={{ x: textX }}

@@ -8,14 +8,12 @@ import StatsSection from './components/StatsSection';
 import PartnersSection from './components/PartnersSection';
 import ProjectsSection from './components/ProjectsSection';
 import Footer from './components/Footer';
-import { useLenis } from './hooks/useLenis';
 import { PageThemeContext, type PageTheme } from './hooks/usePageTheme';
 
 function App() {
   const footerRef = useRef<HTMLDivElement>(null);
   const whoWeAreRef = useRef<HTMLDivElement>(null);
   const workRef = useRef<HTMLDivElement>(null);
-  const lenis = useLenis();
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [isFooterInteractive, setIsFooterInteractive] = useState(false);
   const [pageTheme, setPageTheme] = useState<PageTheme>('light');
@@ -25,41 +23,34 @@ function App() {
     const work = workRef.current;
     if (!whoWeAre || !work) return;
 
-    const updatePageTheme = () => {
-      const trigger = window.innerHeight * 0.5;
-      const workTop = work.getBoundingClientRect().top;
-      const whoWeAreTop = whoWeAre.getBoundingClientRect().top;
+    let rafId = 0;
+    let lastTheme: PageTheme = 'light';
 
-      let next: PageTheme = 'light';
-      if (workTop <= trigger) {
-        next = 'light';
-      } else if (whoWeAreTop <= trigger) {
-        next = 'dark';
+    const tick = () => {
+      const vh = window.innerHeight;
+      // Dark when who-we-are top reaches ~25% from the top of the viewport
+      const darkLine = vh * 0.25;
+      // Light when Work reaches the middle of the screen
+      const lightLine = vh * 0.5;
+
+      const whoTop = whoWeAre.getBoundingClientRect().top;
+      const workTop = work.getBoundingClientRect().top;
+
+      const next: PageTheme =
+        workTop <= lightLine ? 'light' : whoTop <= darkLine ? 'dark' : 'light';
+
+      if (next !== lastTheme) {
+        lastTheme = next;
+        setPageTheme(next);
       }
 
-      setPageTheme((prev) => (prev === next ? prev : next));
+      rafId = requestAnimationFrame(tick);
     };
 
-    updatePageTheme();
+    rafId = requestAnimationFrame(tick);
 
-    const observer = new IntersectionObserver(updatePageTheme, {
-      root: null,
-      threshold: [0, 0.25, 0.5, 0.75, 1],
-    });
-    observer.observe(whoWeAre);
-    observer.observe(work);
-
-    window.addEventListener('scroll', updatePageTheme, { passive: true });
-    window.addEventListener('resize', updatePageTheme);
-    lenis?.on('scroll', updatePageTheme);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', updatePageTheme);
-      window.removeEventListener('resize', updatePageTheme);
-      lenis?.off('scroll', updatePageTheme);
-    };
-  }, [lenis]);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -147,7 +138,7 @@ function App() {
       <PageThemeContext.Provider value={pageTheme}>
         <div
           data-theme={pageTheme}
-          className={`relative isolate z-10 flex flex-col gap-0 overflow-hidden transition-[background-color,color] duration-500 ${
+          className={`relative isolate z-10 flex flex-col gap-0 overflow-hidden transition-[background-color,color] duration-700 ${
             pageTheme === 'dark' ? 'text-white' : 'text-black'
           }`}
           style={{
