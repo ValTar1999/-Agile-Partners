@@ -7,10 +7,17 @@ import imagePortrait from '../../assets/image/sectionPeople/surface-4FEub7tWUzM-
 import imageObject from '../../assets/image/sectionPeople/redd-5U_28ojjgms-unsplash 1.svg';
 
 const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current leading-[26px]';
+const TESTIMONIAL_TEXT_CLASS =
+  'text-xl leading-[26px] -tracking-[0.72px] text-current xl:text-2xl xl:leading-7';
 
 const QUOTE_LEADING = {
   mobile: { initial: '56px', final: '26px' },
   desktop: { initial: '64px', final: '26px' },
+};
+
+const TESTIMONIAL_LEADING = {
+  mobile: { initial: '56px', final: '26px' },
+  desktop: { initial: '64px', final: '28px' },
 };
 
 function getQuoteLeading() {
@@ -20,12 +27,34 @@ function getQuoteLeading() {
     : QUOTE_LEADING.mobile;
 }
 
+function getTestimonialLeading() {
+  if (typeof window === 'undefined') return TESTIMONIAL_LEADING.mobile;
+  return window.matchMedia('(min-width: 768px)').matches
+    ? TESTIMONIAL_LEADING.desktop
+    : TESTIMONIAL_LEADING.mobile;
+}
+
 function useQuoteLeading() {
   const [leading, setLeading] = useState(getQuoteLeading);
 
   useLayoutEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     const update = () => setLeading(mq.matches ? QUOTE_LEADING.desktop : QUOTE_LEADING.mobile);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return leading;
+}
+
+function useTestimonialLeading() {
+  const [leading, setLeading] = useState(getTestimonialLeading);
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () =>
+      setLeading(mq.matches ? TESTIMONIAL_LEADING.desktop : TESTIMONIAL_LEADING.mobile);
     update();
     mq.addEventListener('change', update);
     return () => mq.removeEventListener('change', update);
@@ -49,6 +78,29 @@ function QuoteRevealParagraph({
     <RevealParagraph
       className={className}
       textClassName={QUOTE_TEXT_CLASS}
+      delay={delay}
+      leading={leading}
+    >
+      {children}
+    </RevealParagraph>
+  );
+}
+
+function TestimonialRevealParagraph({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const leading = useTestimonialLeading();
+
+  return (
+    <RevealParagraph
+      className={className}
+      textClassName={TESTIMONIAL_TEXT_CLASS}
       delay={delay}
       leading={leading}
     >
@@ -148,12 +200,12 @@ export default function PeopleSection() {
               />
             </svg>
           </motion.div>
-          <QuoteRevealParagraph className="mb-8">
+          <TestimonialRevealParagraph className="mb-8">
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
             commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
             dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa.
-          </QuoteRevealParagraph>
+          </TestimonialRevealParagraph>
           <div className="grid gap-2 uppercase">
             <div className="overflow-hidden">
               <motion.div
