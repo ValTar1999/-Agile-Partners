@@ -212,7 +212,7 @@ export default function PeopleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-60 xl:pb-24"
+      className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-36 xl:pb-24"
     >
       <PeopleMarquee />
 
