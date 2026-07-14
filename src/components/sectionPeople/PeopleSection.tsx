@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
 import imageGroup from '../../assets/image/sectionPeople/image 8.svg';
@@ -146,35 +146,75 @@ function RevealImage({
   );
 }
 
-export default function PeopleSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
+const MARQUEE_ITEM_CLASS =
+  'flex shrink-0 items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
 
-  const { scrollYProgress } = useScroll({
-    target: marqueeRef,
-    offset: ['start end', 'end start'],
+const MARQUEE_PHRASES = 4;
+const MARQUEE_SCROLL_SPEED = 0.45;
+
+function MarqueePhrase() {
+  return (
+    <span>
+      <span className="italic">PEOPLE</span> BUILDING
+    </span>
+  );
+}
+
+function PeopleMarquee() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setWidthRef = useRef(0);
+  const x = useMotionValue(0);
+  const { scrollY } = useScroll();
+
+  useLayoutEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const updateWidth = () => {
+      setWidthRef.current = el.scrollWidth / 2;
+      const w = setWidthRef.current;
+      if (!w) return;
+      const offset = (scrollY.get() * MARQUEE_SCROLL_SPEED) % w;
+      x.set(-w + offset);
+    };
+
+    updateWidth();
+    const ro = new ResizeObserver(updateWidth);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [scrollY, x]);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const w = setWidthRef.current;
+    if (!w) return;
+    const offset = (latest * MARQUEE_SCROLL_SPEED) % w;
+    x.set(-w + offset);
   });
 
-  const textX = useTransform(scrollYProgress, [0, 1], [-200, 200]);
+  const phrases = Array.from({ length: MARQUEE_PHRASES * 2 }, (_, i) => <MarqueePhrase key={i} />);
+
+  return (
+    <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
+      <motion.div
+        ref={trackRef}
+        className={`${MARQUEE_ITEM_CLASS} w-max will-change-transform`}
+        style={{ x }}
+      >
+        {phrases}
+      </motion.div>
+    </div>
+  );
+}
+
+export default function PeopleSection() {
+  const sectionRef = useRef<HTMLElement>(null);
 
   return (
     <section
       ref={sectionRef}
       className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-60 xl:pb-24"
     >
-      <div ref={marqueeRef} className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
-        <motion.div
-          className="flex items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-12 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]"
-          style={{ x: textX }}
-        >
-          <span className="xl:mr-10">
-            <span className="italic">PEOPLE</span> BUILDING
-          </span>
-          <span>
-            <span className="italic">PEOPLE</span> BUILDING
-          </span>
-        </motion.div>
-      </div>
+      <PeopleMarquee />
 
       <div className="grid grid-cols-12 gap-x-8 px-4 md:px-10">
         <div className="relative col-span-8 col-start-4 md:col-span-8 md:col-start-5 lg:col-span-6 lg:col-start-6 xl:col-span-4 xl:col-start-7">

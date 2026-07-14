@@ -1,5 +1,5 @@
-import { useRef, type ReactNode } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { motion, useInView, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import RevealParagraph from './RevealParagraph';
 import p1 from '../assets/image/project/p-1 (1).png';
 import p2 from '../assets/image/project/p-2 (1).png';
@@ -171,28 +171,73 @@ function ProjectCard({
   );
 }
 
+const MARQUEE_ITEM_CLASS =
+  'flex shrink-0 items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-10 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
+
+const MARQUEE_PHRASES = 4;
+const MARQUEE_SCROLL_SPEED = 0.45;
+
+function MarqueePhrase() {
+  return (
+    <span className="xl:mr-36">
+      <span className="text-current">WHAT WE DO</span>
+      <span className="text-current italic">BEST</span>
+    </span>
+  );
+}
+
+function ProjectsMarquee() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setWidthRef = useRef(0);
+  const x = useMotionValue(0);
+  const { scrollY } = useScroll();
+
+  useLayoutEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const updateWidth = () => {
+      setWidthRef.current = el.scrollWidth / 2;
+      const w = setWidthRef.current;
+      if (!w) return;
+      const offset = (scrollY.get() * MARQUEE_SCROLL_SPEED) % w;
+      x.set(-w + offset);
+    };
+
+    updateWidth();
+    const ro = new ResizeObserver(updateWidth);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [scrollY, x]);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const w = setWidthRef.current;
+    if (!w) return;
+    const offset = (latest * MARQUEE_SCROLL_SPEED) % w;
+    x.set(-w + offset);
+  });
+
+  const phrases = Array.from({ length: MARQUEE_PHRASES * 2 }, (_, i) => <MarqueePhrase key={i} />);
+
+  return (
+    <div className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
+      <motion.div
+        ref={trackRef}
+        className={`${MARQUEE_ITEM_CLASS} w-max will-change-transform`}
+        style={{ x }}
+      >
+        {phrases}
+      </motion.div>
+    </div>
+  );
+}
+
 export default function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: marqueeRef,
-    offset: ['start end', 'end start'],
-  });
-  const textX = useTransform(scrollYProgress, [0, 1], [-200, 200]);
 
   return (
     <section ref={sectionRef} className="w-full py-24 md:pt-24 md:pb-60 lg:pt-40 xl:pb-48">
-      <div ref={marqueeRef} className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
-        <motion.div
-          className="flex items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-10 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]"
-          style={{ x: textX }}
-        >
-          <span className="text-current">WHAT WE DO</span>
-          <span className="text-current italic xl:mr-28">BEST</span>
-          <span className="text-current">WHAT WE DO</span>
-          <span className="text-current italic">BEST</span>
-        </motion.div>
-      </div>
+      <ProjectsMarquee />
 
       <div className="flex flex-col gap-14 px-4 md:gap-20 md:px-10 lg:gap-32 xl:gap-0">
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-8 xl:mb-48">
