@@ -1,29 +1,4 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
-
 export default function ButtonGlobal() {
-  const dotRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const dot = dotRef.current;
-    if (!dot) return;
-    let frame: number;
-    let start: number | null = null;
-
-    const animate = (ts: number) => {
-      if (!start) start = ts;
-      const t = ((ts - start) % 1800) / 1800;
-      const eased = 0.5 - Math.cos(t * Math.PI * 2) / 2;
-      dot.style.transform = `scale(${1 - eased * 0.35})`;
-      dot.style.opacity = `${1 - eased * 0.6}`;
-      frame = requestAnimationFrame(animate);
-    };
-
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
   return (
     <a
       href="#hiring"
@@ -33,11 +8,7 @@ export default function ButtonGlobal() {
         color: '#000000',
       }}
     >
-      <span
-        ref={dotRef}
-        className="h-3 w-3 shrink-0 rounded-full"
-        style={{ backgroundColor: '#000000' }}
-      />
+      <span className="h-3 w-3 shrink-0 rounded-full bg-black" />
       We're Hiring
     </a>
   );
