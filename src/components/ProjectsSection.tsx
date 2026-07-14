@@ -1,5 +1,5 @@
 import { useRef, type ReactNode } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import RevealParagraph from './RevealParagraph';
 import p1 from '../assets/image/project/p-1 (1).png';
 import p2 from '../assets/image/project/p-2 (1).png';
@@ -60,6 +60,40 @@ const PROJECTS = [
 
 const LINE_DURATION = 0.5;
 const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const IMAGE_REVEAL_DURATION = 1.6;
+
+function RevealImage({
+  src,
+  alt,
+  aspectClass,
+  delay = 0,
+}: {
+  src: string;
+  alt: string;
+  aspectClass: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
+
+  return (
+    <div ref={ref} className={`relative w-full overflow-hidden ${aspectClass}`}>
+      <motion.img
+        src={src}
+        alt={alt}
+        className="absolute inset-0 h-full w-full object-cover"
+        initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
+        animate={
+          isInView
+            ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
+            : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
+        }
+        transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
+      />
+    </div>
+  );
+}
 
 function RevealText({
   children,
@@ -90,7 +124,7 @@ function RevealText({
 
 function ProjectCard({
   image,
-  imageClassName,
+  aspectClass,
   title,
   titleClassName,
   description,
@@ -98,7 +132,7 @@ function ProjectCard({
   className,
 }: {
   image: string;
-  imageClassName: string;
+  aspectClass: string;
   title: string;
   titleClassName?: string;
   description?: string | null;
@@ -107,15 +141,7 @@ function ProjectCard({
 }) {
   return (
     <div className={className}>
-      <motion.img
-        className={imageClassName}
-        src={image}
-        alt=""
-        initial={{ opacity: 0, y: 48 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-10px' }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      />
+      <RevealImage src={image} alt="" aspectClass={aspectClass} />
       <motion.div
         className="my-6 h-px w-full origin-left bg-current"
         initial={{ scaleX: 0 }}
@@ -175,7 +201,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-8 xl:col-span-8"
             image={p1}
-            imageClassName="aspect-5/3 w-full object-cover"
+            aspectClass="aspect-5/3"
             title={PROJECTS[0].title}
             description={PROJECTS[0].description}
             descriptionClassName="w-full text-base leading-5 -tracking-[0.48px] lg:max-w-[372px]"
@@ -186,7 +212,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-5 lg:col-start-8 xl:col-span-5 xl:col-start-8"
             image={p2}
-            imageClassName="aspect-square w-full object-cover"
+            aspectClass="aspect-square"
             title={PROJECTS[2].title}
             titleClassName="w-full lg:max-w-60"
             description={PROJECTS[2].description}
@@ -202,7 +228,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-4 lg:col-start-2"
             image={p3}
-            imageClassName="aspect-3/4 w-full object-cover"
+            aspectClass="aspect-3/4"
             title={PROJECTS[1].title}
             titleClassName="w-full lg:max-w-[108px]"
             description={PROJECTS[1].description}
@@ -219,7 +245,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-6"
             image={p4}
-            imageClassName="aspect-5/3 w-full object-cover"
+            aspectClass="aspect-5/3"
             title={PROJECTS[3].title}
             description={PROJECTS[3].description}
             descriptionClassName="w-full lg:max-w-[372px]"
@@ -230,7 +256,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-5 lg:col-start-8"
             image={p5}
-            imageClassName="aspect-4/3 w-full object-cover"
+            aspectClass="aspect-4/3"
             title={PROJECTS[4].title}
             titleClassName="w-full lg:max-w-60"
             description={PROJECTS[4].description}
@@ -242,7 +268,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-3 lg:col-start-2"
             image={p6}
-            imageClassName="aspect-5/3 w-full object-cover"
+            aspectClass="aspect-5/3"
             title={PROJECTS[5].title}
             description={PROJECTS[5].description}
           />
@@ -252,7 +278,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-4 lg:col-start-5 xl:col-span-4 xl:col-start-5"
             image={p7}
-            imageClassName="aspect-3/4 w-full object-cover"
+            aspectClass="aspect-3/4"
             title={PROJECTS[6].title}
             description={PROJECTS[6].description}
           />
@@ -262,7 +288,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-5"
             image={p8}
-            imageClassName="aspect-square w-full object-cover"
+            aspectClass="aspect-square"
             title={PROJECTS[7].title}
             titleClassName="w-full lg:max-w-60"
             description={PROJECTS[7].description}
@@ -274,7 +300,7 @@ export default function ProjectsSection() {
           <ProjectCard
             className="lg:col-span-5 lg:col-start-7"
             image={p9}
-            imageClassName="aspect-5/3 w-full object-cover"
+            aspectClass="aspect-5/3"
             title={PROJECTS[8].title}
             description={PROJECTS[8].description}
           />

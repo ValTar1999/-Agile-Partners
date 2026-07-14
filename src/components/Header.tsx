@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 function RevealLine({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
-    <span className="block overflow-hidden">
+    <span className="block overflow-hidden py-[0.22em] -my-[0.22em]">
       <motion.span
         className="block"
         initial={{ y: '100%', opacity: 0.5 }}

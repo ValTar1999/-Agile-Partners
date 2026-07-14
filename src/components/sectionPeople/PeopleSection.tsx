@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
 import imageGroup from '../../assets/image/sectionPeople/image 8.svg';
@@ -57,6 +57,44 @@ function QuoteRevealParagraph({
   );
 }
 
+const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const IMAGE_REVEAL_DURATION = 2.2;
+
+function RevealImage({
+  src,
+  alt,
+  aspectClass,
+  delay = 0,
+}: {
+  src: string;
+  alt: string;
+  aspectClass: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
+
+  return (
+    <div ref={ref} className={`relative w-full overflow-hidden ${aspectClass}`}>
+      <motion.img
+        src={src}
+        alt={alt}
+        className="absolute inset-0 h-full w-full object-cover"
+        initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
+        animate={
+          isInView
+            ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
+            : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
+        }
+        transition={{
+          clipPath: { duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay },
+          scale: { duration: IMAGE_REVEAL_DURATION + 0.3, ease: IMAGE_REVEAL_EASE, delay },
+        }}
+      />
+    </div>
+  );
+}
+
 export default function PeopleSection() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -70,7 +108,7 @@ export default function PeopleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-32 xl:pb-24"
+      className="relative z-10 mx-auto w-full max-w-2160 overflow-x-hidden pt-24 pb-24 text-current md:pt-24 md:pb-36 lg:pt-36 lg:pb-52 xl:pt-60 xl:pb-24"
     >
       <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div
@@ -150,27 +188,18 @@ export default function PeopleSection() {
       <div className="overflow-visible px-4 py-24 md:px-10 xl:pt-48 xl:pb-0">
         <div className="flex flex-col gap-10 md:grid md:auto-rows-auto md:grid-cols-12 md:items-start md:gap-x-8 md:gap-y-0">
           <div className="w-full md:col-span-8 md:col-start-3 md:row-start-1 lg:col-span-8 lg:col-start-3 xl:col-span-8 xl:col-start-3">
-            <div className="w-full overflow-hidden lg:w-full">
-              <img
-                src={imageObject}
-                alt="Team meeting"
-                className="aspect-5/3 w-full object-cover"
-              />
-            </div>
+            <RevealImage src={imageObject} alt="Team meeting" aspectClass="aspect-5/3" />
           </div>
           <div className="relative w-[68%] self-start md:-top-10 md:col-span-3 md:col-start-1 md:row-start-2 md:w-auto md:self-start lg:top-0 lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:w-full xl:-top-20">
-            <div className="w-full overflow-hidden lg:w-full">
-              <img
-                src={imagePortrait}
-                alt="Team member"
-                className="aspect-3/4 w-full object-cover"
-              />
-            </div>
+            <RevealImage
+              src={imagePortrait}
+              alt="Team member"
+              aspectClass="aspect-3/4"
+              delay={0.3}
+            />
           </div>
           <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
-            <div className="w-full overflow-hidden lg:w-full">
-              <img src={imageGroup} alt="Workspace" className="aspect-5/3 w-full object-cover" />
-            </div>
+            <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" delay={0.6} />
           </div>
         </div>
       </div>
