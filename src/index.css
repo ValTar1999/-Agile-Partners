@@ -205,6 +205,11 @@
   box-sizing: border-box;
 }
 
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
+}
+
 html {
   overscroll-behavior-y: none;
 }
@@ -275,7 +280,7 @@ html[data-theme='light'] body {
 }
 
 .text-primary {
-  color: #3aa9fa;
+  color: #1a98f3;
 }
 
 .blob-people-green {

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import circle1 from '../assets/whatWeDo/Circle 1.svg';
 import circle2 from '../assets/whatWeDo/Circle 2.svg';
 import circle3 from '../assets/whatWeDo/Circle 3.svg';
+import RevealLine from './RevealLine';
 
 const services = [
   'UX/UI design',
@@ -50,41 +51,6 @@ const PHASE_STAGGER = 0.15;
 const LINE_REVEAL_DURATION = 0.5;
 const TEXT_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function ScrollRevealLine({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <span className={`-my-[0.22em] block overflow-hidden py-[0.22em] ${className ?? ''}`}>
-      <motion.span
-        className="block"
-        initial={{ y: '100%', opacity: 0.5 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: '-10px' }}
-        transition={{
-          y: {
-            duration: 1,
-            ease: [0.22, 1, 0.36, 1],
-            delay,
-          },
-          opacity: {
-            duration: 0.1,
-            ease: 'easeOut',
-            delay: delay + 0.18,
-          },
-        }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
-
 function PhaseGraphic({ type, delay = 0 }: { type: keyof typeof PHASE_GRAPHICS; delay?: number }) {
   return (
     <motion.div
@@ -116,14 +82,14 @@ export default function WhatWeDo({ id }: { id?: string }) {
     >
       <div className="grid grid-cols-1 gap-x-8 md:grid-cols-12">
         <div className="col-span-12 xl:col-span-6 xl:col-start-2">
-          <ScrollRevealLine className="mb-5 text-sm leading-4 tracking-[0.14px] text-current uppercase md:text-base md:leading-5 md:tracking-[0.16px]">
+          <RevealLine className="mb-5 text-sm leading-4 tracking-[0.14px] text-current uppercase md:text-base md:leading-5 md:tracking-[0.16px]">
             WHAT WE DO
-          </ScrollRevealLine>
+          </RevealLine>
           <h2 className="text-[32px] leading-[34px] -tracking-[1.28px] text-current md:text-[52px] md:leading-[60px] md:-tracking-[2.34px]">
-            <ScrollRevealLine>
-              We thrive at the intersection of{' '}
+            <RevealLine>We thrive at the intersection of</RevealLine>
+            <RevealLine delay={0.15}>
               <span className="text-primary">technology, data, design, and marketing.</span>
-            </ScrollRevealLine>
+            </RevealLine>
           </h2>
         </div>
       </div>

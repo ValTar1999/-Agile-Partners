@@ -184,16 +184,13 @@ export default function ProjectsSection() {
     <section ref={sectionRef} className="w-full py-24 md:pt-24 md:pb-60 lg:pt-40 xl:pb-48">
       <div ref={marqueeRef} className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
         <motion.div
-          className="flex items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
+          className="flex items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-10 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]"
           style={{ x: textX }}
         >
-          <span className="text-current">WHAT WE DO </span>
-          <span className="text-current">
-            <span className="italic">BEST</span> WHAT WE DO{' '}
-          </span>
-          <span className="text-current">
-            <span className="italic">BEST</span>
-          </span>
+          <span className="text-current">WHAT WE DO</span>
+          <span className="text-current italic xl:mr-28">BEST</span>
+          <span className="text-current">WHAT WE DO</span>
+          <span className="text-current italic">BEST</span>
         </motion.div>
       </div>
 

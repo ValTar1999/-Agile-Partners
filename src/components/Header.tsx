@@ -1,39 +1,6 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-
-function RevealLine({
-  children,
-  delay = 0,
-  className,
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  return (
-    <span className={`block overflow-hidden ${className ?? ''}`}>
-      <motion.span
-        className="block"
-        initial={{ y: '100%', opacity: 0.5 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          y: {
-            duration: 1,
-            ease: [0.22, 1, 0.36, 1],
-            delay,
-          },
-          opacity: {
-            duration: 0.1,
-            ease: 'easeOut',
-            delay: delay + 0.18,
-          },
-        }}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
+import RevealLine from './RevealLine';
 
 const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
@@ -242,7 +209,7 @@ export default function Header() {
             </div>
           </motion.div>
           <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
-            <RevealLine delay={0}>
+            <RevealLine delay={0} whenInView={false}>
               We{' '}
               <span className="inline-flex items-baseline gap-1 italic">
                 {displayed}
@@ -253,7 +220,7 @@ export default function Header() {
               </span>{' '}
               <span className="text-primary">fintech</span> solutions that
             </RevealLine>
-            <RevealLine className="pb-0.5" delay={0.08}>
+            <RevealLine className="pb-0.5" delay={0.08} whenInView={false}>
               power seamless digital payments.
             </RevealLine>
           </h1>

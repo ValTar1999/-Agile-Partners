@@ -57,7 +57,7 @@ function QuoteRevealParagraph({
   );
 }
 
-const IMAGE_REVEAL_DURATION = 1.9;
+const IMAGE_REVEAL_DURATION = 1;
 
 function RevealImage({
   src,
@@ -112,12 +112,13 @@ export default function PeopleSection() {
     >
       <div ref={marqueeRef} className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
         <motion.div
-          className="flex items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px]"
+          className="flex items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-12 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]"
           style={{ x: textX }}
         >
-          <span className="italic">PEOPLE </span>
-          BUILDING
-          <span className="text-current">
+          <span className="xl:mr-10">
+            <span className="italic">PEOPLE</span> BUILDING
+          </span>
+          <span>
             <span className="italic">PEOPLE</span> BUILDING
           </span>
         </motion.div>

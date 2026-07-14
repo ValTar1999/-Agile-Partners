@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Header from './components/Header';
 import Nav from './components/Nav';
 import ButtonGlobal from './components/ButtonGlobal';
+import CustomCursor from './components/CustomCursor';
 import WhatWeDo from './components/WhatWeDo';
 import PeopleSection from './components/sectionPeople/PeopleSection';
 import StatsSection from './components/StatsSection';
@@ -31,7 +32,7 @@ function App() {
       // Dark when who-we-are top reaches ~25% from the top of the viewport
       const darkLine = vh * 0.25;
       // Light when Work reaches the middle of the screen
-      const lightLine = vh * 0.5;
+      const lightLine = vh * 0.4;
 
       const whoTop = whoWeAre.getBoundingClientRect().top;
       const workTop = work.getBoundingClientRect().top;
@@ -285,6 +286,7 @@ function App() {
       >
         <ButtonGlobal />
       </div>
+      <CustomCursor />
     </div>
   );
 }
