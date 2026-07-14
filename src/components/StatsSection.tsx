@@ -52,10 +52,10 @@ const STATS: { value: number; suffix: string; label: ReactNode }[] = [
 ];
 
 const STAT_GRID = [
-  'xl:col-span-3 xl:col-start-5 xl:row-start-1',
-  'xl:col-span-3 xl:col-start-9 xl:row-start-1',
-  'xl:col-span-3 xl:col-start-5 xl:row-start-2',
-  'xl:col-span-3 xl:col-start-9 xl:row-start-2',
+  'xl:col-span-4 xl:col-start-5 xl:row-start-1',
+  'xl:col-span-4 xl:col-start-9 xl:row-start-1',
+  'xl:col-span-4 xl:col-start-5 xl:row-start-2',
+  'xl:col-span-4 xl:col-start-9 xl:row-start-2',
 ] as const;
 
 const fadeIn = {
@@ -203,7 +203,7 @@ export default function StatsSection() {
           {STATS.map(({ value, suffix, label }, index) => (
             <motion.div
               key={`${value}${suffix}`}
-              className={`flex w-full min-w-0 flex-col items-start gap-1 overflow-hidden text-current md:flex-row md:items-start md:gap-6 xl:gap-3 ${STAT_GRID[index]}`}
+              className={`flex w-full flex-col items-start gap-1 text-current md:flex-row md:items-start md:gap-6 xl:gap-4 ${STAT_GRID[index]}`}
               initial={{ opacity: 0, y: 48 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
@@ -214,7 +214,7 @@ export default function StatsSection() {
               }}
             >
               <AnimatedNumber value={value} suffix={suffix} start={isInView} />
-              <span className="shrink-0 text-left text-base leading-5 -tracking-[0.48px] text-current">
+              <span className="shrink-0 text-left text-base leading-5 -tracking-[0.48px] whitespace-nowrap text-current">
                 {label}
               </span>
             </motion.div>
