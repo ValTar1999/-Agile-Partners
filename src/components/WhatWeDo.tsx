@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import circle1 from '../assets/whatWeDo/Circle 1.svg';
 import circle2 from '../assets/whatWeDo/Circle 2.svg';
 import circle3 from '../assets/whatWeDo/Circle 3.svg';
-import RevealLine from './RevealLine';
+import RevealLine, { RevealWrappedLines } from './RevealLine';
 
 const services = [
   'UX/UI design',
@@ -51,6 +51,14 @@ const PHASE_STAGGER = 0.15;
 const LINE_REVEAL_DURATION = 0.5;
 const TEXT_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+const HEADING_SEGMENTS = [
+  { text: 'We thrive at the intersection of' },
+  {
+    text: 'technology, data, design, and marketing.',
+    className: 'text-primary',
+  },
+];
+
 function PhaseGraphic({ type, delay = 0 }: { type: keyof typeof PHASE_GRAPHICS; delay?: number }) {
   return (
     <motion.div
@@ -86,10 +94,11 @@ export default function WhatWeDo({ id }: { id?: string }) {
             WHAT WE DO
           </RevealLine>
           <h2 className="text-[32px] leading-[34px] -tracking-[1.28px] text-current md:text-[52px] md:leading-[60px] md:-tracking-[2.34px]">
-            <RevealLine delay={0.15}>We thrive at the intersection of</RevealLine>
-            <RevealLine delay={0.3} className="xl:-mt-1">
-              <span className="text-primary">technology, data, design, and marketing.</span>
-            </RevealLine>
+            <RevealWrappedLines
+              baseDelay={0.15}
+              stagger={0.15}
+              segments={HEADING_SEGMENTS}
+            />
           </h2>
         </div>
       </div>
