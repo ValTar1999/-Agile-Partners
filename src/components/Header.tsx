@@ -1,9 +1,17 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-function RevealLine({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+function RevealLine({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
-    <span className="block overflow-hidden py-[0.22em] -my-[0.22em]">
+    <span className={`block overflow-hidden ${className ?? ''}`}>
       <motion.span
         className="block"
         initial={{ y: '100%', opacity: 0.5 }}
@@ -31,10 +39,10 @@ const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
 
 const PARAGRAPH_GRID_CLASS =
-  'col-span-4 col-start-3 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 xl:min-w-[248px]';
+  'col-span-4 col-start-3 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
 
 const PARAGRAPH_TEXT_CLASS =
-  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px]';
+  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] min-w-[248px] max-w-[248px]';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
@@ -90,7 +98,7 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
       >
         {text}
       </p>
-      <div className="overflow-hidden" style={{ height: height || undefined }}>
+      <div className="min-w-[248px] overflow-hidden" style={{ height: height || undefined }}>
         <motion.p
           className={PARAGRAPH_TEXT_CLASS}
           initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
@@ -245,10 +253,12 @@ export default function Header() {
               </span>{' '}
               <span className="text-primary">fintech</span> solutions that
             </RevealLine>
-            <RevealLine delay={0.08}>power seamless digital payments.</RevealLine>
+            <RevealLine className="pb-0.5" delay={0.08}>
+              power seamless digital payments.
+            </RevealLine>
           </h1>
         </div>
-        <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8">
+        <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8 xl:mt-24">
           <RevealParagraph text={PARAGRAPH_TEXT} />
           {/* <div className="flex justify-start md:col-span-4 md:col-start-9 lg:-mt-20 xl:-mt-4 2xl:ml-7">
             <img
