@@ -35,6 +35,13 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       const href = anchor.getAttribute('href');
       if (!href || href === '#') return;
 
+      // Footer is fixed; scroll to page bottom to reveal it.
+      if (href === '#contact-us') {
+        event.preventDefault();
+        instance.scrollTo(instance.limit);
+        return;
+      }
+
       const target = document.getElementById(href.slice(1));
       if (!target) return;
 
