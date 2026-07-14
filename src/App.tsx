@@ -30,7 +30,7 @@ function App() {
     const tick = () => {
       const vh = window.innerHeight;
       // Dark when who-we-are top reaches ~25% from the top of the viewport
-      const darkLine = vh * 0.25;
+      const darkLine = vh * 0.5;
       // Light when Work reaches the middle of the screen
       const lightLine = vh * 0.4;
 
