@@ -2,9 +2,9 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { motion, useInView, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
-import imageGroup from '../../assets/image/sectionPeople/image 8.svg';
-import imagePortrait from '../../assets/image/sectionPeople/surface-4FEub7tWUzM-unsplash 1.svg';
-import imageObject from '../../assets/image/sectionPeople/redd-5U_28ojjgms-unsplash 1.svg';
+import imageGroup from '../../assets/image/sectionPeople/workspace.webp';
+import imagePortrait from '../../assets/image/sectionPeople/team-member.webp';
+import imageObject from '../../assets/image/sectionPeople/team-meeting.webp';
 
 const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current leading-[26px]';
 const TESTIMONIAL_TEXT_CLASS =
@@ -109,7 +109,8 @@ function TestimonialRevealParagraph({
   );
 }
 
-const IMAGE_REVEAL_DURATION = 0.75;
+const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const IMAGE_REVEAL_DURATION = 0.9;
 
 function RevealImage({
   src,
@@ -130,17 +131,17 @@ function RevealImage({
       <motion.img
         src={src}
         alt={alt}
-        className="absolute inset-0 h-full w-full object-cover text-xl"
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        className="absolute inset-0 h-full w-full object-cover"
         initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
         animate={
           isInView
             ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
             : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
         }
-        transition={{
-          clipPath: { duration: IMAGE_REVEAL_DURATION, ease: 'easeOut', delay },
-          scale: { duration: IMAGE_REVEAL_DURATION + 0.3, ease: 'easeOut', delay },
-        }}
+        transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
       />
     </div>
   );
@@ -288,18 +289,18 @@ export default function PeopleSection() {
       <div className="overflow-visible px-4 py-24 md:px-10 xl:pt-48 xl:pb-0">
         <div className="flex flex-col gap-10 md:grid md:auto-rows-auto md:grid-cols-12 md:items-start md:gap-x-8 md:gap-y-0">
           <div className="w-full md:col-span-8 md:col-start-3 md:row-start-1 lg:col-span-8 lg:col-start-3 xl:col-span-8 xl:col-start-3">
-            <RevealImage src={imageObject} alt="Team meeting" aspectClass="aspect-5/3" />
+            <RevealImage src={imageObject} alt="Team meeting" aspectClass="aspect-5/3" delay={1} />
           </div>
           <div className="relative w-[68%] self-start md:-top-10 md:col-span-3 md:col-start-1 md:row-start-2 md:w-auto md:self-start lg:top-0 lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:w-full xl:-top-20">
             <RevealImage
               src={imagePortrait}
               alt="Team member"
               aspectClass="aspect-3/4"
-              delay={0.3}
+              delay={0.9}
             />
           </div>
           <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
-            <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" delay={0.6} />
+            <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" delay={1.25} />
           </div>
         </div>
       </div>

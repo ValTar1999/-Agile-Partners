@@ -61,8 +61,9 @@ const PROJECTS = [
 const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const MEDIA_REVEAL_DURATION = 0.9;
+const MEDIA_START_DELAY = 1;
 const TEXT_REVEAL_DURATION = 0.5;
-const TEXT_START_DELAY = 0.4;
+const TEXT_START_DELAY = MEDIA_START_DELAY + 0.4;
 
 function RevealImage({
   src,
@@ -82,6 +83,9 @@ function RevealImage({
       <motion.img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
         className="absolute inset-0 h-full w-full object-cover"
         initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
         animate={
@@ -145,12 +149,22 @@ function ProjectCard({
 
   return (
     <div ref={ref} className={className}>
-      <RevealImage src={image} alt="" aspectClass={aspectClass} active={active} />
+      <RevealImage
+        src={image}
+        alt=""
+        aspectClass={aspectClass}
+        active={active}
+        delay={MEDIA_START_DELAY}
+      />
       <motion.div
         className="my-6 h-px w-full origin-left bg-current"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: active ? 1 : 0 }}
-        transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
+        transition={{
+          duration: MEDIA_REVEAL_DURATION,
+          ease: IMAGE_REVEAL_EASE,
+          delay: MEDIA_START_DELAY,
+        }}
       />
       <div className="flex flex-col items-start justify-between gap-3 text-current xl:flex-row">
         <RevealText
