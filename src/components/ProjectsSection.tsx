@@ -58,38 +58,38 @@ const PROJECTS = [
   },
 ];
 
-const LINE_DURATION = 0.5;
 const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const IMAGE_REVEAL_DURATION = 1.6;
+const MEDIA_REVEAL_DURATION = 0.9;
+const TEXT_REVEAL_DURATION = 0.5;
+const TEXT_START_DELAY = 0.4;
 
 function RevealImage({
   src,
   alt,
   aspectClass,
+  active,
   delay = 0,
 }: {
   src: string;
   alt: string;
   aspectClass: string;
+  active: boolean;
   delay?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
-
   return (
-    <div ref={ref} className={`relative w-full overflow-hidden ${aspectClass}`}>
+    <div className={`relative w-full overflow-hidden ${aspectClass}`}>
       <motion.img
         src={src}
         alt={alt}
         className="absolute inset-0 h-full w-full object-cover"
         initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
         animate={
-          isInView
+          active
             ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
             : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
         }
-        transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
+        transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
       />
     </div>
   );
@@ -99,21 +99,22 @@ function RevealText({
   children,
   className,
   delay = 0,
+  active,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
+  active: boolean;
 }) {
   return (
     <div className="overflow-hidden">
       <motion.div
         className={className}
         initial={{ y: '100%', opacity: 0.5 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: '-60px' }}
+        animate={active ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0.5 }}
         transition={{
-          y: { duration: 0.8, ease: TEXT_EASE, delay },
-          opacity: { duration: 0.1, ease: 'easeOut', delay: delay + 0.18 },
+          y: { duration: TEXT_REVEAL_DURATION, ease: TEXT_EASE, delay },
+          opacity: { duration: 0.1, ease: 'easeOut', delay: delay + 0.1 },
         }}
       >
         {children}
@@ -139,28 +140,33 @@ function ProjectCard({
   descriptionClassName?: string;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const active = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
+
   return (
-    <div className={className}>
-      <RevealImage src={image} alt="" aspectClass={aspectClass} />
+    <div ref={ref} className={className}>
+      <RevealImage src={image} alt="" aspectClass={aspectClass} active={active} />
       <motion.div
         className="my-6 h-px w-full origin-left bg-current"
         initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: LINE_DURATION, ease: 'easeOut', delay: 0.1 }}
+        animate={{ scaleX: active ? 1 : 0 }}
+        transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
       />
       <div className="flex flex-col items-start justify-between gap-3 text-current xl:flex-row">
         <RevealText
+          active={active}
           className={`text-base leading-5 font-semibold tracking-[0.32px] uppercase ${titleClassName ?? ''}`}
-          delay={0.1 + LINE_DURATION}
+          delay={TEXT_START_DELAY}
         >
           {title}
         </RevealText>
         {description ? (
           <RevealParagraph
+            active={active}
             className={descriptionClassName ?? 'w-full lg:max-w-[372px]'}
             textClassName="text-base -tracking-[0.48px] text-current"
-            delay={0.18 + LINE_DURATION}
+            delay={TEXT_START_DELAY + 0.06}
+            duration={TEXT_REVEAL_DURATION}
             leading={{ initial: '36px', final: '20px' }}
           >
             {description}
@@ -172,14 +178,16 @@ function ProjectCard({
 }
 
 const MARQUEE_ITEM_CLASS =
-  'flex shrink-0 items-center gap-8 px-4 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] xl:gap-40 lg:-tracking-[8.4px] xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
+  'flex shrink-0 items-center gap-8 text-[100px] leading-[100px] font-normal -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-7xl md:-tracking-[4px] lg:gap-36 lg:text-[168px] lg:leading-[168px] xl:gap-40 lg:-tracking-[8.4px] xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
 
 const MARQUEE_PHRASES = 4;
-const MARQUEE_SCROLL_SPEED = 1;
+const MARQUEE_LOOPS = 0.08;
+/** Extra shift so the phrase sits further left in the viewport. */
+const MARQUEE_LEFT_NUDGE = 280;
 
 function MarqueePhrase() {
   return (
-    <span className="">
+    <span>
       <span className="text-current">WHAT WE DO</span>
       <span className="text-current italic">BEST</span>
     </span>
@@ -187,10 +195,14 @@ function MarqueePhrase() {
 }
 
 function ProjectsMarquee() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const setWidthRef = useRef(0);
   const x = useMotionValue(0);
-  const { scrollY } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
 
   useLayoutEffect(() => {
     const el = trackRef.current;
@@ -200,27 +212,27 @@ function ProjectsMarquee() {
       setWidthRef.current = el.scrollWidth / 2;
       const w = setWidthRef.current;
       if (!w) return;
-      const offset = (scrollY.get() * MARQUEE_SCROLL_SPEED) % w;
-      x.set(-w + offset);
+      const offset = (scrollYProgress.get() * w * MARQUEE_LOOPS) % w;
+      x.set(-w + offset - MARQUEE_LEFT_NUDGE);
     };
 
     updateWidth();
     const ro = new ResizeObserver(updateWidth);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [scrollY, x]);
+  }, [scrollYProgress, x]);
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
     const w = setWidthRef.current;
     if (!w) return;
-    const offset = (latest * MARQUEE_SCROLL_SPEED) % w;
-    x.set(-w + offset);
+    const offset = (progress * w * MARQUEE_LOOPS) % w;
+    x.set(-w + offset - MARQUEE_LEFT_NUDGE);
   });
 
   const phrases = Array.from({ length: MARQUEE_PHRASES * 2 }, (_, i) => <MarqueePhrase key={i} />);
 
   return (
-    <div className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
+    <div ref={containerRef} className="mb-16 w-full overflow-hidden md:mb-32 lg:mb-72">
       <motion.div
         ref={trackRef}
         className={`${MARQUEE_ITEM_CLASS} w-max will-change-transform`}

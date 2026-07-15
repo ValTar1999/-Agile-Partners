@@ -150,7 +150,9 @@ const MARQUEE_ITEM_CLASS =
   'flex shrink-0 items-center gap-6 text-[100px] leading-[100px] -tracking-[5px] whitespace-nowrap uppercase md:gap-16 md:text-[132px] md:leading-[132px] md:-tracking-[6.6px] lg:gap-36 lg:text-[168px] lg:leading-[168px] lg:-tracking-[8.4px] xl:gap-24 xl:text-[204px] xl:leading-[168px] xl:-tracking-[10.2px]';
 
 const MARQUEE_PHRASES = 4;
-const MARQUEE_SCROLL_SPEED = 1;
+const MARQUEE_LOOPS = 0.08;
+/** Extra shift so the phrase sits further left in the viewport. */
+const MARQUEE_LEFT_NUDGE = 280;
 
 function MarqueePhrase() {
   return (
@@ -161,10 +163,14 @@ function MarqueePhrase() {
 }
 
 function PeopleMarquee() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const setWidthRef = useRef(0);
   const x = useMotionValue(0);
-  const { scrollY } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
 
   useLayoutEffect(() => {
     const el = trackRef.current;
@@ -174,27 +180,27 @@ function PeopleMarquee() {
       setWidthRef.current = el.scrollWidth / 2;
       const w = setWidthRef.current;
       if (!w) return;
-      const offset = (scrollY.get() * MARQUEE_SCROLL_SPEED) % w;
-      x.set(-w + offset);
+      const offset = (scrollYProgress.get() * w * MARQUEE_LOOPS) % w;
+      x.set(-w + offset - MARQUEE_LEFT_NUDGE);
     };
 
     updateWidth();
     const ro = new ResizeObserver(updateWidth);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [scrollY, x]);
+  }, [scrollYProgress, x]);
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
     const w = setWidthRef.current;
     if (!w) return;
-    const offset = (latest * MARQUEE_SCROLL_SPEED) % w;
-    x.set(-w + offset);
+    const offset = (progress * w * MARQUEE_LOOPS) % w;
+    x.set(-w + offset - MARQUEE_LEFT_NUDGE);
   });
 
   const phrases = Array.from({ length: MARQUEE_PHRASES * 2 }, (_, i) => <MarqueePhrase key={i} />);
 
   return (
-    <div className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
+    <div ref={containerRef} className="mb-40 w-full overflow-hidden md:mb-44 lg:mb-60">
       <motion.div
         ref={trackRef}
         className={`${MARQUEE_ITEM_CLASS} w-max will-change-transform`}

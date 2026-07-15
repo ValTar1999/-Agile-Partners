@@ -16,6 +16,7 @@ type RevealParagraphProps = {
   className?: string;
   textClassName: string;
   delay?: number;
+  duration?: number;
   leading?: LeadingConfig;
   /** When set, overrides useInView (e.g. fixed footer visibility). */
   active?: boolean;
@@ -26,6 +27,7 @@ export default function RevealParagraph({
   className,
   textClassName,
   delay = 0,
+  duration = 1,
   leading = DEFAULT_LEADING,
   active,
 }: RevealParagraphProps) {
@@ -68,17 +70,17 @@ export default function RevealParagraph({
           }
           transition={{
             y: {
-              duration: 1,
+              duration,
               ease: [0.22, 1, 0.36, 1],
               delay,
             },
             opacity: {
               duration: 0.1,
               ease: 'easeOut',
-              delay: delay + 0.18,
+              delay: delay + 0.12,
             },
             lineHeight: {
-              duration: 1,
+              duration,
               ease: [0.22, 1, 0.36, 1],
               delay,
             },
