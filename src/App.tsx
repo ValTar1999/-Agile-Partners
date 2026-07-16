@@ -87,7 +87,7 @@ function App() {
       const footerTop = pageBottom - footerHeight;
       const visibleAmount = Math.max(0, scrollBottom - footerTop);
       // Animate as soon as ~15% of the footer is uncovered
-      setIsFooterVisible(visibleAmount >= footerHeight * 0.15);
+      setIsFooterVisible(visibleAmount >= footerHeight * 0.05);
       // Clicks only when nearly fully revealed (content has scrolled away)
       setIsFooterInteractive(scrollBottom >= pageBottom - 48);
     };
@@ -129,8 +129,8 @@ function App() {
     <div className="app relative min-h-screen w-full">
       <div
         ref={footerRef}
-        className={`fixed bottom-0 left-0 h-dvh w-full overflow-hidden ${
-          isFooterInteractive ? 'z-40' : 'pointer-events-none z-0'
+        className={`fixed bottom-0 left-0 z-10 h-dvh w-full overflow-hidden ${
+          isFooterInteractive ? '' : 'pointer-events-none'
         }`}
       >
         <Footer isActive={isFooterVisible} />

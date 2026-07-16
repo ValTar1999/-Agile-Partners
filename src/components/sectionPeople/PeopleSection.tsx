@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { motion, useInView, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
+import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
 import imageGroup from '../../assets/image/sectionPeople/workspace.webp';
@@ -111,20 +111,33 @@ function TestimonialRevealParagraph({
 
 const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const IMAGE_REVEAL_DURATION = 0.9;
+/** Fire when image top has crossed ~35% into the viewport. */
+const SCROLL_TRIGGER_AT = 0.35;
 
 function RevealImage({
   src,
   alt,
   aspectClass,
-  delay = 0,
 }: {
   src: string;
   alt: string;
   aspectClass: string;
-  delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
+  const [active, setActive] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    // 0 = image top at bottom of viewport, 1 = image top at top of viewport
+    offset: ['start end', 'start start'],
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+    if (!active && progress >= SCROLL_TRIGGER_AT) setActive(true);
+  });
+
+  useLayoutEffect(() => {
+    if (!active && scrollYProgress.get() >= SCROLL_TRIGGER_AT) setActive(true);
+  }, [active, scrollYProgress]);
 
   return (
     <div ref={ref} className={`relative w-full overflow-hidden ${aspectClass}`}>
@@ -137,11 +150,11 @@ function RevealImage({
         className="absolute inset-0 h-full w-full object-cover"
         initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
         animate={
-          isInView
+          active
             ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
             : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
         }
-        transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
+        transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
       />
     </div>
   );
@@ -289,18 +302,13 @@ export default function PeopleSection() {
       <div className="overflow-visible px-4 py-24 md:px-10 xl:pt-48 xl:pb-0">
         <div className="flex flex-col gap-10 md:grid md:auto-rows-auto md:grid-cols-12 md:items-start md:gap-x-8 md:gap-y-0">
           <div className="w-full md:col-span-8 md:col-start-3 md:row-start-1 lg:col-span-8 lg:col-start-3 xl:col-span-8 xl:col-start-3">
-            <RevealImage src={imageObject} alt="Team meeting" aspectClass="aspect-5/3" delay={1} />
+            <RevealImage src={imageObject} alt="Team meeting" aspectClass="aspect-5/3" />
           </div>
           <div className="relative w-[68%] self-start md:-top-10 md:col-span-3 md:col-start-1 md:row-start-2 md:w-auto md:self-start lg:top-0 lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:w-full xl:-top-20">
-            <RevealImage
-              src={imagePortrait}
-              alt="Team member"
-              aspectClass="aspect-3/4"
-              delay={0.9}
-            />
+            <RevealImage src={imagePortrait} alt="Team member" aspectClass="aspect-3/4" />
           </div>
           <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
-            <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" delay={1.25} />
+            <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" />
           </div>
         </div>
       </div>

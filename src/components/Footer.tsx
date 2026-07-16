@@ -203,7 +203,7 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
           </div>
 
           <div className="flex shrink-0 flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8 lg:gap-10 xl:mb-40">
-            <div className="flex flex-col items-end gap-8 xl:flex-row xl:gap-x-12">
+            <div className="flex flex-col items-start gap-8 xl:flex-row xl:items-end xl:gap-x-12">
               <RevealLine active={show} delay={0.18}>
                 <address className="text-xl leading-[26px] -tracking-[0.7px] text-white not-italic xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]">
                   Stefan cel Mare Str. 135

@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef, type ReactNode } from 'react';
-import { motion, useInView, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import RevealParagraph from './RevealParagraph';
 import p1 from '../assets/image/project/p-1 (1).png';
 import p2 from '../assets/image/project/p-2 (1).png';
@@ -61,22 +61,22 @@ const PROJECTS = [
 const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const MEDIA_REVEAL_DURATION = 0.9;
-const MEDIA_START_DELAY = 1;
 const TEXT_REVEAL_DURATION = 0.5;
-const TEXT_START_DELAY = MEDIA_START_DELAY + 0.4;
+/** Relative delay after scroll-trigger fires (image/line first, then text). */
+const TEXT_AFTER_MEDIA_DELAY = 0.35;
+/** Fire when card top has crossed ~35% into the viewport. */
+const SCROLL_TRIGGER_AT = 0.35;
 
 function RevealImage({
   src,
   alt,
   aspectClass,
   active,
-  delay = 0,
 }: {
   src: string;
   alt: string;
   aspectClass: string;
   active: boolean;
-  delay?: number;
 }) {
   return (
     <div className={`relative w-full overflow-hidden ${aspectClass}`}>
@@ -93,7 +93,7 @@ function RevealImage({
             ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
             : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
         }
-        transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE, delay }}
+        transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
       />
     </div>
   );
@@ -145,17 +145,24 @@ function ProjectCard({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const active = useInView(ref, { once: true, margin: '-60px', amount: 0.2 });
+  const [active, setActive] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    // 0 = card top at bottom of viewport, 1 = card top at top of viewport
+    offset: ['start end', 'start start'],
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+    if (!active && progress >= SCROLL_TRIGGER_AT) setActive(true);
+  });
+
+  useLayoutEffect(() => {
+    if (!active && scrollYProgress.get() >= SCROLL_TRIGGER_AT) setActive(true);
+  }, [active, scrollYProgress]);
 
   return (
     <div ref={ref} className={className}>
-      <RevealImage
-        src={image}
-        alt=""
-        aspectClass={aspectClass}
-        active={active}
-        delay={MEDIA_START_DELAY}
-      />
+      <RevealImage src={image} alt="" aspectClass={aspectClass} active={active} />
       <motion.div
         className="my-6 h-px w-full origin-left bg-current"
         initial={{ scaleX: 0 }}
@@ -163,14 +170,13 @@ function ProjectCard({
         transition={{
           duration: MEDIA_REVEAL_DURATION,
           ease: IMAGE_REVEAL_EASE,
-          delay: MEDIA_START_DELAY,
         }}
       />
       <div className="flex flex-col items-start justify-between gap-3 text-current xl:flex-row">
         <RevealText
           active={active}
           className={`text-base leading-5 font-semibold tracking-[0.32px] uppercase ${titleClassName ?? ''}`}
-          delay={TEXT_START_DELAY}
+          delay={TEXT_AFTER_MEDIA_DELAY}
         >
           {title}
         </RevealText>
@@ -179,7 +185,7 @@ function ProjectCard({
             active={active}
             className={descriptionClassName ?? 'w-full lg:max-w-[372px]'}
             textClassName="text-base -tracking-[0.48px] text-current"
-            delay={TEXT_START_DELAY + 0.06}
+            delay={TEXT_AFTER_MEDIA_DELAY + 0.06}
             duration={TEXT_REVEAL_DURATION}
             leading={{ initial: '36px', final: '20px' }}
           >
