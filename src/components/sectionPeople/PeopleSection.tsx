@@ -109,14 +109,15 @@ function TestimonialRevealParagraph({
   );
 }
 
-const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const IMAGE_REVEAL_DURATION = 0.9;
+const IMAGE_REVEAL_EASE: [number, number, number, number] = [0, 0, 0.58, 1]; // CSS ease-out
+const IMAGE_REVEAL_DURATION = 0.65;
 /** Fire when image top has crossed ~35% into the viewport. */
 const SCROLL_TRIGGER_AT = 0.35;
 
 function RevealImage({ src, alt, aspectClass }: { src: string; alt: string; aspectClass: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  const [outerWidth, setOuterWidth] = useState(0);
   const { scrollYProgress } = useScroll({
     target: ref,
     // 0 = image top at bottom of viewport, 1 = image top at top of viewport
@@ -131,23 +132,38 @@ function RevealImage({ src, alt, aspectClass }: { src: string; alt: string; aspe
     if (!active && scrollYProgress.get() >= SCROLL_TRIGGER_AT) setActive(true);
   }, [active, scrollYProgress]);
 
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const update = () => setOuterWidth(el.offsetWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <div ref={ref} className={`relative w-full overflow-hidden ${aspectClass}`}>
-      <motion.img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-        className="absolute inset-0 h-full w-full object-cover"
-        initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
-        animate={
-          active
-            ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
-            : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
-        }
+    <div ref={ref} className={`relative w-full ${aspectClass}`}>
+      <motion.div
+        className="absolute inset-y-0 left-0 overflow-hidden will-change-[width]"
+        initial={{ width: 0 }}
+        animate={{ width: active ? '100%' : 0 }}
         transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
-      />
+      >
+        <motion.img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          className="absolute top-0 left-0 h-full max-w-none object-cover will-change-transform"
+          style={outerWidth ? { width: outerWidth } : { width: '100%' }}
+          initial={{ scale: 1.2 }}
+          animate={{ scale: active ? 1 : 1.2 }}
+          transition={{ duration: IMAGE_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
+        />
+      </motion.div>
     </div>
   );
 }

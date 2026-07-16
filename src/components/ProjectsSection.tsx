@@ -59,8 +59,8 @@ const PROJECTS = [
 ];
 
 const TEXT_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const IMAGE_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const MEDIA_REVEAL_DURATION = 0.9;
+const IMAGE_REVEAL_EASE: [number, number, number, number] = [0, 0, 0.58, 1]; // CSS ease-out
+const MEDIA_REVEAL_DURATION = 0.65;
 const TEXT_REVEAL_DURATION = 0.5;
 /** Relative delay after scroll-trigger fires (image/line first, then text). */
 const TEXT_AFTER_MEDIA_DELAY = 0.35;
@@ -78,23 +78,43 @@ function RevealImage({
   aspectClass: string;
   active: boolean;
 }) {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [outerWidth, setOuterWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+
+    const update = () => setOuterWidth(el.offsetWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
-    <div className={`relative w-full overflow-hidden ${aspectClass}`}>
-      <motion.img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-        className="absolute inset-0 h-full w-full object-cover"
-        initial={{ clipPath: 'inset(0 100% 0 0)', scale: 1.2 }}
-        animate={
-          active
-            ? { clipPath: 'inset(0 0% 0 0)', scale: 1 }
-            : { clipPath: 'inset(0 100% 0 0)', scale: 1.2 }
-        }
+    <div ref={outerRef} className={`relative w-full ${aspectClass}`}>
+      {/* Frame: width 0 → 100%, same as Figma kf_*_width */}
+      <motion.div
+        className="absolute inset-y-0 left-0 overflow-hidden will-change-[width]"
+        initial={{ width: 0 }}
+        animate={{ width: active ? '100%' : 0 }}
         transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
-      />
+      >
+        {/* Inner image: scale 1.2 → 1, sized to final frame (not the growing clip) */}
+        <motion.img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          className="absolute top-0 left-0 h-full max-w-none object-cover will-change-transform"
+          style={outerWidth ? { width: outerWidth } : { width: '100%' }}
+          initial={{ scale: 1.2 }}
+          animate={{ scale: active ? 1 : 1.2 }}
+          transition={{ duration: MEDIA_REVEAL_DURATION, ease: IMAGE_REVEAL_EASE }}
+        />
+      </motion.div>
     </div>
   );
 }
