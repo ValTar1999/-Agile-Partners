@@ -4,7 +4,7 @@ import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
 import imageGroup from '../../assets/image/sectionPeople/workspace.webp';
 import imagePortrait from '../../assets/image/sectionPeople/team-member.webp';
-import imageObject from '../../assets/image/sectionPeople/team-meeting.webp';
+import imageObject from '../../assets/image/sectionPeople/Image Container.svg';
 
 const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current leading-[26px]';
 const TESTIMONIAL_TEXT_CLASS =
@@ -114,15 +114,7 @@ const IMAGE_REVEAL_DURATION = 0.9;
 /** Fire when image top has crossed ~35% into the viewport. */
 const SCROLL_TRIGGER_AT = 0.35;
 
-function RevealImage({
-  src,
-  alt,
-  aspectClass,
-}: {
-  src: string;
-  alt: string;
-  aspectClass: string;
-}) {
+function RevealImage({ src, alt, aspectClass }: { src: string; alt: string; aspectClass: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const { scrollYProgress } = useScroll({
