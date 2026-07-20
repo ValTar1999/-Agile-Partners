@@ -11,6 +11,7 @@ import ProjectsSection from './components/ProjectsSection';
 import Footer from './components/Footer';
 import { PageThemeContext, type PageTheme } from './hooks/usePageTheme';
 import PaginationButton from './components/PaginationButton';
+import Preloader from './components/Preloader';
 
 function App() {
   const footerRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,7 @@ function App() {
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [isFooterInteractive, setIsFooterInteractive] = useState(false);
   const [pageTheme, setPageTheme] = useState<PageTheme>('light');
+  const [showPreloader, setShowPreloader] = useState(true);
 
   useEffect(() => {
     const whoWeAre = whoWeAreRef.current;
@@ -128,6 +130,7 @@ function App() {
 
   return (
     <div className="app relative min-h-screen w-full">
+      {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
       <div
         ref={footerRef}
         className={`fixed bottom-0 left-0 z-10 h-dvh w-full overflow-hidden ${
@@ -281,11 +284,8 @@ function App() {
         </div>
       </PageThemeContext.Provider>
       <div aria-hidden className="pointer-events-none h-(--footer-height,100dvh) shrink-0" />
-      <div
-        className="fixed top-10 right-10 z-50 hidden xl:block"
-        style={{ mixBlendMode: 'difference' }}
-      >
-        <PaginationButton />
+      <div className="fixed top-1/2 right-10 z-50 hidden -translate-y-1/2 xl:block">
+        <PaginationButton theme={pageTheme} />
       </div>
       <div
         className="fixed right-10 bottom-10 z-50 hidden md:block"

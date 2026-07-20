@@ -243,7 +243,7 @@ body {
     color 700ms ease;
 }
 
-body::before {
+/* body::before {
   content: '';
   position: fixed;
   top: 0;
@@ -254,7 +254,7 @@ body::before {
   background: url('/src/assets/image/bg-project.svg') no-repeat center center;
   background-size: cover;
   transition: opacity 300ms ease;
-}
+} */
 
 html[data-theme='dark'] body::before {
   opacity: 0;
