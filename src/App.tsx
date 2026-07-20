@@ -10,6 +10,7 @@ import PartnersSection from './components/PartnersSection';
 import ProjectsSection from './components/ProjectsSection';
 import Footer from './components/Footer';
 import { PageThemeContext, type PageTheme } from './hooks/usePageTheme';
+import PaginationButton from './components/PaginationButton';
 
 function App() {
   const footerRef = useRef<HTMLDivElement>(null);
@@ -280,6 +281,12 @@ function App() {
         </div>
       </PageThemeContext.Provider>
       <div aria-hidden className="pointer-events-none h-(--footer-height,100dvh) shrink-0" />
+      <div
+        className="fixed top-10 right-10 z-50 hidden xl:block"
+        style={{ mixBlendMode: 'difference' }}
+      >
+        <PaginationButton />
+      </div>
       <div
         className="fixed right-10 bottom-10 z-50 hidden md:block"
         style={{ mixBlendMode: 'difference' }}
