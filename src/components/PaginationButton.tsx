@@ -91,7 +91,7 @@ export default function PaginationButton({ theme }: PaginationButtonProps) {
                 {section.label}
               </span>
               <span
-                className={`transition-width block h-[0.5px] max-h-[0.5px] min-h-[0.5px] bg-current duration-250 ease-linear group-hover:w-11 ${
+                className={`transition-width block h-px max-h-px min-h-px bg-current duration-250 ease-linear group-hover:w-11 ${
                   isActive ? 'w-11' : 'w-4'
                 }`}
               />
