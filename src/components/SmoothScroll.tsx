@@ -36,8 +36,8 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     const getAnchorScrollOptions = (destination: number) => ({
       // Give long jumps more time than neighboring-section jumps.
       duration: Math.min(
-        4.2,
-        Math.max(1.8, 1.4 + (Math.abs(destination - window.scrollY) / window.innerHeight) * 0.35),
+        3,
+        Math.max(1.2, 1 + (Math.abs(destination - window.scrollY) / window.innerHeight) * 0.22),
       ),
       easing: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
     });
