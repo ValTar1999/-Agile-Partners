@@ -4,7 +4,7 @@ import ButtonTeam from '../ButtonTeam';
 import RevealParagraph from '../RevealParagraph';
 import imageGroup from '../../assets/image/sectionPeople/workspace.webp';
 import imagePortrait from '../../assets/image/sectionPeople/team-member.webp';
-import imageObject from '../../assets/image/sectionPeople/Image Container.svg';
+import imageObject from '../../assets/image/sectionPeople/Image Container-2.webp';
 
 const QUOTE_TEXT_CLASS = 'text-xl -tracking-[0.72px] text-current leading-[26px]';
 const TESTIMONIAL_TEXT_CLASS =

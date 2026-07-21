@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Header from './components/Header';
 import Nav from './components/Nav';
 import ButtonGlobal from './components/ButtonGlobal';
@@ -21,6 +21,14 @@ function App() {
   const [isFooterInteractive, setIsFooterInteractive] = useState(false);
   const [pageTheme, setPageTheme] = useState<PageTheme>('light');
   const [showPreloader, setShowPreloader] = useState(true);
+  const [showPageCover, setShowPageCover] = useState(true);
+  const [animationRun, setAnimationRun] = useState(0);
+
+  const finishPreloader = useCallback(() => {
+    setShowPreloader(false);
+    setAnimationRun(1);
+    setShowPageCover(false);
+  }, []);
 
   useEffect(() => {
     const whoWeAre = whoWeAreRef.current;
@@ -130,7 +138,8 @@ function App() {
 
   return (
     <div className="app relative min-h-screen w-full">
-      {showPreloader && <Preloader onComplete={() => setShowPreloader(false)} />}
+      {showPreloader && <Preloader onComplete={finishPreloader} />}
+      {showPageCover && <div aria-hidden className="fixed inset-0 z-9999 bg-[#f8f8f8]" />}
       <div
         ref={footerRef}
         className={`fixed bottom-0 left-0 z-10 h-dvh w-full overflow-hidden ${
@@ -150,9 +159,9 @@ function App() {
             backgroundColor: pageTheme === 'dark' ? '#000000' : '#f8f8f8',
           }}
         >
-          <Nav />
-          <Header />
-          <WhatWeDo id="about" />
+          <Nav key={`nav-${animationRun}`} />
+          <Header key={`header-${animationRun}`} />
+          <WhatWeDo key={`about-${animationRun}`} id="about" />
           <div ref={whoWeAreRef} className="relative scroll-mt-20" id="who-we-are">
             {/* <div className="pointer-events-none absolute top-0 left-0 h-full w-full max-w-lg overflow-visible opacity-60 md:left-1/12 md:opacity-100">
             <svg
@@ -214,9 +223,9 @@ function App() {
               </defs>
             </svg>
           </div> */}
-            <PeopleSection />
-            <StatsSection />
-            <PartnersSection />
+            <PeopleSection key={`people-${animationRun}`} />
+            <StatsSection key={`stats-${animationRun}`} />
+            <PartnersSection key={`partners-${animationRun}`} />
           </div>
           <div ref={workRef} className="relative mx-auto w-full max-w-2160 scroll-mt-20" id="work">
             {/* <div className="pointer-events-none absolute top-0 right-0 h-full w-full max-w-lg overflow-visible opacity-60 md:right-1/12 md:opacity-100">
@@ -279,7 +288,7 @@ function App() {
                 </defs>
               </svg>
             </div> */}
-            <ProjectsSection />
+            <ProjectsSection key={`projects-${animationRun}`} />
           </div>
         </div>
       </PageThemeContext.Provider>

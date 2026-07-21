@@ -84,14 +84,14 @@ export default function PaginationButton({ theme }: PaginationButtonProps) {
             aria-label={section.label}
             aria-current={isActive ? 'true' : undefined}
             onClick={() => setActiveId(section.id)}
-            className="group relative flex items-center justify-end py-1.5 pl-28"
+            className="group relative flex items-center justify-end py-[5.5px] pl-28"
           >
             <span className="relative flex items-center">
               <span className="pointer-events-none absolute right-full mr-3 text-[10px] leading-normal whitespace-nowrap uppercase opacity-0 transition-opacity duration-[250ms] ease-linear group-hover:opacity-100">
                 {section.label}
               </span>
               <span
-                className={`transition-width block h-px bg-current duration-[250ms] ease-linear group-hover:w-11 ${
+                className={`transition-width block h-[0.5px] max-h-[0.5px] min-h-[0.5px] bg-current duration-[250ms] ease-linear group-hover:w-11 ${
                   isActive ? 'w-11' : 'w-4'
                 }`}
               />

@@ -243,6 +243,26 @@ body {
     color 700ms ease;
 }
 
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+html[data-theme='dark'] ::selection,
+footer ::selection {
+  background-color: #ffffff;
+  color: #000000;
+}
+
 /* body::before {
   content: '';
   position: fixed;

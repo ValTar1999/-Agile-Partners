@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLenis } from '../hooks/useLenis';
 
 const BRAND = '#3AA9FA';
@@ -12,9 +12,12 @@ const A_PATHS = [
 const P_PATH =
   'M2.9502 0.0189386C4.18751 -0.104793 5.14997 0.384336 5.87988 1.29335L6.02344 1.48085L6.02637 1.48574C7.11585 3.0541 8.20524 4.6174 9.29492 6.18007C10.3843 7.74229 11.4739 9.30494 12.5635 10.8734C14.4066 13.5065 16.2759 16.1663 18.0967 18.8256C19.3256 20.6037 18.6982 22.901 16.752 23.7689C16.2729 23.9818 15.7504 24.0589 15.2666 24.059H5.60254V21.6908H15.1699C15.4461 21.6908 15.6703 21.6667 15.8506 21.5951C16.0193 21.5281 16.1616 21.4151 16.2715 21.2045C16.477 20.8106 16.35 20.4631 16.0518 20.0268C12.1004 14.3512 8.17354 8.70018 4.22266 3.04921C4.08387 2.85486 3.99657 2.71388 3.8916 2.62636L3.88477 2.62148L3.87988 2.61659C3.37466 2.14746 2.56256 2.37884 2.38086 3.05019C2.32146 3.26815 2.31934 3.5153 2.31934 3.81093V35.6019H0V3.4037C0.000183003 1.58745 1.15843 0.203631 2.9502 0.0189386ZM15.2666 23.7601L15.6104 23.7465C15.495 23.7562 15.3801 23.7601 15.2666 23.7601Z';
 
-const EASE = [0.76, 0, 0.24, 1] as const;
+const EASE = [0.65, 0, 0.35, 1] as const;
+const WORDMARK_EASE = [0.16, 1, 0.3, 1] as const;
 const OPEN_WIDTH = 640;
 const CLOSED_WIDTH = 52;
+const LINE_REVEAL_DURATION = 0.9;
+const LETTER_REVEAL_DELAY = LINE_REVEAL_DURATION / 2;
 
 type Phase = 'intro' | 'pull' | 'brand' | 'exit';
 
@@ -24,7 +27,6 @@ type PreloaderProps = {
 
 export default function Preloader({ onComplete }: PreloaderProps) {
   const [phase, setPhase] = useState<Phase>('intro');
-  const [visible, setVisible] = useState(true);
   const lenis = useLenis();
 
   useEffect(() => {
@@ -44,10 +46,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     window.addEventListener('touchmove', prevent, { passive: false });
 
     const timers = [
-      window.setTimeout(() => setPhase('pull'), 1400),
-      window.setTimeout(() => setPhase('brand'), 2300),
-      window.setTimeout(() => setPhase('exit'), 3500),
-      window.setTimeout(() => setVisible(false), 4200),
+      window.setTimeout(() => setPhase('pull'), 1500),
+      window.setTimeout(() => setPhase('brand'), 2400),
+      window.setTimeout(() => setPhase('exit'), 4900),
+      window.setTimeout(() => onComplete?.(), 5900),
     ];
 
     return () => {
@@ -58,116 +60,123 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       html.style.overflow = prevHtml;
       lenis?.start();
     };
-  }, [lenis]);
-
-  const handleExitComplete = () => {
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-    lenis?.start();
-    onComplete?.();
-  };
+  }, [lenis, onComplete]);
 
   const open = phase === 'intro';
   const branded = phase === 'brand' || phase === 'exit';
   const exiting = phase === 'exit';
 
   return (
-    <AnimatePresence onExitComplete={handleExitComplete}>
-      {visible && (
-        <motion.div
-          className="fixed inset-0 z-10000 flex items-center justify-center bg-black"
-          initial={{ y: 0 }}
-          animate={{ y: exiting ? '-100%' : 0 }}
-          exit={{ y: '-100%' }}
-          transition={{ duration: 0.7, ease: EASE }}
-          aria-hidden
-        >
-          <div className="relative flex items-center">
-            {/*
+    <motion.div
+      className="fixed inset-0 z-10000 flex items-center justify-center bg-black"
+      initial={{ y: 0 }}
+      animate={{ y: exiting ? '-100%' : 0 }}
+      transition={{ duration: 1, ease: EASE }}
+      aria-hidden
+    >
+      <div className="relative flex items-center">
+        {/*
               Stage width shrinks on pull → justify-between pulls A & P together.
               Line is absolute in the center and grows with scaleX from the middle.
             */}
-            <motion.div
-              className="relative flex h-9 max-w-[72vw] items-center justify-between"
-              initial={{ width: OPEN_WIDTH }}
-              animate={{ width: open ? OPEN_WIDTH : CLOSED_WIDTH }}
-              transition={{ duration: 0.85, ease: EASE }}
-            >
-              {/* A — left edge */}
-              <motion.svg
-                width="30"
-                height="36"
-                viewBox="0 0 30 36"
-                fill="none"
-                className="relative z-10 shrink-0"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  color: branded ? BRAND : '#ffffff',
-                }}
-                transition={{
-                  opacity: { duration: 0.4, ease: 'easeOut', delay: 0.15 },
-                  color: { duration: 0.4, ease: 'easeOut' },
-                }}
-              >
-                {A_PATHS.map((d) => (
-                  <path
-                    key={d.slice(0, 24)}
-                    d={d}
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  />
-                ))}
-              </motion.svg>
-
-              {/* Line — grows from center to sides, then shrinks */}
-              <motion.div
-                className="pointer-events-none absolute top-1/2 left-1/2 h-px origin-center -translate-x-1/2 -translate-y-1/2 bg-white/55"
-                style={{ width: 'calc(100% - 56px)' }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: open ? 1 : 0 }}
-                transition={{ duration: 1.15, ease: EASE }}
+        <motion.div
+          className="relative flex h-9 max-w-[72vw] items-center justify-between"
+          initial={{ width: OPEN_WIDTH }}
+          animate={{
+            width: open ? OPEN_WIDTH : CLOSED_WIDTH,
+            x: branded ? -80 : 0,
+          }}
+          transition={{
+            width: { duration: 0.8, ease: EASE },
+            x: {
+              duration: 1.1,
+              ease: WORDMARK_EASE,
+              delay: branded ? 0.8 : 0,
+            },
+          }}
+        >
+          {/* A — left edge */}
+          <motion.svg
+            width="30"
+            height="36"
+            viewBox="0 0 30 36"
+            fill="none"
+            className="relative z-10 shrink-0"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              color: branded ? BRAND : '#ffffff',
+            }}
+            transition={{
+              opacity: { duration: 0.3, ease: 'easeOut', delay: LETTER_REVEAL_DELAY },
+              color: { duration: 0.45, ease: 'easeInOut' },
+            }}
+          >
+            {A_PATHS.map((d) => (
+              <path
+                key={d.slice(0, 24)}
+                d={d}
+                fill="currentColor"
+                fillRule="evenodd"
+                clipRule="evenodd"
               />
+            ))}
+          </motion.svg>
 
-              {/* P — right edge */}
-              <motion.svg
-                width="19"
-                height="36"
-                viewBox="0 0 19 36"
-                fill="none"
-                className="relative z-10 shrink-0"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  color: branded ? BRAND : '#ffffff',
-                }}
-                transition={{
-                  opacity: { duration: 0.4, ease: 'easeOut', delay: 0.15 },
-                  color: { duration: 0.4, ease: 'easeOut' },
-                }}
-              >
-                <path d={P_PATH} fill="currentColor" fillRule="evenodd" clipRule="evenodd" />
-              </motion.svg>
-            </motion.div>
+          {/* Line — grows from center to sides, then shrinks */}
+          <motion.div
+            className="pointer-events-none absolute top-1/2 right-[39px] left-[50px] h-px origin-center -translate-y-1/2 bg-white/55"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: open ? 1 : 0 }}
+            transition={{ duration: LINE_REVEAL_DURATION, ease: EASE }}
+          />
 
-            {/* Wordmark */}
-            <motion.span
-              className="overflow-hidden text-[22px] leading-none font-normal tracking-[-0.02em] whitespace-nowrap text-white sm:text-[26px]"
-              style={{ fontFamily: 'var(--font-inter)' }}
-              initial={{ opacity: 0, maxWidth: 0, marginLeft: 0 }}
-              animate={{
-                opacity: branded ? 1 : 0,
-                maxWidth: branded ? 220 : 0,
-                marginLeft: branded ? 16 : 0,
-              }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
-              Agile Partners
-            </motion.span>
-          </div>
+          {/* P — right edge */}
+          <motion.svg
+            width="19"
+            height="36"
+            viewBox="0 0 19 36"
+            fill="none"
+            className="relative z-10 shrink-0"
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              color: branded ? BRAND : '#ffffff',
+            }}
+            transition={{
+              opacity: { duration: 0.3, ease: 'easeOut', delay: LETTER_REVEAL_DELAY },
+              color: { duration: 0.45, ease: 'easeInOut' },
+            }}
+          >
+            <path d={P_PATH} fill="currentColor" fillRule="evenodd" clipRule="evenodd" />
+          </motion.svg>
         </motion.div>
-      )}
-    </AnimatePresence>
+
+        {/* Wordmark */}
+        <motion.span
+          className="absolute top-1/2 left-1/2 block text-[25px] leading-normal -tracking-[0.255px] whitespace-nowrap text-white"
+          style={{ fontFamily: '"Haas Grot Disp", sans-serif', marginLeft: -38, y: '-50%' }}
+          initial={{ opacity: 0, x: -70 }}
+          animate={{
+            opacity: branded ? 1 : 0,
+            x: branded ? 0 : -70,
+          }}
+          transition={{
+            opacity: {
+              duration: 2,
+              ease: WORDMARK_EASE,
+              delay: branded ? 1 : 0,
+            },
+            x: {
+              duration: 1.1,
+              ease: WORDMARK_EASE,
+              delay: branded ? 0.8 : 0,
+            },
+          }}
+        >
+          Agile Partners
+        </motion.span>
+      </div>
+    </motion.div>
   );
 }
