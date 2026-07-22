@@ -67,7 +67,7 @@ function App() {
   useEffect(() => {
     const root = document.documentElement;
     const { body } = document;
-    const bg = pageTheme === 'dark' ? '#000000' : '#f8f8f8';
+    const bg = pageTheme === 'dark' ? '#000000' : '#ffffff';
 
     root.dataset.theme = pageTheme;
     root.style.backgroundColor = bg;
@@ -139,7 +139,7 @@ function App() {
   return (
     <div className="app relative min-h-screen w-full">
       {showPreloader && <Preloader onComplete={finishPreloader} />}
-      {showPageCover && <div aria-hidden className="fixed inset-0 z-9999 bg-[#f8f8f8]" />}
+      {showPageCover && <div aria-hidden className="fixed inset-0 z-9999 bg-[#ffffff]" />}
       <div
         ref={footerRef}
         className={`fixed bottom-0 left-0 z-10 h-dvh w-full overflow-hidden ${
@@ -156,7 +156,7 @@ function App() {
             pageTheme === 'dark' ? 'text-white' : 'text-black'
           }`}
           style={{
-            backgroundColor: pageTheme === 'dark' ? '#000000' : '#f8f8f8',
+            backgroundColor: pageTheme === 'dark' ? '#000000' : '#ffffff',
           }}
         >
           <Nav key={`nav-${animationRun}`} />
