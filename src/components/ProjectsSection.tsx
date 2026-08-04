@@ -1,15 +1,15 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion';
 import RevealParagraph from './RevealParagraph';
-import p1 from '../assets/image/project/p-1 (1).png';
-import p2 from '../assets/image/project/p-2 (1).png';
-import p3 from '../assets/image/project/p-3 (1).png';
-import p4 from '../assets/image/project/p-4 (1).png';
-import p5 from '../assets/image/project/p-5 (1).png';
-import p6 from '../assets/image/project/p-6 (1).png';
-import p7 from '../assets/image/project/p-7 (1).png';
-import p8 from '../assets/image/project/p-8 (1).png';
-import p9 from '../assets/image/project/p-9 (1).png';
+import p1 from '../assets/image/project/p-1.webp';
+import p2 from '../assets/image/project/p-2.webp';
+import p3 from '../assets/image/project/p-3.webp';
+import p4 from '../assets/image/project/p-4.webp';
+import p5 from '../assets/image/project/p-5.webp';
+import p6 from '../assets/image/project/p-6.webp';
+import p7 from '../assets/image/project/p-7.webp';
+import p8 from '../assets/image/project/p-8.webp';
+import p9 from '../assets/image/project/p-9.webp';
 import Simbols from '../assets/image/project/Simbolds.svg';
 
 const PROJECTS = [
