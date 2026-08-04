@@ -108,6 +108,7 @@ const MERIDIAN_FLAT =
 const CIRCLE_1_DURATION = 0.9;
 const CIRCLE_2_DELAY = 0.8;
 const CIRCLE_3_DELAY = 3.0;
+const CIRCLE_EASE = [0.5, 0, 0.5, 1] as const;
 
 /** Middle Circle: outer ring → diameter → meridians bend out from center. Total 2.2s. */
 const MIDDLE_CIRCLE_RING = {
@@ -408,7 +409,7 @@ export default function Header() {
                 stroke="#3BADFF"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: CIRCLE_1_DURATION, ease: 'easeOut' }}
+                transition={{ duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE }}
               />
             </svg>
 
@@ -427,7 +428,7 @@ export default function Header() {
                 animate={{ pathLength: 1 }}
                 transition={{
                   duration: MIDDLE_CIRCLE_RING.duration,
-                  ease: 'linear',
+                  ease: CIRCLE_EASE,
                   delay: CIRCLE_2_DELAY + MIDDLE_CIRCLE_RING.delay,
                 }}
               />
@@ -438,7 +439,7 @@ export default function Header() {
                 animate={{ pathLength: 1 }}
                 transition={{
                   duration: MIDDLE_CIRCLE_DIAMETER.duration,
-                  ease: 'linear',
+                  ease: CIRCLE_EASE,
                   delay: CIRCLE_2_DELAY + MIDDLE_CIRCLE_DIAMETER.delay,
                 }}
               />
@@ -449,7 +450,7 @@ export default function Header() {
                   initial={{ d: from, opacity: 0 }}
                   animate={{ d: to, opacity: 1 }}
                   transition={{
-                    d: { duration, ease: 'easeOut', delay: CIRCLE_2_DELAY + delay },
+                    d: { duration, ease: CIRCLE_EASE, delay: CIRCLE_2_DELAY + delay },
                     opacity: { duration: 0.01, delay: CIRCLE_2_DELAY + delay },
                   }}
                 />
@@ -473,7 +474,7 @@ export default function Header() {
                   animate={{ pathLength: 1 }}
                   transition={{
                     duration: 1,
-                    ease: 'linear',
+                    ease: CIRCLE_EASE,
                     delay: CIRCLE_3_DELAY + delay,
                   }}
                 />
