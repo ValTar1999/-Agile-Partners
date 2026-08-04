@@ -203,7 +203,7 @@ function ProjectCard({
         {description ? (
           <RevealParagraph
             active={active}
-            className={descriptionClassName ?? 'w-full lg:max-w-[372px]'}
+            className={descriptionClassName ?? 'w-full lg:max-w-93'}
             textClassName="text-base -tracking-[0.48px] text-current"
             delay={TEXT_AFTER_MEDIA_DELAY + 0.06}
             duration={TEXT_REVEAL_DURATION}

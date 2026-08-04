@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import RevealLine from './RevealLine';
-import bgImage from '../assets/image/header/Blurs.svg';
 
 const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
@@ -10,7 +9,7 @@ const PARAGRAPH_GRID_CLASS =
   'col-span-4 col-start-3 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
 
 const PARAGRAPH_TEXT_CLASS =
-  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] min-w-[248px] max-w-[248px]';
+  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] min-w-62 max-w-62';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
@@ -66,7 +65,7 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
       >
         {text}
       </p>
-      <div className="min-w-[248px] overflow-hidden" style={{ height: height || undefined }}>
+      <div className="min-w-62 overflow-hidden" style={{ height: height || undefined }}>
         <motion.p
           className={PARAGRAPH_TEXT_CLASS}
           initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
@@ -107,7 +106,6 @@ const MERIDIAN_FLAT =
 
 /** Circles play one after another: 1 → 2 → 3. */
 const CIRCLE_1_DURATION = 0.9;
-const CIRCLE_2_DURATION = 2.2;
 const CIRCLE_2_DELAY = 0.8;
 const CIRCLE_3_DELAY = 3.0;
 
@@ -270,7 +268,7 @@ export default function Header() {
       </div> */}
 
       <div className="relative z-10 mx-auto w-full max-w-2160 flex-col items-start px-4 md:px-10">
-        <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-[52px] md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
+        <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-13 md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
           <motion.div
             className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex"
             initial={{ opacity: 0 }}
@@ -295,7 +293,7 @@ export default function Header() {
               />
             </div>
           </motion.div>
-          <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-[100px] md:text-[52px] md:leading-[60px] md:-tracking-[2.34px] lg:min-h-[180px] lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
+          <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-25 md:text-[52px] md:leading-15 md:-tracking-[2.34px] lg:min-h-45 lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
             <RevealLine delay={0} whenInView={false}>
               We{' '}
               <span className="inline-flex items-baseline gap-1 italic">
