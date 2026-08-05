@@ -1,8 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import circle1 from '../assets/whatWeDo/Circle 1.svg';
-import circle2 from '../assets/whatWeDo/Circle 2.svg';
-import circle3 from '../assets/whatWeDo/Circle 3.svg';
+import AnimatedCircleGraphic, { type AnimatedCircleGraphicType } from './AnimatedCircleGraphic';
 import RevealLine, { RevealWrappedLines } from './RevealLine';
 
 const services = [
@@ -12,12 +10,6 @@ const services = [
   'Platform architecture',
 ];
 
-const PHASE_GRAPHICS = {
-  circle: circle1,
-  sphere: circle2,
-  target: circle3,
-} as const;
-
 const phases = [
   {
     title: 'Strategy and Planning',
@@ -25,7 +17,7 @@ const phases = [
     description:
       'We focus on generating ideas and strategies that are progressive, feasible, scalable, and have what it takes to turn into a pioneering fintech solution.',
     services,
-    graphic: 'circle' as const,
+    graphic: 'circle' as AnimatedCircleGraphicType,
   },
   {
     title: 'Create and Build',
@@ -33,7 +25,7 @@ const phases = [
     description:
       'We focus on generating ideas and strategies that are progressive, feasible, scalable, and have what it takes to turn into a pioneering fintech solution.',
     services,
-    graphic: 'sphere' as const,
+    graphic: 'sphere' as AnimatedCircleGraphicType,
     twoColumns: true,
   },
   {
@@ -42,7 +34,7 @@ const phases = [
     description:
       'We focus on generating ideas & strategies that are progressive, feasible, scalable, and have what it takes to turn into a pioneering fintech solution.',
     services,
-    graphic: 'target' as const,
+    graphic: 'target' as AnimatedCircleGraphicType,
   },
 ];
 
@@ -64,28 +56,18 @@ function PhaseGraphic({
   delay = 0,
   active,
 }: {
-  type: keyof typeof PHASE_GRAPHICS;
+  type: AnimatedCircleGraphicType;
   delay?: number;
   active: boolean;
 }) {
   return (
-    <motion.div
-      className="inline-flex shrink-0"
-      initial={{ opacity: 0, scale: 0.72 }}
-      animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.72 }}
-      transition={{
-        duration: 0.85,
-        ease: TEXT_REVEAL_EASE,
-        delay,
-      }}
-    >
-      <img
-        src={PHASE_GRAPHICS[type]}
-        alt=""
-        className="h-40 w-40 shrink-0 object-contain"
-        draggable={false}
-      />
-    </motion.div>
+    <AnimatedCircleGraphic
+      type={type}
+      active={active}
+      delay={delay}
+      size={160}
+      className="shrink-0"
+    />
   );
 }
 
@@ -99,10 +81,7 @@ function PhaseBlock({ phase }: { phase: Phase }) {
   const afterLine = lineDelay + LINE_REVEAL_DURATION;
 
   return (
-    <div
-      ref={ref}
-      className="grid grid-cols-1 items-start md:grid-cols-12 md:gap-x-8 md:gap-y-0"
-    >
+    <div ref={ref} className="grid grid-cols-1 items-start md:grid-cols-12 md:gap-x-8 md:gap-y-0">
       <motion.div
         className="mb-5 hidden h-px w-full origin-left bg-current md:col-span-4 md:col-start-1 md:row-start-1 md:block xl:col-span-4 xl:col-start-2"
         initial={{ scaleX: 0 }}
@@ -279,4 +258,3 @@ export default function WhatWeDo({ id }: { id?: string }) {
     </section>
   );
 }
-
