@@ -35,6 +35,18 @@ type MobileNavMenuProps = {
   menuId: string;
 };
 
+const SCROLL_KEYS = new Set([
+  ' ',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'PageUp',
+  'PageDown',
+  'Home',
+  'End',
+]);
+
 export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenuProps) {
   const lenis = useLenis();
   useOverlayOpen(isOpen);
@@ -42,24 +54,66 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
   useEffect(() => {
     if (!isOpen) return;
 
+    const html = document.documentElement;
+    const { body } = document;
+    const scrollY = window.scrollY;
+
     lenis?.stop();
 
-    const prevent = (event: Event) => {
+    const prev = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyLeft: body.style.left,
+      bodyRight: body.style.right,
+      bodyWidth: body.style.width,
+      bodyTouchAction: body.style.touchAction,
+    };
+
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.touchAction = 'none';
+
+    const preventScroll = (event: Event) => {
       event.preventDefault();
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (SCROLL_KEYS.has(event.key)) {
+        event.preventDefault();
+      }
     };
 
-    window.addEventListener('wheel', prevent, { passive: false });
-    window.addEventListener('touchmove', prevent, { passive: false });
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('wheel', preventScroll, { passive: false, capture: true });
+    window.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
+    window.addEventListener('keydown', onKeyDown, true);
 
     return () => {
-      window.removeEventListener('wheel', prevent);
-      window.removeEventListener('touchmove', prevent);
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('wheel', preventScroll, true);
+      window.removeEventListener('touchmove', preventScroll, true);
+      window.removeEventListener('keydown', onKeyDown, true);
+
+      html.style.overflow = prev.htmlOverflow;
+      body.style.overflow = prev.bodyOverflow;
+      body.style.position = prev.bodyPosition;
+      body.style.top = prev.bodyTop;
+      body.style.left = prev.bodyLeft;
+      body.style.right = prev.bodyRight;
+      body.style.width = prev.bodyWidth;
+      body.style.touchAction = prev.bodyTouchAction;
+
+      window.scrollTo(0, scrollY);
+      lenis?.scrollTo(scrollY, { immediate: true });
       lenis?.start();
     };
   }, [isOpen, onClose, lenis]);
