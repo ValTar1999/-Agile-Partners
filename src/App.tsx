@@ -67,14 +67,25 @@ function App() {
   useEffect(() => {
     const root = document.documentElement;
     const { body } = document;
-    const bg = pageTheme === 'dark' ? '#000000' : '#ffffff';
 
-    root.dataset.theme = pageTheme;
-    root.style.backgroundColor = bg;
-    body.style.backgroundColor = bg;
-    body.style.color = pageTheme === 'dark' ? '#ffffff' : '#333333';
+    const applyTheme = () => {
+      if (root.classList.contains('overlay-open')) return;
+
+      const bg = pageTheme === 'dark' ? '#000000' : '#ffffff';
+      root.dataset.theme = pageTheme;
+      root.style.backgroundColor = bg;
+      body.style.backgroundColor = bg;
+      body.style.color = pageTheme === 'dark' ? '#ffffff' : '#333333';
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg);
+    };
+
+    applyTheme();
+
+    const observer = new MutationObserver(applyTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
 
     return () => {
+      observer.disconnect();
       delete root.dataset.theme;
       root.style.backgroundColor = '';
       body.style.backgroundColor = '';

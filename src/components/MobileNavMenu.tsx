@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logoDark from '../assets/image/LOGO-dark.svg';
-import { useFullscreenOverlayStyle } from '../hooks/useFullscreenOverlayStyle';
+import { useOverlayOpen } from '../hooks/useOverlayOpen';
 import { useLenis } from '../hooks/useLenis';
 import RevealLine from './RevealLine';
 
@@ -37,21 +37,11 @@ type MobileNavMenuProps = {
 
 export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenuProps) {
   const lenis = useLenis();
-  const overlayStyle = useFullscreenOverlayStyle(isOpen);
+  useOverlayOpen(isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const html = document.documentElement;
-    const prevBody = document.body.style.overflow;
-    const prevHtml = html.style.overflow;
-    const prevBodyBg = document.body.style.backgroundColor;
-    const prevHtmlBg = html.style.backgroundColor;
-
-    document.body.style.overflow = 'hidden';
-    html.style.overflow = 'hidden';
-    document.body.style.backgroundColor = '#000000';
-    html.style.backgroundColor = '#000000';
     lenis?.stop();
 
     const prevent = (event: Event) => {
@@ -70,10 +60,6 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
       window.removeEventListener('wheel', prevent);
       window.removeEventListener('touchmove', prevent);
       window.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = prevBody;
-      html.style.overflow = prevHtml;
-      document.body.style.backgroundColor = prevBodyBg;
-      html.style.backgroundColor = prevHtmlBg;
       lenis?.start();
     };
   }, [isOpen, onClose, lenis]);
@@ -88,7 +74,6 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           aria-modal="true"
           aria-label="Navigation menu"
           className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top,0px)]`}
-          style={overlayStyle}
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 1 }}

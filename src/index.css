@@ -233,17 +233,19 @@ body {
   width: 100%;
   position: relative;
   font-family: var(--font-inter);
-  background: #f8f8f8;
+  background: #000000;
   color: #333333;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  min-height: 100dvh;
+  min-height: 100%;
   overscroll-behavior-y: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color 700ms ease,
-    color 700ms ease;
+}
+
+/* While preloader/menu is open — force black behind iOS Safari chrome */
+html.overlay-open,
+html.overlay-open body {
+  background-color: #000000 !important;
+  background: #000000 !important;
 }
 
 html {
@@ -255,14 +257,11 @@ html::-webkit-scrollbar {
   display: none;
 }
 
-/* Full-screen fixed overlays — height set via useFullscreenOverlayStyle (visualViewport) */
 .fullscreen-fixed {
   position: fixed;
-  left: 0;
-  right: 0;
+  inset: 0;
   width: 100%;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+  height: 100%;
 }
 
 ::selection {
