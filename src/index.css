@@ -255,15 +255,14 @@ html::-webkit-scrollbar {
   display: none;
 }
 
-/* Full-screen fixed overlays — covers iOS Safari bottom gap (use lvh, not only dvh) */
+/* Full-screen fixed overlays — height set via useFullscreenOverlayStyle (visualViewport) */
 .fullscreen-fixed {
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  min-height: 100dvh;
-  min-height: 100lvh;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 ::selection {

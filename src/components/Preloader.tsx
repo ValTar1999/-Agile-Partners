@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
+import { useFullscreenOverlayStyle } from '../hooks/useFullscreenOverlayStyle';
 import { useLenis } from '../hooks/useLenis';
 
 const BRAND = '#3AA9FA';
@@ -28,6 +30,7 @@ type PreloaderProps = {
 export default function Preloader({ onComplete }: PreloaderProps) {
   const [phase, setPhase] = useState<Phase>('intro');
   const lenis = useLenis();
+  const overlayStyle = useFullscreenOverlayStyle();
 
   useEffect(() => {
     const html = document.documentElement;
@@ -72,9 +75,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const branded = phase === 'brand' || phase === 'exit';
   const exiting = phase === 'exit';
 
-  return (
+  return createPortal(
     <motion.div
       className="fullscreen-fixed z-10000 flex items-center justify-center bg-black"
+      style={overlayStyle}
       initial={{ y: 0 }}
       animate={{ y: exiting ? '-100%' : 0 }}
       transition={{ duration: 1, ease: EASE }}
@@ -183,6 +187,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           Agile Partners
         </motion.span>
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }

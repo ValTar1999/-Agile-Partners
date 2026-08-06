@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logoDark from '../assets/image/LOGO-dark.svg';
+import { useFullscreenOverlayStyle } from '../hooks/useFullscreenOverlayStyle';
 import { useLenis } from '../hooks/useLenis';
 import RevealLine from './RevealLine';
 
@@ -35,6 +37,7 @@ type MobileNavMenuProps = {
 
 export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenuProps) {
   const lenis = useLenis();
+  const overlayStyle = useFullscreenOverlayStyle(isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -75,7 +78,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
     };
   }, [isOpen, onClose, lenis]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.aside
@@ -85,6 +88,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           aria-modal="true"
           aria-label="Navigation menu"
           className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top,0px)]`}
+          style={overlayStyle}
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 1 }}
@@ -228,6 +232,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           </motion.div>
         </motion.aside>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
