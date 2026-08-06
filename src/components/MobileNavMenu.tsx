@@ -35,17 +35,7 @@ type MobileNavMenuProps = {
   menuId: string;
 };
 
-const SCROLL_KEYS = new Set([
-  ' ',
-  'ArrowUp',
-  'ArrowDown',
-  'ArrowLeft',
-  'ArrowRight',
-  'PageUp',
-  'PageDown',
-  'Home',
-  'End',
-]);
+const SCROLL_KEYS = new Set([' ', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End']);
 
 export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenuProps) {
   const lenis = useLenis();
@@ -60,25 +50,8 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
 
     lenis?.stop();
 
-    const prev = {
-      htmlOverflow: html.style.overflow,
-      bodyOverflow: body.style.overflow,
-      bodyPosition: body.style.position,
-      bodyTop: body.style.top,
-      bodyLeft: body.style.left,
-      bodyRight: body.style.right,
-      bodyWidth: body.style.width,
-      bodyTouchAction: body.style.touchAction,
-    };
-
     html.style.overflow = 'hidden';
     body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.left = '0';
-    body.style.right = '0';
-    body.style.width = '100%';
-    body.style.touchAction = 'none';
 
     const preventScroll = (event: Event) => {
       event.preventDefault();
@@ -103,17 +76,11 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
       window.removeEventListener('touchmove', preventScroll, true);
       window.removeEventListener('keydown', onKeyDown, true);
 
-      html.style.overflow = prev.htmlOverflow;
-      body.style.overflow = prev.bodyOverflow;
-      body.style.position = prev.bodyPosition;
-      body.style.top = prev.bodyTop;
-      body.style.left = prev.bodyLeft;
-      body.style.right = prev.bodyRight;
-      body.style.width = prev.bodyWidth;
-      body.style.touchAction = prev.bodyTouchAction;
+      html.style.overflow = '';
+      body.style.overflow = '';
 
       window.scrollTo(0, scrollY);
-      lenis?.scrollTo(scrollY, { immediate: true });
+      lenis?.scrollTo(scrollY, { immediate: true, force: true });
       lenis?.start();
     };
   }, [isOpen, onClose, lenis]);

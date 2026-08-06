@@ -241,12 +241,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* While menu is open — force black behind iOS Safari chrome + hard scroll lock */
+/* While menu is open — force black behind iOS Safari chrome */
 html.overlay-open,
 html.overlay-open body {
   background-color: #000000 !important;
   background: #000000 !important;
-  overflow: hidden !important;
   overscroll-behavior: none;
 }
 

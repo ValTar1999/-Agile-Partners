@@ -11,8 +11,6 @@ export function useOverlayOpen(active: boolean) {
     html.classList.add(OVERLAY_OPEN_CLASS);
     html.style.setProperty('background-color', '#000000', 'important');
     document.body.style.setProperty('background-color', '#000000', 'important');
-    document.body.style.overflow = 'hidden';
-    html.style.overflow = 'hidden';
 
     let themeMeta = document.querySelector('meta[name="theme-color"]');
     const createdMeta = !themeMeta;
@@ -28,8 +26,6 @@ export function useOverlayOpen(active: boolean) {
       html.classList.remove(OVERLAY_OPEN_CLASS);
       html.style.removeProperty('background-color');
       document.body.style.removeProperty('background-color');
-      document.body.style.overflow = '';
-      html.style.overflow = '';
       if (themeMeta) {
         if (createdMeta) themeMeta.remove();
         else if (prevTheme) themeMeta.setAttribute('content', prevTheme);
