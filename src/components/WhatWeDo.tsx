@@ -67,6 +67,7 @@ function PhaseGraphic({
       delay={delay}
       size={160}
       className="shrink-0"
+      circleVariant={type === 'circle' ? 'double' : 'once'}
     />
   );
 }

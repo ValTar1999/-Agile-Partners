@@ -1,17 +1,7 @@
 import { Fragment, useEffect, useState, type ReactNode } from 'react';
-import {
-  autoUpdate,
-  flip,
-  FloatingPortal,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-} from '@floating-ui/react';
 import { motion } from 'framer-motion';
 import logo from '../assets/image/LOGO-dark.svg';
+import MobileNavMenu from './MobileNavMenu';
 
 const navLinks = [
   { label: 'ABOUT', href: '#about' },
@@ -79,17 +69,8 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
   const show = hasRevealed;
 
   const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = () => setIsMenuOpen((open) => !open);
   const menuId = 'footer-nav-menu';
-  const { refs, floatingStyles, context } = useFloating({
-    open: isMenuOpen,
-    onOpenChange: setIsMenuOpen,
-    placement: 'bottom-end',
-    middleware: [offset(12), flip({ padding: 16 }), shift({ padding: 16 })],
-    whileElementsMounted: autoUpdate,
-  });
-  const click = useClick(context);
-  const dismiss = useDismiss(context);
-  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
   return (
     <footer
@@ -108,15 +89,14 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
           </motion.a>
           <motion.button
             type="button"
-            ref={refs.setReference}
             className="inline-flex h-6 w-6 items-center justify-center bg-transparent lg:hidden"
-            aria-label="Toggle navigation menu"
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isMenuOpen}
             aria-controls={menuId}
             initial={slideDown.initial}
             animate={show ? slideDown.animate : slideDown.initial}
             transition={{ ...slideDown.transition, delay: 0.04 }}
-            {...getReferenceProps()}
+            onClick={toggleMenu}
           >
             <span className="sr-only">Menu</span>
             <span className="flex flex-col gap-1.5">
@@ -144,31 +124,7 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
             ))}
           </motion.ul>
 
-          {isMenuOpen && (
-            <FloatingPortal>
-              <div
-                id={menuId}
-                ref={refs.setFloating}
-                style={floatingStyles}
-                className="z-30 w-[min(92vw,20rem)] rounded-2xl border border-white/10 bg-black/95 p-3 shadow-2xl backdrop-blur-sm lg:hidden"
-                {...getFloatingProps()}
-              >
-                <ul className="m-0 list-none space-y-1 p-0">
-                  {navLinks.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        onClick={closeMenu}
-                        className={`block px-3 py-2 ${navLinkClass} transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none`}
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </FloatingPortal>
-          )}
+          <MobileNavMenu isOpen={isMenuOpen} onClose={closeMenu} menuId={menuId} />
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col justify-between gap-8 py-6 md:gap-10 md:py-8 lg:gap-12 lg:py-10 xl:gap-0 xl:py-0">

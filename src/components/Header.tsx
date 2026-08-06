@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedCircleGraphic from './AnimatedCircleGraphic';
-import RevealLine from './RevealLine';
+import { RevealWrappedLines } from './RevealLine';
 
 const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
@@ -104,6 +104,13 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
 const CIRCLE_2_DELAY = 0.8;
 const CIRCLE_3_DELAY = 3.0;
 
+const HEADING_SEGMENTS = [
+  { text: 'We' },
+  { text: 'ideate', className: 'italic' },
+  { text: 'fintech', className: 'text-primary' },
+  { text: 'solutions that power seamless digital payments.' },
+];
+
 export default function Header() {
   // const [wordIndex, setWordIndex] = useState(0);
   // const [charCount, setCharCount] = useState(0);
@@ -133,7 +140,6 @@ export default function Header() {
 
   // const word = TYPING_WORDS[wordIndex];
   // const displayed = word.slice(0, charCount);
-  const displayed = 'ideate';
 
   return (
     <header className="relative h-full w-full overflow-visible">
@@ -213,29 +219,21 @@ export default function Header() {
             </div>
           </motion.div>
           <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-25 md:text-[52px] md:leading-15 md:-tracking-[2.34px] lg:min-h-45 lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
-            <RevealLine delay={0} whenInView={false}>
-              We{' '}
-              <span className="inline-flex items-baseline gap-1 italic">
-                {displayed}
-                {/* <span
-                  className="animate-blink inline-block h-10 w-px shrink-0 self-baseline bg-current"
-                  aria-hidden
-                /> */}
-              </span>{' '}
-              <span className="text-primary">fintech</span> solutions that
-            </RevealLine>
-            <RevealLine className="pb-0.5" delay={0.08} whenInView={false}>
-              power seamless digital payments.
-            </RevealLine>
+            <RevealWrappedLines
+              active
+              baseDelay={0}
+              stagger={0.08}
+              segments={HEADING_SEGMENTS}
+            />
           </h1>
         </div>
         <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8 xl:mt-16">
           <RevealParagraph text={PARAGRAPH_TEXT} />
         </div>
 
-        <div className="relative mt-20 w-full xl:-mt-24 xl:w-1/2 xl:scale-105">
+        <div className="relative mt-20 w-full xl:-mt-24 xl:w-1/2">
           <motion.svg
-            className="absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2"
+            className="absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 xl:scale-105"
             width="925"
             height="627"
             viewBox="0 0 925 627"

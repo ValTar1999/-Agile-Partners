@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 
 const CIRCLE_STROKE = '#007BF9';
 const CIRCLE_1_DURATION = 0.9;
@@ -82,12 +83,71 @@ const CIRCLE_3_RINGS: { d: string; delay: number }[] = [
 
 export type AnimatedCircleGraphicType = 'circle' | 'sphere' | 'target';
 
+function CirclePulsePath({ active, delay }: { active: boolean; delay: number }) {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (!active) {
+      controls.set({ pathLength: 0, pathOffset: 0 });
+      return;
+    }
+
+    let cancelled = false;
+
+    const run = async () => {
+      controls.set({ pathLength: 0, pathOffset: 0 });
+
+      // 1. Draw 0→100
+      await controls.start({
+        pathLength: 1,
+        pathOffset: 0,
+        transition: { duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE, delay },
+      });
+      if (cancelled) return;
+
+      // 2. Erase 100→0 clockwise (offset only moves forward)
+      await controls.start({
+        pathLength: 0,
+        pathOffset: 1,
+        transition: { duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE },
+      });
+      if (cancelled) return;
+
+      // 3. Reset offset while empty, then draw 0→100 again
+      // (pathLength:1 + pathOffset:1 renders as empty — redraw must use offset 0)
+      controls.set({ pathLength: 0, pathOffset: 0 });
+      await controls.start({
+        pathLength: 1,
+        pathOffset: 0,
+        transition: { duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE },
+      });
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [active, delay, controls]);
+
+  return (
+    <motion.path
+      d={CIRCLE_1_PATH}
+      stroke={CIRCLE_STROKE}
+      initial={{ pathLength: 0, pathOffset: 0 }}
+      animate={controls}
+    />
+  );
+}
+
 type AnimatedCircleGraphicProps = {
   type: AnimatedCircleGraphicType;
   active?: boolean;
   delay?: number;
   size?: number;
   className?: string;
+  /** Circle: 0→100 → 100→0 → 0→100 (clockwise). */
+  circleVariant?: 'once' | 'double';
 };
 
 export default function AnimatedCircleGraphic({
@@ -96,6 +156,7 @@ export default function AnimatedCircleGraphic({
   delay = 0,
   size = 277,
   className,
+  circleVariant = 'once',
 }: AnimatedCircleGraphicProps) {
   return (
     <svg
@@ -107,15 +168,18 @@ export default function AnimatedCircleGraphic({
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
     >
-      {type === 'circle' && (
-        <motion.path
-          d={CIRCLE_1_PATH}
-          stroke={CIRCLE_STROKE}
-          initial={{ pathLength: 0 }}
-          animate={active ? { pathLength: 1 } : { pathLength: 0 }}
-          transition={{ duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE, delay }}
-        />
-      )}
+      {type === 'circle' &&
+        (circleVariant === 'double' ? (
+          <CirclePulsePath active={active} delay={delay} />
+        ) : (
+          <motion.path
+            d={CIRCLE_1_PATH}
+            stroke={CIRCLE_STROKE}
+            initial={{ pathLength: 0 }}
+            animate={active ? { pathLength: 1 } : { pathLength: 0 }}
+            transition={{ duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE, delay }}
+          />
+        ))}
 
       {type === 'sphere' && (
         <>

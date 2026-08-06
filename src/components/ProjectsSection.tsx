@@ -330,7 +330,7 @@ export default function ProjectsSection() {
             descriptionClassName="w-full lg:max-w-[372px]"
           />
           <img
-            className="hidden h-8 w-fit object-contain lg:col-span-3 lg:col-start-9 lg:my-auto lg:block xl:col-span-3 xl:col-start-9"
+            className="hidden h-8 w-fit object-contain lg:col-span-3 lg:col-start-9 lg:my-auto lg:block xl:col-span-3 xl:col-start-9 xl:ml-[19%]"
             src={Simbols}
             alt=""
           />
