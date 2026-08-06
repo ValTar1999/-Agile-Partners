@@ -248,6 +248,11 @@ html.overlay-open body {
   background: #000000 !important;
 }
 
+/* Page content must not paint under Safari’s translucent bottom bar */
+html.overlay-open #root {
+  visibility: hidden !important;
+}
+
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -257,11 +262,21 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+/*
+  iOS Safari: fixed inset-0 stops above the toolbar.
+  100lvh = large viewport (full screen including area under the bar).
+*/
 .fullscreen-fixed {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  height: 100lvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100lvh;
 }
 
 ::selection {

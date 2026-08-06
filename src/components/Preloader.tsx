@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
-import { useOverlayOpen } from '../hooks/useOverlayOpen';
+import { useOverlayOpen, getOverlayRoot } from '../hooks/useOverlayOpen';
 import { useLenis } from '../hooks/useLenis';
 
 const BRAND = '#3AA9FA';
@@ -173,6 +173,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         </motion.span>
       </div>
     </motion.div>,
-    document.body,
+    getOverlayRoot(),
   );
 }

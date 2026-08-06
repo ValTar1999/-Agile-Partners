@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 const OVERLAY_OPEN_CLASS = 'overlay-open';
 
-/** Locks document chrome for iOS Safari (html/body paint under the browser bar). */
+/** Locks document chrome for iOS Safari (hides page under translucent browser UI). */
 export function useOverlayOpen(active: boolean) {
   useEffect(() => {
     if (!active) return;
@@ -37,4 +37,8 @@ export function useOverlayOpen(active: boolean) {
       }
     };
   }, [active]);
+}
+
+export function getOverlayRoot(): HTMLElement {
+  return document.getElementById('overlay-root') ?? document.body;
 }

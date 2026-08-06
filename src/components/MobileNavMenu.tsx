@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logoDark from '../assets/image/LOGO-dark.svg';
-import { useOverlayOpen } from '../hooks/useOverlayOpen';
+import { useOverlayOpen, getOverlayRoot } from '../hooks/useOverlayOpen';
 import { useLenis } from '../hooks/useLenis';
 import RevealLine from './RevealLine';
 
@@ -218,6 +218,6 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
         </motion.aside>
       )}
     </AnimatePresence>,
-    document.body,
+    getOverlayRoot(),
   );
 }
