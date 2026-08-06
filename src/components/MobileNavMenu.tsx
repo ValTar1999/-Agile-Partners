@@ -19,15 +19,15 @@ const socialLinks = [
   { label: 'FB', name: 'Facebook', href: '#' },
 ];
 
-/** Griflan-style curtain — duration 0.5s */
+/** Griflan-style curtain */
 const MENU_DURATION = 0.5;
-const MENU_EASE = [0.85, 0, 0.15, 1] as const;
-const LINK_BASE_DELAY = 0.2;
+const MENU_EASE = [0.76, 0, 0.24, 1] as const;
+const LINK_BASE_DELAY = 0.25;
 const LINK_STAGGER = 0.025;
 const FOOTER_TEXT_CLASS = 'text-base leading-5 font-normal -tracking-[0.48px] text-white';
-const FOOTER_BASE_DELAY = 0.35;
+const FOOTER_BASE_DELAY = 0.4;
 const MENU_PANEL_CLASS = 'fullscreen-fixed z-50 flex flex-col lg:hidden';
-const MENU_LAYER_CLASS = 'absolute inset-0 min-h-full';
+const MENU_LAYER_CLASS = 'absolute inset-0';
 
 type MobileNavMenuProps = {
   isOpen: boolean;
@@ -73,12 +73,9 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top,0px)]`}
-          initial={false}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 1 }}
+          className={MENU_PANEL_CLASS}
         >
-          {/* js-m-bg — dim overlay */}
+          {/* Dim overlay */}
           <motion.div
             className={`${MENU_LAYER_CLASS} bg-black/85`}
             initial={{ opacity: 0 }}
@@ -87,19 +84,19 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
             transition={{ duration: MENU_DURATION, ease: 'linear' }}
           />
 
-          {/* js-m-mask outer — slides from top */}
+          {/* Outer mask — from top */}
           <motion.div
             className={`${MENU_LAYER_CLASS} overflow-hidden`}
             initial={{ y: '-100%' }}
-            animate={{ y: 0 }}
+            animate={{ y: '0%' }}
             exit={{ y: '-100%' }}
             transition={{ duration: MENU_DURATION, ease: MENU_EASE }}
           >
-            {/* js-m-mask inner — slides from bottom */}
+            {/* Inner mask — from bottom (counter-translate keeps content fixed) */}
             <motion.div
-              className={`${MENU_LAYER_CLASS} flex flex-col overflow-hidden bg-black text-white`}
+              className={`${MENU_LAYER_CLASS} flex flex-col overflow-hidden bg-black pt-[env(safe-area-inset-top,0px)] text-white`}
               initial={{ y: '100%' }}
-              animate={{ y: 0 }}
+              animate={{ y: '0%' }}
               exit={{ y: '100%' }}
               transition={{ duration: MENU_DURATION, ease: MENU_EASE }}
             >
@@ -140,7 +137,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 0.4, scale: 1 }}
-                  transition={{ duration: 0.4, ease: MENU_EASE, delay: FOOTER_BASE_DELAY }}
+                  transition={{ duration: 0.45, ease: MENU_EASE, delay: FOOTER_BASE_DELAY }}
                 >
                   <svg
                     width="168"
