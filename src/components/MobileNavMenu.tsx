@@ -24,6 +24,9 @@ const LINK_BASE_DELAY = 0.2;
 const LINK_STAGGER = 0.025;
 const FOOTER_TEXT_CLASS = 'text-base leading-5 font-normal -tracking-[0.48px] text-white';
 const FOOTER_BASE_DELAY = 0.35;
+const MENU_PANEL_CLASS =
+  'fixed inset-x-0 top-0 z-50 flex h-dvh min-h-dvh w-full flex-col lg:hidden';
+const MENU_LAYER_CLASS = 'absolute inset-0 min-h-dvh';
 
 type MobileNavMenuProps = {
   isOpen: boolean;
@@ -40,9 +43,13 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
     const html = document.documentElement;
     const prevBody = document.body.style.overflow;
     const prevHtml = html.style.overflow;
+    const prevBodyBg = document.body.style.backgroundColor;
+    const prevHtmlBg = html.style.backgroundColor;
 
     document.body.style.overflow = 'hidden';
     html.style.overflow = 'hidden';
+    document.body.style.backgroundColor = '#000000';
+    html.style.backgroundColor = '#000000';
     lenis?.stop();
 
     const prevent = (event: Event) => {
@@ -63,6 +70,8 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
       window.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = prevBody;
       html.style.overflow = prevHtml;
+      document.body.style.backgroundColor = prevBodyBg;
+      html.style.backgroundColor = prevHtmlBg;
       lenis?.start();
     };
   }, [isOpen, onClose, lenis]);
@@ -76,14 +85,14 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          className="fixed inset-0 z-50 lg:hidden"
+          className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top)]`}
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 1 }}
         >
           {/* js-m-bg — dim overlay */}
           <motion.div
-            className="absolute inset-0 bg-black/85"
+            className={`${MENU_LAYER_CLASS} bg-black/85`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,7 +101,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
 
           {/* js-m-mask outer — slides from top */}
           <motion.div
-            className="absolute inset-0 overflow-hidden"
+            className={`${MENU_LAYER_CLASS} overflow-hidden`}
             initial={{ y: '-100%' }}
             animate={{ y: 0 }}
             exit={{ y: '-100%' }}
@@ -100,7 +109,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           >
             {/* js-m-mask inner — slides from bottom */}
             <motion.div
-              className="absolute inset-0 flex flex-col overflow-hidden bg-black text-white"
+              className={`${MENU_LAYER_CLASS} flex flex-col overflow-hidden bg-black text-white`}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
@@ -138,7 +147,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 ))}
               </ul>
 
-              <div className="mt-auto flex flex-col gap-24 px-4 pb-8">
+              <div className="mt-auto flex flex-col gap-24 px-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
                 <motion.div
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
