@@ -33,9 +33,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     const html = document.documentElement;
     const prevBody = document.body.style.overflow;
     const prevHtml = html.style.overflow;
+    const prevBodyBg = document.body.style.backgroundColor;
+    const prevHtmlBg = html.style.backgroundColor;
 
     document.body.style.overflow = 'hidden';
     html.style.overflow = 'hidden';
+    document.body.style.backgroundColor = '#000000';
+    html.style.backgroundColor = '#000000';
     lenis?.stop();
 
     const prevent = (e: Event) => {
@@ -58,6 +62,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       window.removeEventListener('touchmove', prevent);
       document.body.style.overflow = prevBody;
       html.style.overflow = prevHtml;
+      document.body.style.backgroundColor = prevBodyBg;
+      html.style.backgroundColor = prevHtmlBg;
       lenis?.start();
     };
   }, [lenis, onComplete]);
@@ -68,7 +74,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-10000 flex items-center justify-center bg-black"
+      className="fullscreen-fixed z-10000 flex items-center justify-center bg-black"
       initial={{ y: 0 }}
       animate={{ y: exiting ? '-100%' : 0 }}
       transition={{ duration: 1, ease: EASE }}

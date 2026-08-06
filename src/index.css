@@ -212,6 +212,7 @@ html.custom-cursor * {
 
 html {
   overscroll-behavior-y: none;
+  height: -webkit-fill-available;
 }
 
 html.lenis,
@@ -235,6 +236,8 @@ body {
   background: #f8f8f8;
   color: #333333;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   overscroll-behavior-y: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -250,6 +253,17 @@ html {
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* Full-screen fixed overlays — covers iOS Safari bottom gap (use lvh, not only dvh) */
+.fullscreen-fixed {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  min-height: 100lvh;
 }
 
 ::selection {

@@ -24,9 +24,8 @@ const LINK_BASE_DELAY = 0.2;
 const LINK_STAGGER = 0.025;
 const FOOTER_TEXT_CLASS = 'text-base leading-5 font-normal -tracking-[0.48px] text-white';
 const FOOTER_BASE_DELAY = 0.35;
-const MENU_PANEL_CLASS =
-  'fixed inset-x-0 top-0 z-50 flex h-dvh min-h-dvh w-full flex-col lg:hidden';
-const MENU_LAYER_CLASS = 'absolute inset-0 min-h-dvh';
+const MENU_PANEL_CLASS = 'fullscreen-fixed z-50 flex flex-col lg:hidden';
+const MENU_LAYER_CLASS = 'absolute inset-0 min-h-full';
 
 type MobileNavMenuProps = {
   isOpen: boolean;
@@ -85,7 +84,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top)]`}
+          className={`${MENU_PANEL_CLASS} pt-[env(safe-area-inset-top,0px)]`}
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 1 }}
@@ -147,7 +146,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 ))}
               </ul>
 
-              <div className="mt-auto flex flex-col gap-24 px-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
+              <div className="mt-auto flex flex-col gap-24 px-4 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
                 <motion.div
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
