@@ -276,27 +276,24 @@ html::-webkit-scrollbar {
 }
 
 /*
-  Mobile nav panel — CSS-Tricks --vh polyfill (works on all mobile browsers).
-  https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-  --vh / --vv-top / --app-height are set by syncViewportCssVars().
+  Mobile nav panel.
+  Pin with inset:0 (top+bottom) — height APIs are unreliable on iOS Chrome.
 */
 .mobile-nav-panel {
   position: fixed;
-  top: var(--vv-top, 0px);
-  left: 0;
+  inset: 0;
   width: 100%;
   z-index: 50;
-  height: 100vh;
-  height: 100svh;
-  height: var(--app-height, 100svh);
-  height: calc(var(--vh, 1vh) * 100);
-  max-height: calc(var(--vh, 1vh) * 100);
-  /* Never put transform on this fixed shell — breaks iOS visualViewport */
+  /* Never put transform on this fixed shell — breaks iOS viewport anchoring */
   transform: none !important;
 }
 
 .mobile-nav-panel-footer {
-  padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  /*
+    iOS Chrome bottom toolbar (~48–56px) is NOT in env(safe-area-inset-bottom).
+    DevTools confirmed .mobile-nav-panel-footer sits under that chrome — pad past it.
+  */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 56px);
 }
 
 ::selection {

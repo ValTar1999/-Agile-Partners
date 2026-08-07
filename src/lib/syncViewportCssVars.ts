@@ -9,10 +9,7 @@
  */
 export function syncViewportCssVars(): void {
   const vv = window.visualViewport;
-  const visibleHeight = Math.min(
-    window.innerHeight,
-    vv?.height ?? Number.POSITIVE_INFINITY,
-  );
+  const visibleHeight = Math.min(window.innerHeight, vv?.height ?? Number.POSITIVE_INFINITY);
   const top = vv?.offsetTop ?? 0;
   const root = document.documentElement;
 

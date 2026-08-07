@@ -105,16 +105,18 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
     instance?.stop();
     syncViewportCssVars();
 
-    // iOS: lock body in place so fixed overlays size against the visible viewport
+    /*
+      Avoid body position:fixed on iOS Chrome — it expands the layout viewport
+      so fixed overlays paint under the browser bottom toolbar.
+    */
     html.style.overflow = 'hidden';
     body.style.overflow = 'hidden';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.left = '0';
-    body.style.right = '0';
-    body.style.width = '100%';
 
     const preventScroll = (event: Event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest('[data-mobile-nav-scroll]')) {
+        return;
+      }
       event.preventDefault();
     };
 
@@ -147,11 +149,6 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
 
       html.style.overflow = '';
       body.style.overflow = '';
-      body.style.position = '';
-      body.style.top = '';
-      body.style.left = '';
-      body.style.right = '';
-      body.style.width = '';
 
       const current = lenisRef.current;
       window.scrollTo(0, scrollY);
@@ -214,7 +211,10 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 </button>
               </div>
 
-              <ul className="m-0 flex min-h-0 flex-1 list-none flex-col overflow-y-auto px-4 pt-8">
+              <ul
+                data-mobile-nav-scroll
+                className="m-0 flex min-h-0 flex-1 list-none flex-col overflow-y-auto overscroll-contain px-4 pt-8"
+              >
                 {navLinks.map((link, index) => (
                   <li key={link.label} className="shrink-0">
                     <RevealLine active delay={LINK_BASE_DELAY + index * LINK_STAGGER}>
@@ -230,7 +230,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 ))}
               </ul>
 
-              <div className="mobile-nav-panel-footer flex shrink-0 flex-col gap-24 px-4 pt-8">
+              <div className="mobile-nav-panel-footer flex shrink-0 flex-col gap-8 px-4 pt-6">
                 <motion.div
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
