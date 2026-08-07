@@ -1,9 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const CIRCLE_STROKE = '#007BF9';
 const CIRCLE_1_DURATION = 0.9;
 const CIRCLE_EASE = [0.5, 0, 0.5, 1] as const;
+const STROKE_MOBILE = 1.5;
+const STROKE_DESKTOP = 1;
+
+function useResponsiveStrokeWidth() {
+  const [strokeWidth, setStrokeWidth] = useState(STROKE_MOBILE);
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setStrokeWidth(mq.matches ? STROKE_DESKTOP : STROKE_MOBILE);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return strokeWidth;
+}
 
 const CIRCLE_1_PATH =
   'M138.5 0.500574C156.622 0.500573 174.567 4.07004 191.31 11.0052C208.053 17.9403 223.266 28.1053 236.08 40.9198C248.895 53.7342 259.06 68.9472 265.995 85.6901C272.93 102.433 276.499 120.378 276.499 138.5C276.499 156.623 272.93 174.568 265.995 191.31C259.06 208.053 248.895 223.266 236.08 236.081C223.266 248.895 208.053 259.06 191.31 265.995C174.567 272.931 156.622 276.5 138.5 276.5C120.377 276.5 102.432 272.931 85.6895 265.995C68.9466 259.06 53.7336 248.895 40.9192 236.081C28.1047 223.266 17.9397 208.053 11.0046 191.31C4.06946 174.568 0.499992 156.623 0.499994 138.5C0.499996 120.378 4.06947 102.433 11.0046 85.6901C17.9397 68.9472 28.1047 53.7342 40.9192 40.9197C53.7336 28.1053 68.9466 17.9403 85.6895 11.0052C102.432 4.07004 120.377 0.500571 138.5 0.500574L138.5 0.500574Z';
@@ -165,10 +181,13 @@ export default function AnimatedCircleGraphic({
   active = true,
   delay = 0,
   size = 277,
-  strokeWidth = 1.5,
+  strokeWidth: strokeWidthProp,
   className,
   circleVariant = 'once',
 }: AnimatedCircleGraphicProps) {
+  const responsiveStroke = useResponsiveStrokeWidth();
+  const strokeWidth = strokeWidthProp ?? responsiveStroke;
+
   return (
     <svg
       className={className}
