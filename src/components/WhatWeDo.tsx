@@ -77,9 +77,9 @@ type Phase = (typeof phases)[number];
 
 function PhaseBlock({ phase }: { phase: Phase }) {
   const ref = useRef<HTMLDivElement>(null);
-  const active = useInView(ref, { once: true, margin: '-220px' });
+  const active = useInView(ref, { once: true, margin: '-180px' });
 
-  const lineDelay = 0.55;
+  const lineDelay = 0.45;
   const afterLine = lineDelay + LINE_REVEAL_DURATION;
 
   return (
