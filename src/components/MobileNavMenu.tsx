@@ -167,10 +167,6 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           aria-modal="true"
           aria-label="Navigation menu"
           className="mobile-nav-panel lg:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: MENU_DURATION, ease: 'linear' }}
         >
           <motion.div
             className="absolute inset-0 bg-black/85"
