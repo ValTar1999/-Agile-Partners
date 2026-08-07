@@ -114,14 +114,18 @@ export function RevealWrappedLines({
       const grouped: WordToken[][] = [];
       let line: WordToken[] = [];
       let lastTop: number | null = null;
+      // Subpixel / italic metrics can make same-line words differ by 1px after round().
+      const LINE_TOLERANCE_PX = 4;
 
       nodes.forEach((node, index) => {
-        const top = Math.round(node.offsetTop);
-        if (lastTop !== null && top !== lastTop && line.length) {
+        const top = node.offsetTop;
+        if (lastTop !== null && Math.abs(top - lastTop) > LINE_TOLERANCE_PX && line.length) {
           grouped.push(line);
           line = [];
+          lastTop = top;
+        } else if (lastTop === null) {
+          lastTop = top;
         }
-        lastTop = top;
         line.push(words[index] ?? { text: node.textContent ?? '' });
       });
 
