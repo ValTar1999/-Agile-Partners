@@ -230,7 +230,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 ))}
               </ul>
 
-              <div className="mobile-nav-panel-footer flex shrink-0 flex-col gap-8 px-4 pt-6">
+              <div className="mobile-nav-panel-footer flex shrink-0 flex-col gap-24 px-4 pt-4">
                 <motion.div
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}

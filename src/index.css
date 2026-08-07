@@ -293,7 +293,7 @@ html::-webkit-scrollbar {
     iOS Chrome bottom toolbar (~48–56px) is NOT in env(safe-area-inset-bottom).
     DevTools confirmed .mobile-nav-panel-footer sits under that chrome — pad past it.
   */
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 56px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px);
 }
 
 ::selection {
