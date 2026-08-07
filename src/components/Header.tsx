@@ -7,10 +7,10 @@ const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
 
 const PARAGRAPH_GRID_CLASS =
-  'col-span-4 col-start-3 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
+  'col-span-4 col-start-4 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
 
 const PARAGRAPH_TEXT_CLASS =
-  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] min-w-62 max-w-62';
+  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] max-w-44 xl:min-w-62 xL:max-w-62';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
@@ -66,7 +66,7 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
       >
         {text}
       </p>
-      <div className="min-w-62 overflow-hidden" style={{ height: height || undefined }}>
+      <div className="overflow-hidden" style={{ height: height || undefined }}>
         <motion.p
           className={PARAGRAPH_TEXT_CLASS}
           initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
