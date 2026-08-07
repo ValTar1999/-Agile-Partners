@@ -193,7 +193,7 @@ export default function Header() {
       </div> */}
 
       <div className="relative z-10 mx-auto w-full max-w-2160 flex-col items-start px-4 md:px-10">
-        <div className="relative z-10 mx-auto mt-12 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-13 md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
+        <div className="relative z-10 mx-auto mt-5 grid w-full max-w-2160 grid-cols-1 items-start gap-y-8 md:mt-13 md:grid-cols-12 md:gap-x-8 md:gap-y-0 2xl:mt-4.5">
           <motion.div
             className="mt-5 hidden shrink-0 flex-col items-center gap-3 justify-self-start md:col-span-1 md:col-start-1 md:row-start-1 md:flex"
             initial={{ opacity: 0 }}
@@ -226,7 +226,7 @@ export default function Header() {
           <RevealParagraph text={PARAGRAPH_TEXT} />
         </div>
 
-        <div className="relative mt-10 w-full xl:-mt-24 xl:w-1/2">
+        <div className="relative mt-5 w-full xl:-mt-24 xl:w-1/2">
           <motion.svg
             className="absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 xl:scale-105"
             width="925"
