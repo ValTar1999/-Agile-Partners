@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import type Lenis from 'lenis';
 import logoDark from '../assets/image/LOGO-dark.svg';
 import { useOverlayOpen, getOverlayRoot } from '../hooks/useOverlayOpen';
 import { useLenis } from '../hooks/useLenis';
@@ -26,6 +27,8 @@ const LINK_BASE_DELAY = 0.25;
 const LINK_STAGGER = 0.025;
 const FOOTER_TEXT_CLASS = 'text-base leading-6 font-normal -tracking-[0.48px] text-white';
 const FOOTER_BASE_DELAY = 0.4;
+/** Wait for body unlock + Lenis restart before scrolling to a hash. */
+const NAVIGATE_AFTER_CLOSE_MS = 80;
 
 type MobileNavMenuProps = {
   isOpen: boolean;
@@ -35,18 +38,71 @@ type MobileNavMenuProps = {
 
 const SCROLL_KEYS = new Set([' ', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End']);
 
+function getAnchorScrollOptions(destination: number, fromY: number) {
+  return {
+    duration: Math.min(
+      3,
+      Math.max(1.2, 1 + (Math.abs(destination - fromY) / window.innerHeight) * 0.22),
+    ),
+    easing: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  };
+}
+
+function scrollToHash(hash: string, lenis: Lenis | null) {
+  lenis?.resize();
+
+  if (hash === '#contact-us') {
+    const fromY = lenis?.scroll ?? window.scrollY;
+    const limit = lenis?.limit ?? document.documentElement.scrollHeight - window.innerHeight;
+    if (lenis) {
+      lenis.scrollTo(limit, getAnchorScrollOptions(limit, fromY));
+    } else {
+      window.scrollTo({ top: limit, behavior: 'smooth' });
+    }
+    return;
+  }
+
+  const target = document.getElementById(hash.slice(1));
+  if (!target) return;
+
+  const fromY = lenis?.scroll ?? window.scrollY;
+  const destination = fromY + target.getBoundingClientRect().top - 80;
+
+  if (lenis) {
+    lenis.scrollTo(destination, getAnchorScrollOptions(destination, fromY));
+  } else {
+    window.scrollTo({ top: destination, behavior: 'smooth' });
+  }
+}
+
 export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenuProps) {
   const lenis = useLenis();
+  const lenisRef = useRef(lenis);
+  const onCloseRef = useRef(onClose);
+  lenisRef.current = lenis;
+  onCloseRef.current = onClose;
   useOverlayOpen(isOpen);
+
+  const handleNavLinkClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const href = event.currentTarget.getAttribute('href');
+    onClose();
+    if (!href || !href.startsWith('#') || href === '#') return;
+
+    window.setTimeout(() => {
+      scrollToHash(href, lenisRef.current);
+    }, NAVIGATE_AFTER_CLOSE_MS);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
 
     const html = document.documentElement;
     const { body } = document;
-    const scrollY = window.scrollY;
+    const instance = lenisRef.current;
+    const scrollY = instance?.scroll ?? window.scrollY;
 
-    lenis?.stop();
+    instance?.stop();
     syncViewportCssVars();
 
     // iOS: lock body in place so fixed overlays size against the visible viewport
@@ -64,7 +120,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (SCROLL_KEYS.has(event.key)) {
@@ -97,11 +153,12 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
       body.style.right = '';
       body.style.width = '';
 
+      const current = lenisRef.current;
       window.scrollTo(0, scrollY);
-      lenis?.scrollTo(scrollY, { immediate: true, force: true });
-      lenis?.start();
+      current?.scrollTo(scrollY, { immediate: true, force: true });
+      current?.start();
     };
-  }, [isOpen, onClose, lenis]);
+  }, [isOpen]);
 
   return createPortal(
     <AnimatePresence>
@@ -163,7 +220,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                     <RevealLine active delay={LINK_BASE_DELAY + index * LINK_STAGGER}>
                       <a
                         href={link.href}
-                        onClick={onClose}
+                        onClick={handleNavLinkClick}
                         className="block text-[40px] leading-11 font-normal -tracking-[1.6px] text-white uppercase no-underline transition-opacity hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none"
                       >
                         {link.label}

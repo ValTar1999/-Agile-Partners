@@ -43,6 +43,9 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     });
 
     const handleAnchorClick = (event: MouseEvent) => {
+      // Mobile menu owns navigation while open (body scroll is locked).
+      if (document.documentElement.classList.contains('overlay-open')) return;
+
       const anchor = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
       if (!anchor) return;
 
