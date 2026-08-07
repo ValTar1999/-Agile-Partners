@@ -165,7 +165,7 @@ export default function AnimatedCircleGraphic({
   active = true,
   delay = 0,
   size = 277,
-  strokeWidth = 1,
+  strokeWidth = 1.5,
   className,
   circleVariant = 'once',
 }: AnimatedCircleGraphicProps) {
