@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import logoDark from '../assets/image/LOGO-dark.svg';
 import { useOverlayOpen, getOverlayRoot } from '../hooks/useOverlayOpen';
 import { useLenis } from '../hooks/useLenis';
+import { syncViewportCssVars } from '../lib/syncViewportCssVars';
 import RevealLine from './RevealLine';
 
 const navLinks = [
@@ -19,15 +20,12 @@ const socialLinks = [
   { label: 'FB', name: 'Facebook', href: '#' },
 ];
 
-/** Griflan-style curtain */
 const MENU_DURATION = 0.5;
 const MENU_EASE = [0.76, 0, 0.24, 1] as const;
 const LINK_BASE_DELAY = 0.25;
 const LINK_STAGGER = 0.025;
-const FOOTER_TEXT_CLASS = 'text-base leading-5 font-normal -tracking-[0.48px] text-white';
+const FOOTER_TEXT_CLASS = 'text-base leading-6 font-normal -tracking-[0.48px] text-white';
 const FOOTER_BASE_DELAY = 0.4;
-const MENU_PANEL_CLASS = 'fullscreen-fixed z-50 flex flex-col lg:hidden';
-const MENU_LAYER_CLASS = 'absolute inset-0';
 
 type MobileNavMenuProps = {
   isOpen: boolean;
@@ -49,9 +47,16 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
     const scrollY = window.scrollY;
 
     lenis?.stop();
+    syncViewportCssVars();
 
+    // iOS: lock body in place so fixed overlays size against the visible viewport
     html.style.overflow = 'hidden';
     body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
 
     const preventScroll = (event: Event) => {
       event.preventDefault();
@@ -67,17 +72,30 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
       }
     };
 
+    const onViewportChange = () => syncViewportCssVars();
+    window.visualViewport?.addEventListener('resize', onViewportChange);
+    window.visualViewport?.addEventListener('scroll', onViewportChange);
+    window.addEventListener('resize', onViewportChange);
+
     window.addEventListener('wheel', preventScroll, { passive: false, capture: true });
     window.addEventListener('touchmove', preventScroll, { passive: false, capture: true });
     window.addEventListener('keydown', onKeyDown, true);
 
     return () => {
+      window.visualViewport?.removeEventListener('resize', onViewportChange);
+      window.visualViewport?.removeEventListener('scroll', onViewportChange);
+      window.removeEventListener('resize', onViewportChange);
       window.removeEventListener('wheel', preventScroll, true);
       window.removeEventListener('touchmove', preventScroll, true);
       window.removeEventListener('keydown', onKeyDown, true);
 
       html.style.overflow = '';
       body.style.overflow = '';
+      body.style.position = '';
+      body.style.top = '';
+      body.style.left = '';
+      body.style.right = '';
+      body.style.width = '';
 
       window.scrollTo(0, scrollY);
       lenis?.scrollTo(scrollY, { immediate: true, force: true });
@@ -94,34 +112,36 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
-          className={MENU_PANEL_CLASS}
+          className="mobile-nav-panel lg:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: MENU_DURATION, ease: 'linear' }}
         >
-          {/* Dim overlay */}
           <motion.div
-            className={`${MENU_LAYER_CLASS} bg-black/85`}
+            className="absolute inset-0 bg-black/85"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: MENU_DURATION, ease: 'linear' }}
           />
 
-          {/* Outer mask — from top */}
           <motion.div
-            className={`${MENU_LAYER_CLASS} overflow-hidden`}
+            className="absolute inset-0 overflow-hidden"
             initial={{ y: '-100%' }}
             animate={{ y: '0%' }}
             exit={{ y: '-100%' }}
             transition={{ duration: MENU_DURATION, ease: MENU_EASE }}
           >
-            {/* Inner mask — from bottom (counter-translate keeps content fixed) */}
             <motion.div
-              className={`${MENU_LAYER_CLASS} flex flex-col overflow-hidden bg-black pt-[env(safe-area-inset-top,0px)] text-white`}
+              className="absolute inset-0 flex min-h-0 flex-col overflow-hidden bg-black text-white"
+              style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
               initial={{ y: '100%' }}
               animate={{ y: '0%' }}
               exit={{ y: '100%' }}
               transition={{ duration: MENU_DURATION, ease: MENU_EASE }}
             >
-              <div className="flex items-center justify-between p-4">
+              <div className="flex shrink-0 items-center justify-between p-4">
                 <a href="/" className="flex items-center no-underline" onClick={onClose}>
                   <img src={logoDark} alt="Agile Partners" className="h-8 w-auto" />
                 </a>
@@ -137,9 +157,9 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 </button>
               </div>
 
-              <ul className="m-0 flex list-none flex-col px-4 pt-8">
+              <ul className="m-0 flex min-h-0 flex-1 list-none flex-col overflow-y-auto px-4 pt-8">
                 {navLinks.map((link, index) => (
-                  <li key={link.label}>
+                  <li key={link.label} className="shrink-0">
                     <RevealLine active delay={LINK_BASE_DELAY + index * LINK_STAGGER}>
                       <a
                         href={link.href}
@@ -153,11 +173,11 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 ))}
               </ul>
 
-              <div className="mt-auto flex flex-col gap-24 px-4 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
+              <div className="mobile-nav-panel-footer flex shrink-0 flex-col gap-24 px-4 pt-8">
                 <motion.div
                   className="mx-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 0.4, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.45, ease: MENU_EASE, delay: FOOTER_BASE_DELAY }}
                 >
                   <svg
@@ -208,7 +228,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                 </motion.div>
 
                 <div className="flex items-end justify-between gap-4">
-                  <RevealLine active delay={FOOTER_BASE_DELAY}>
+                  <RevealLine active delay={FOOTER_BASE_DELAY} className="pb-1">
                     <div className={`flex flex-wrap items-center gap-x-2 ${FOOTER_TEXT_CLASS}`}>
                       {socialLinks.map(({ label, name, href }, index) => (
                         <span key={label} className="inline-flex items-center gap-x-2">
@@ -224,7 +244,7 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
                       ))}
                     </div>
                   </RevealLine>
-                  <RevealLine active delay={FOOTER_BASE_DELAY + 0.08}>
+                  <RevealLine active delay={FOOTER_BASE_DELAY + 0.08} className="pb-1">
                     <p className={`m-0 shrink-0 ${FOOTER_TEXT_CLASS}`}>
                       © {new Date().getFullYear()}
                     </p>

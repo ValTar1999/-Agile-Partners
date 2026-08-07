@@ -83,7 +83,15 @@ const CIRCLE_3_RINGS: { d: string; delay: number }[] = [
 
 export type AnimatedCircleGraphicType = 'circle' | 'sphere' | 'target';
 
-function CirclePulsePath({ active, delay }: { active: boolean; delay: number }) {
+function CirclePulsePath({
+  active,
+  delay,
+  strokeWidth,
+}: {
+  active: boolean;
+  delay: number;
+  strokeWidth: number;
+}) {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -134,6 +142,7 @@ function CirclePulsePath({ active, delay }: { active: boolean; delay: number }) 
     <motion.path
       d={CIRCLE_1_PATH}
       stroke={CIRCLE_STROKE}
+      strokeWidth={strokeWidth}
       initial={{ pathLength: 0, pathOffset: 0 }}
       animate={controls}
     />
@@ -145,6 +154,7 @@ type AnimatedCircleGraphicProps = {
   active?: boolean;
   delay?: number;
   size?: number;
+  strokeWidth?: number;
   className?: string;
   /** Circle: 0→100 → 100→0 → 0→100 (clockwise). */
   circleVariant?: 'once' | 'double';
@@ -155,6 +165,7 @@ export default function AnimatedCircleGraphic({
   active = true,
   delay = 0,
   size = 277,
+  strokeWidth = 1,
   className,
   circleVariant = 'once',
 }: AnimatedCircleGraphicProps) {
@@ -170,11 +181,12 @@ export default function AnimatedCircleGraphic({
     >
       {type === 'circle' &&
         (circleVariant === 'double' ? (
-          <CirclePulsePath active={active} delay={delay} />
+          <CirclePulsePath active={active} delay={delay} strokeWidth={strokeWidth} />
         ) : (
           <motion.path
             d={CIRCLE_1_PATH}
             stroke={CIRCLE_STROKE}
+            strokeWidth={strokeWidth}
             initial={{ pathLength: 0 }}
             animate={active ? { pathLength: 1 } : { pathLength: 0 }}
             transition={{ duration: CIRCLE_1_DURATION, ease: CIRCLE_EASE, delay }}
@@ -186,6 +198,7 @@ export default function AnimatedCircleGraphic({
           <motion.path
             d={MIDDLE_CIRCLE_RING.d}
             stroke={CIRCLE_STROKE}
+            strokeWidth={strokeWidth}
             initial={{ pathLength: 0 }}
             animate={active ? { pathLength: 1 } : { pathLength: 0 }}
             transition={{
@@ -197,6 +210,7 @@ export default function AnimatedCircleGraphic({
           <motion.path
             d={MIDDLE_CIRCLE_DIAMETER.d}
             stroke={CIRCLE_STROKE}
+            strokeWidth={strokeWidth}
             initial={{ pathLength: 0 }}
             animate={active ? { pathLength: 1 } : { pathLength: 0 }}
             transition={{
@@ -209,6 +223,7 @@ export default function AnimatedCircleGraphic({
             <motion.path
               key={to}
               stroke={CIRCLE_STROKE}
+              strokeWidth={strokeWidth}
               initial={{ d: from, opacity: 0 }}
               animate={active ? { d: to, opacity: 1 } : { d: from, opacity: 0 }}
               transition={{
@@ -226,6 +241,7 @@ export default function AnimatedCircleGraphic({
             key={d.slice(0, 24)}
             d={d}
             stroke={CIRCLE_STROKE}
+            strokeWidth={strokeWidth}
             initial={{ pathLength: 0 }}
             animate={active ? { pathLength: 1 } : { pathLength: 0 }}
             transition={{

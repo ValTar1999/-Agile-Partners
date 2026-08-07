@@ -219,19 +219,14 @@ export default function Header() {
             </div>
           </motion.div>
           <h1 className="min-h-0 w-full text-[40px] leading-11 -tracking-[1.6px] text-current md:col-span-11 md:col-start-2 md:min-h-25 md:text-[52px] md:leading-15 md:-tracking-[2.34px] lg:min-h-45 lg:text-[60px] lg:leading-16 lg:-tracking-[2.8px] xl:row-start-1 xl:text-7xl xl:leading-20 xl:-tracking-[2.88px] 2xl:col-span-8 2xl:col-start-3">
-            <RevealWrappedLines
-              active
-              baseDelay={0}
-              stagger={0.08}
-              segments={HEADING_SEGMENTS}
-            />
+            <RevealWrappedLines active baseDelay={0} stagger={0.08} segments={HEADING_SEGMENTS} />
           </h1>
         </div>
         <div className="mt-10 grid grid-cols-6 gap-y-8 md:mt-11 md:grid-cols-12 md:gap-x-8 xl:mt-16">
           <RevealParagraph text={PARAGRAPH_TEXT} />
         </div>
 
-        <div className="relative mt-20 w-full xl:-mt-24 xl:w-1/2">
+        <div className="relative mt-10 w-full xl:-mt-24 xl:w-1/2">
           <motion.svg
             className="absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 xl:scale-105"
             width="925"
