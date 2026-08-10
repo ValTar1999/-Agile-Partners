@@ -10,7 +10,7 @@ const PARAGRAPH_GRID_CLASS =
   'col-span-4 col-start-4 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
 
 const PARAGRAPH_TEXT_CLASS =
-  'text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] max-w-44 xl:min-w-62 xL:max-w-62';
+  'w-full text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] xl:min-w-62 xl:max-w-62';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
@@ -226,7 +226,7 @@ export default function Header() {
           <RevealParagraph text={PARAGRAPH_TEXT} />
         </div>
 
-        <div className="relative mt-5 w-full xl:-mt-24 xl:w-1/2">
+        <div className="relative mt-5 w-full md:mt-24 xl:-mt-24 xl:w-1/2">
           <motion.svg
             className="absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 xl:scale-105"
             width="925"

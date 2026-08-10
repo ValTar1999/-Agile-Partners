@@ -88,6 +88,19 @@ function tokenize(segments: RevealTextSegment[]): WordToken[] {
   return words;
 }
 
+function linesEqual(a: WordToken[][], b: WordToken[][]) {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].length !== b[i].length) return false;
+    for (let j = 0; j < a[i].length; j++) {
+      if (a[i][j].text !== b[i][j].text || a[i][j].className !== b[i][j].className) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 /** Splits flowing text into visual lines and reveals each with staggered RevealLine. */
 export function RevealWrappedLines({
   segments,
@@ -111,31 +124,48 @@ export function RevealWrappedLines({
       const nodes = el.querySelectorAll<HTMLElement>('[data-word]');
       if (!nodes.length) return;
 
+      const containerWidth = el.getBoundingClientRect().width;
+      if (containerWidth < 1) return;
+
+      // Prefer width packing over offsetTop — more stable across fonts/subpixels/Safari.
+      const spaceWidth = (() => {
+        const probe = el.querySelector<HTMLElement>('[data-space]');
+        return probe?.getBoundingClientRect().width ?? containerWidth * 0.02;
+      })();
+
       const grouped: WordToken[][] = [];
       let line: WordToken[] = [];
-      let lastTop: number | null = null;
-      // Subpixel / italic metrics can make same-line words differ by 1px after round().
-      const LINE_TOLERANCE_PX = 4;
+      let lineWidth = 0;
 
       nodes.forEach((node, index) => {
-        const top = node.offsetTop;
-        if (lastTop !== null && Math.abs(top - lastTop) > LINE_TOLERANCE_PX && line.length) {
+        const word = words[index] ?? { text: node.textContent ?? '' };
+        const wordWidth = node.getBoundingClientRect().width;
+        const nextWidth = line.length === 0 ? wordWidth : lineWidth + spaceWidth + wordWidth;
+
+        if (line.length > 0 && nextWidth > containerWidth + 0.5) {
           grouped.push(line);
-          line = [];
-          lastTop = top;
-        } else if (lastTop === null) {
-          lastTop = top;
+          line = [word];
+          lineWidth = wordWidth;
+          return;
         }
-        line.push(words[index] ?? { text: node.textContent ?? '' });
+
+        line.push(word);
+        lineWidth = nextWidth;
       });
 
       if (line.length) grouped.push(line);
-      setLines(grouped.length ? grouped : [words]);
+
+      const next = grouped.length ? grouped : [words];
+      setLines((prev) => (linesEqual(prev, next) ? prev : next));
     };
 
     measure();
+
+    void document.fonts?.ready?.then(() => measure());
+
     const ro = new ResizeObserver(measure);
     ro.observe(el);
+    if (rootRef.current) ro.observe(rootRef.current);
     window.addEventListener('resize', measure);
     return () => {
       ro.disconnect();
@@ -144,16 +174,19 @@ export function RevealWrappedLines({
   }, [words]);
 
   return (
-    <span ref={rootRef} className={`relative block ${className ?? ''}`}>
+    <span ref={rootRef} className={`relative block w-full ${className ?? ''}`}>
+      {/* In-flow full-width measure: absolute + inset can shrink wrong on some WebKit sizes. */}
       <span
         ref={measureRef}
         aria-hidden
-        className="pointer-events-none invisible absolute inset-x-0 top-0"
+        className="pointer-events-none block h-0 w-full overflow-hidden opacity-0"
       >
         {words.map((word, i) => (
-          <span key={i} data-word className={word.className}>
-            {i > 0 ? ' ' : ''}
-            {word.text}
+          <span key={i}>
+            {i > 0 ? <span data-space> </span> : null}
+            <span data-word className={`whitespace-nowrap ${word.className ?? ''}`}>
+              {word.text}
+            </span>
           </span>
         ))}
       </span>

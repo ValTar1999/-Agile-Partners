@@ -77,13 +77,13 @@ type Phase = (typeof phases)[number];
 
 function PhaseBlock({ phase }: { phase: Phase }) {
   const ref = useRef<HTMLDivElement>(null);
-  const active = useInView(ref, { once: true, margin: '-180px' });
+  const active = useInView(ref, { once: true, margin: '-150px' });
 
-  const lineDelay = 0.45;
+  const lineDelay = 0.5;
   const afterLine = lineDelay + LINE_REVEAL_DURATION;
 
   return (
-    <div ref={ref} className="grid grid-cols-1 items-start md:grid-cols-12 md:gap-x-8 md:gap-y-0">
+    <div ref={ref} className="grid grid-cols-1 items-start md:grid-cols-12 md:gap-x-10 md:gap-y-0">
       <motion.div
         className="mb-5 hidden h-px w-full origin-left bg-current md:col-span-4 md:col-start-1 md:row-start-1 md:block xl:col-span-4 xl:col-start-2"
         initial={{ scaleX: 0 }}
@@ -115,10 +115,10 @@ function PhaseBlock({ phase }: { phase: Phase }) {
         }}
       />
 
-      <div className="mb-8 flex w-full items-baseline justify-between gap-4 md:mb-0 md:contents">
-        <div className="overflow-hidden md:col-span-3 md:col-start-1 md:row-start-2 md:mb-0 xl:col-span-3 xl:col-start-2">
+      <div className="mb-8 flex w-full items-baseline justify-between gap-4 md:col-span-4 md:col-start-1 md:row-start-2 md:mb-0 xl:col-span-4 xl:col-start-2">
+        <div className="min-w-0 flex-1 overflow-hidden">
           <motion.h3
-            className="min-w-0 text-2xl leading-7 font-medium -tracking-[0.72px] text-current"
+            className="text-2xl leading-7 font-medium -tracking-[0.72px] text-current"
             initial={{ opacity: 0, y: 24 }}
             animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{
@@ -130,20 +130,18 @@ function PhaseBlock({ phase }: { phase: Phase }) {
             {phase.title}
           </motion.h3>
         </div>
-        <div className="overflow-hidden md:col-span-1 md:col-start-4 md:row-start-2 md:mb-0 md:text-right xl:col-start-5">
-          <motion.span
-            className="font-inter shrink-0 text-2xl leading-7 -tracking-[0.72px] text-current"
-            initial={{ opacity: 0, y: 24 }}
-            animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{
-              duration: 0.5,
-              ease: TEXT_REVEAL_EASE,
-              delay: afterLine + 0.06,
-            }}
-          >
-            {phase.number}
-          </motion.span>
-        </div>
+        <motion.span
+          className="font-inter shrink-0 text-2xl leading-7 -tracking-[0.72px] text-current"
+          initial={{ opacity: 0, y: 24 }}
+          animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{
+            duration: 0.5,
+            ease: TEXT_REVEAL_EASE,
+            delay: afterLine + 0.06,
+          }}
+        >
+          {phase.number}
+        </motion.span>
       </div>
 
       <div className="col-span-full flex justify-center py-12 md:col-span-4 md:col-start-1 md:row-start-3 md:py-0 md:pt-8 xl:col-span-2 xl:col-start-3 xl:pt-20">

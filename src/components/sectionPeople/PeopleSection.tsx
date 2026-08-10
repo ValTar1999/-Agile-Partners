@@ -315,7 +315,7 @@ export default function PeopleSection() {
           <div className="relative w-[68%] self-start md:-top-10 md:col-span-3 md:col-start-1 md:row-start-2 md:w-auto md:self-start lg:top-0 lg:col-span-3 lg:col-start-2 lg:row-start-2 lg:w-full xl:-top-20">
             <RevealImage src={imagePortrait} alt="Team member" aspectClass="aspect-3/4" />
           </div>
-          <div className="relative w-11/12 self-end md:-top-32 md:col-span-5 md:col-start-6 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
+          <div className="relative w-11/12 self-end md:-top-20 md:col-span-5 md:col-start-8 md:row-start-3 md:w-auto md:self-start lg:top-0 lg:col-span-5 lg:col-start-7 lg:row-start-3 lg:w-full xl:-top-48">
             <RevealImage src={imageGroup} alt="Workspace" aspectClass="aspect-5/3" />
           </div>
         </div>
