@@ -1,6 +1,7 @@
-import { Fragment, useEffect, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type MouseEvent, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import logo from '../assets/image/LOGO-dark.svg';
+import { useLenis } from '../hooks/useLenis';
 import MobileNavMenu from './MobileNavMenu';
 
 const navLinks = [
@@ -59,6 +60,7 @@ function RevealLine({
 }
 
 export default function Footer({ isActive = false }: { isActive?: boolean }) {
+  const lenis = useLenis();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasRevealed, setHasRevealed] = useState(false);
 
@@ -72,6 +74,18 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
   const toggleMenu = () => setIsMenuOpen((open) => !open);
   const menuId = 'footer-nav-menu';
 
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const fromY = lenis?.scroll ?? window.scrollY;
+    if (fromY <= 0) return;
+    const options = {
+      duration: Math.min(3, Math.max(1.2, 1 + (fromY / window.innerHeight) * 0.22)),
+      easing: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+    };
+    if (lenis) lenis.scrollTo(0, options);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer
       id="contact-us"
@@ -80,12 +94,13 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
       <div className="mx-auto flex h-full min-h-0 w-full max-w-2160 flex-col p-4 md:p-10">
         <div className="relative flex shrink-0 items-center justify-between lg:items-start">
           <motion.a
-            href="/"
+            href={import.meta.env.BASE_URL}
             initial={slideDown.initial}
             animate={show ? slideDown.animate : slideDown.initial}
             transition={slideDown.transition}
+            onClick={handleLogoClick}
           >
-            <img src={logo} alt="Agile Partners" className="h-11 w-auto" />
+            <img src={logo} alt="Agile Partners" className="h-8 w-auto md:h-11" />
           </motion.a>
           <motion.button
             type="button"

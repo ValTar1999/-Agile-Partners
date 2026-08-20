@@ -192,7 +192,24 @@ export default function MobileNavMenu({ isOpen, onClose, menuId }: MobileNavMenu
               transition={{ duration: MENU_DURATION, ease: MENU_EASE }}
             >
               <div className="flex shrink-0 items-center justify-between p-4">
-                <a href="/" className="flex items-center no-underline" onClick={onClose}>
+                <a
+                  href={import.meta.env.BASE_URL}
+                  className="flex items-center no-underline"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onClose();
+                    window.setTimeout(() => {
+                      const instance = lenisRef.current;
+                      const fromY = instance?.scroll ?? window.scrollY;
+                      if (fromY <= 0) return;
+                      if (instance) {
+                        instance.scrollTo(0, getAnchorScrollOptions(0, fromY));
+                      } else {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }, NAVIGATE_AFTER_CLOSE_MS);
+                  }}
+                >
                   <img src={logoDark} alt="Agile Partners" className="h-8 w-auto" />
                 </a>
                 <button

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 import logo from '../assets/image/header/LOGO.svg';
+import { useLenis } from '../hooks/useLenis';
 import { usePageTheme } from '../hooks/usePageTheme';
 import MobileNavMenu from './MobileNavMenu';
 
@@ -20,7 +21,21 @@ const slideDown = {
   transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] as const },
 };
 
+function scrollToTop(lenis: ReturnType<typeof useLenis>) {
+  const fromY = lenis?.scroll ?? window.scrollY;
+  if (fromY <= 0) return;
+
+  const options = {
+    duration: Math.min(3, Math.max(1.2, 1 + (fromY / window.innerHeight) * 0.22)),
+    easing: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  };
+
+  if (lenis) lenis.scrollTo(0, options);
+  else window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 export default function Nav() {
+  const lenis = useLenis();
   const pageTheme = usePageTheme();
   const isDark = pageTheme === 'dark';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,15 +44,21 @@ export default function Nav() {
   const toggleMenu = () => setIsMenuOpen((open) => !open);
   const menuId = 'mobile-nav-menu';
 
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    scrollToTop(lenis);
+  };
+
   return (
     <nav className="mx-auto flex w-full max-w-2160 justify-center">
       <div className="relative flex w-full items-center justify-between p-4 md:p-10 lg:items-start">
         <motion.a
-          href="/"
+          href={import.meta.env.BASE_URL}
           className="flex items-center no-underline"
           initial={slideDown.initial}
           animate={slideDown.animate}
           transition={slideDown.transition}
+          onClick={handleLogoClick}
         >
           <img
             src={logo}
