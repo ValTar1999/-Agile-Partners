@@ -6,11 +6,12 @@ import { RevealWrappedLines } from './RevealLine';
 const PARAGRAPH_TEXT =
   'Agile Partners transform and support every aspect of a fintech business at every phase - from start-up to large-scale platform — across the world.';
 
+// Keep placements inside the explicit grid (6 / 12 cols) so overflow-hidden ancestors don't clip.
 const PARAGRAPH_GRID_CLASS =
-  'col-span-4 col-start-4 md:col-span-5 md:col-start-7 xl:col-span-2 xl:col-start-8 ';
+  'col-span-3 col-start-4 min-w-0 md:col-span-5 md:col-start-7 xl:col-span-3 xl:col-start-8';
 
 const PARAGRAPH_TEXT_CLASS =
-  'w-full text-base -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px] xl:min-w-62 xl:max-w-62';
+  'w-full max-w-full text-base break-words -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px]';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
@@ -50,6 +51,7 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
 
     const update = () => setHeight(el.offsetHeight);
     update();
+    void document.fonts?.ready?.then(update);
 
     const observer = new ResizeObserver(update);
     observer.observe(el);
@@ -57,40 +59,42 @@ function RevealParagraph({ text, delay = 0 }: { text: string; delay?: number }) 
   }, [text, leading.final]);
 
   return (
-    <div className={`relative ${PARAGRAPH_GRID_CLASS}`}>
-      <p
-        ref={measureRef}
-        className={`${PARAGRAPH_TEXT_CLASS} pointer-events-none invisible absolute inset-x-0 top-0`}
-        style={{ lineHeight: leading.final }}
-        aria-hidden
-      >
-        {text}
-      </p>
-      <div className="overflow-hidden" style={{ height: height || undefined }}>
-        <motion.p
-          className={PARAGRAPH_TEXT_CLASS}
-          initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
-          animate={{ y: 0, opacity: 1, lineHeight: leading.final }}
-          transition={{
-            y: {
-              duration: 1,
-              ease: [0.22, 1, 0.36, 1],
-              delay,
-            },
-            opacity: {
-              duration: 0.1,
-              ease: 'easeOut',
-              delay: delay + 0.18,
-            },
-            lineHeight: {
-              duration: 1,
-              ease: [0.22, 1, 0.36, 1],
-              delay,
-            },
-          }}
+    <div className={PARAGRAPH_GRID_CLASS}>
+      <div className="relative w-full min-w-0">
+        <p
+          ref={measureRef}
+          className={`${PARAGRAPH_TEXT_CLASS} pointer-events-none invisible absolute inset-x-0 top-0`}
+          style={{ lineHeight: leading.final }}
+          aria-hidden
         >
           {text}
-        </motion.p>
+        </p>
+        <div className="w-full min-w-0 overflow-hidden" style={{ height: height || undefined }}>
+          <motion.p
+            className={PARAGRAPH_TEXT_CLASS}
+            initial={{ y: '100%', opacity: 0.5, lineHeight: leading.initial }}
+            animate={{ y: 0, opacity: 1, lineHeight: leading.final }}
+            transition={{
+              y: {
+                duration: 1,
+                ease: [0.22, 1, 0.36, 1],
+                delay,
+              },
+              opacity: {
+                duration: 0.1,
+                ease: 'easeOut',
+                delay: delay + 0.18,
+              },
+              lineHeight: {
+                duration: 1,
+                ease: [0.22, 1, 0.36, 1],
+                delay,
+              },
+            }}
+          >
+            {text}
+          </motion.p>
+        </div>
       </div>
     </div>
   );
