@@ -11,7 +11,7 @@ const PARAGRAPH_GRID_CLASS =
   'col-span-3 col-start-4 min-w-0 md:col-span-5 md:col-start-7 xl:col-span-3 xl:col-start-8';
 
 const PARAGRAPH_TEXT_CLASS =
-  'w-full max-w-full text-base break-words -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px]';
+  'w-full max-w-[248px] text-base break-words -tracking-[0.48px] text-current md:text-xl md:-tracking-[0.7px]';
 
 const PARAGRAPH_LEADING = {
   mobile: { initial: '56px', final: '22px' },
