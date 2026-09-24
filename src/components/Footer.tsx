@@ -155,7 +155,7 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
                 className="group/link relative inline-flex items-center gap-2 text-xl leading-[26px] -tracking-[0.7px] text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
               >
                 <span
-                  className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/link:w-full"
+                  className="absolute bottom-0 left-0 h-px w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/link:w-full"
                   aria-hidden
                 />
                 <svg
