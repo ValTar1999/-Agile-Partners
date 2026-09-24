@@ -212,7 +212,7 @@ export default function Footer({ isActive = false }: { isActive?: boolean }) {
                     className="group/social relative inline-block text-xl leading-[26px] -tracking-[0.7px] text-white/90 transition-colors hover:text-[#0AE58A] xl:text-2xl xl:leading-7 xl:-tracking-[0.72px]"
                   >
                     <span
-                      className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/social:w-full"
+                      className="absolute bottom-0 left-0 h-px w-0 bg-[#0AE58A] transition-[width] duration-300 ease-out group-hover/social:w-full"
                       aria-hidden
                     />
                     <span className="relative z-10">{name}</span>
